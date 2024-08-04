@@ -1,7 +1,10 @@
 package pwm.ar.arpacinema
 
+import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import pwm.ar.arpacinema.databinding.MenuItemBinding
 
@@ -29,6 +32,12 @@ class MenuAdapter(
     override fun onBindViewHolder(holder: MenuViewHolder, position: Int) {
         val menuItem = menuItems[position]
         holder.binding.menuItemIcon.setImageResource(menuItem.iconResId)
+        if(menuItem.title == "Logout") {
+            val textView = holder.binding.menuItemTitle
+            val color = ContextCompat.getColor(holder.itemView.context, R.color.md_theme_error)
+            textView.setTextColor(color)
+            holder.binding.menuItemIcon.setColorFilter(color)
+        }
         holder.binding.menuItemTitle.text = menuItem.title
     }
 

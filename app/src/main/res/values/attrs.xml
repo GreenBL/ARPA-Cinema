@@ -1,0 +1,34 @@
+<resources>
+    <attr name="colorGold" format="color" />
+    <attr name="colorOnGold" format="color" />
+    <attr name="colorGoldContainer" format="color" />
+    <attr name="colorOnGoldContainer" format="color" />
+    <attr name="colorEvergreen" format="color" />
+    <attr name="colorOnEvergreen" format="color" />
+    <attr name="colorEvergreenContainer" format="color" />
+    <attr name="colorOnEvergreenContainer" format="color" />
+    <attr name="colorDeepPurple" format="color" />
+    <attr name="colorOnDeepPurple" format="color" />
+    <attr name="colorDeepPurpleContainer" format="color" />
+    <attr name="colorOnDeepPurpleContainer" format="color" />
+    <attr name="colorLightPurple" format="color" />
+    <attr name="colorOnLightPurple" format="color" />
+    <attr name="colorLightPurpleContainer" format="color" />
+    <attr name="colorOnLightPurpleContainer" format="color" />
+    <attr name="colorWarning" format="color" />
+    <attr name="colorOnWarning" format="color" />
+    <attr name="colorWarningContainer" format="color" />
+    <attr name="colorOnWarningContainer" format="color" />
+    <attr name="colorTeal" format="color" />
+    <attr name="colorOnTeal" format="color" />
+    <attr name="colorTealContainer" format="color" />
+    <attr name="colorOnTealContainer" format="color" />
+    <attr name="colorSea" format="color" />
+    <attr name="colorOnSea" format="color" />
+    <attr name="colorSeaContainer" format="color" />
+    <attr name="colorOnSeaContainer" format="color" />
+    <attr name="colorAquamarine" format="color" />
+    <attr name="colorOnAquamarine" format="color" />
+    <attr name="colorAquamarineContainer" format="color" />
+    <attr name="colorOnAquamarineContainer" format="color" />
+</resources>
