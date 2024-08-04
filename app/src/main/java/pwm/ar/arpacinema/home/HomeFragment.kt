@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import pwm.ar.arpacinema.R
+import pwm.ar.arpacinema.databinding.ActivityMainBinding
 import pwm.ar.arpacinema.databinding.FragmentHomeBinding
 
 private const val ARG_PARAM1 = "param1"
@@ -19,6 +21,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
+    // TODO
     private val catItems = listOf(CategoryItem(R.drawable.baseline_person_24, "Giallo"),
         CategoryItem(R.drawable.baseline_person_24, "Avventura"),
         CategoryItem(R.drawable.baseline_person_24, "Fantasy"),
@@ -49,7 +52,7 @@ class HomeFragment : Fragment() {
         val recyclerView = binding.categoryRV
 
         val catAdapter = CategoryAdapter(catItems) { catItem ->
-            // TODO: HANDLE CATEGORY CLICK
+            // TODO handle category click, probably a custom view separate from the search one
         }
 
         recyclerView.apply {
