@@ -8,6 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.carousel.CarouselLayoutManager
+import com.google.android.material.carousel.CarouselSnapHelper
+import com.google.android.material.carousel.HeroCarouselStrategy
+import com.google.android.material.carousel.MultiBrowseCarouselStrategy
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.databinding.ActivityMainBinding
 import pwm.ar.arpacinema.databinding.FragmentHomeBinding
@@ -60,6 +64,27 @@ class HomeFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         }
 
+        // TODO: EXAMPLE OF HOW TO USE THE CAROUSEL
+        val dataset = listOf(CarouselItem("Spider-Man", "https://i.ebayimg.com/images/g/3h0AAOSwwNpkAO7-/s-l1600.jpg"),
+            CarouselItem("Spider-Man 4", "https://i.ebayimg.com/images/g/3h0AAOSwwNpkAO7-/s-l1600.jpg"),
+            CarouselItem("Spider-Man 6", "https://i.ebayimg.com/images/g/3h0AAOSwwNpkAO7-/s-l1600.jpg"),
+            CarouselItem("Spider-Man 6", "https://i.ebayimg.com/images/g/3h0AAOSwwNpkAO7-/s-l1600.jpg"),
+            CarouselItem("Spider-Man 6", "https://i.ebayimg.com/images/g/3h0AAOSwwNpkAO7-/s-l1600.jpg"),
+            CarouselItem("Spider-Man 6", "https://i.ebayimg.com/images/g/3h0AAOSwwNpkAO7-/s-l1600.jpg"),
+            CarouselItem("Spider-Man 6", "https://i.ebayimg.com/images/g/3h0AAOSwwNpkAO7-/s-l1600.jpg"),
+            CarouselItem("Spider-Man 6", "https://i.ebayimg.com/images/g/3h0AAOSwwNpkAO7-/s-l1600.jpg"))
+
+        val carAdapter = CarouselAdapter(dataset)
+        val carousel = binding.carouselRV
+        val carouselLayoutManager = CarouselLayoutManager()
+        carouselLayoutManager.carouselAlignment = CarouselLayoutManager.ALIGNMENT_CENTER
+        carousel.apply {
+            adapter = carAdapter
+            layoutManager = carouselLayoutManager
+        }
+
+        val snapHelper = CarouselSnapHelper()
+        snapHelper.attachToRecyclerView(carousel)
     }
 
     override fun onDestroyView() {

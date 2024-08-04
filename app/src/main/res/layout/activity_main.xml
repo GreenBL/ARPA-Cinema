@@ -8,6 +8,19 @@
     android:fitsSystemWindows="false"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/global_background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/gradient"
+        tools:visibility="gone" />
+
     <include
         android:id="@+id/include"
         layout="@layout/activity_main_container"
@@ -26,6 +39,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/navbar_menu" />
+        app:menu="@menu/navbar_menu" >
+
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
