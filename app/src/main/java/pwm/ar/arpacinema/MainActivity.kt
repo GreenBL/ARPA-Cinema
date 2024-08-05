@@ -17,8 +17,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val menuItems = listOf(
-        MenuItem(R.drawable.round_chevron_right_24, "Premi"),
-        MenuItem(R.drawable.round_chevron_right_24, "Storico Acquisti"),
+        MenuItem(R.drawable.outline_person_24, "Premi"),
+        MenuItem(R.drawable.outline_fastfood_24, "Storico Acquisti"),
         MenuItem(R.drawable.round_chevron_right_24, "Roba"),
         MenuItem(R.drawable.round_chevron_right_24, "XL (500g)"),
         MenuItem(R.drawable.round_chevron_right_24, "L (350g)"),

@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,9 +37,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:itemCount="1"
                 tools:listitem="@layout/menu_item" />
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:itemCount="5"
                 tools:listitem="@layout/menu_item" />
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
         <ImageView
             android:id="@+id/imageView"

@@ -18,7 +18,7 @@
         android:paddingBottom="16dp">
 
         <ImageView
-            android:id="@+id/menu_item_draw"
+            android:id="@+id/menu_item_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -36,12 +36,12 @@
             android:layout_marginStart="16dp"
             android:textAppearance="?attr/textAppearanceListItem"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/menu_item_draw"
+            app:layout_constraintStart_toEndOf="@+id/menu_item_icon"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@tools:sample/lorem" />
 
         <ImageView
-            android:id="@+id/menu_item_icon"
+            android:id="@+id/chevron"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
