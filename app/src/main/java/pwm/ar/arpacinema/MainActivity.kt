@@ -47,7 +47,27 @@ class MainActivity : AppCompatActivity() {
 
         //binding.bottomNavigationView.visibility = View.GONE
 
+        val navigationBar = binding.bottomNavigationView
 
+        navigationBar.setOnItemSelectedListener { item ->
+
+            when (item.itemId) {
+                R.id.home -> {
+                    val navController = findNavController(R.id.fragmentContainerView)
+                    navController.navigate(R.id.homeFragment)
+                    true
+                }
+
+                R.id.profile -> {
+                    val navController = findNavController(R.id.fragmentContainerView)
+                    navController.navigate(R.id.profileViewAction)
+                    true
+                }
+
+                else -> { false }
+            }
+
+        }
 
     }
 }

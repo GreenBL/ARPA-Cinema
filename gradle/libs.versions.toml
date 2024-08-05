@@ -20,6 +20,7 @@ lifecycleViewmodelKtx = "2.8.4"
 kotlinxCoroutinesAndroid = "1.9.0-RC"
 kotlinxCoroutinesCore = "1.9.0-RC"
 navigationUiKtx = "2.8.0-beta06"
+legacySupportV4 = "1.0.0"
 
 
 [libraries]
@@ -42,6 +43,7 @@ androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifec
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
+androidx-legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacySupportV4" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
