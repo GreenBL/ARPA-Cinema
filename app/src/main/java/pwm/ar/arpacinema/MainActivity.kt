@@ -1,14 +1,13 @@
 package pwm.ar.arpacinema
 
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.findNavController
-import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import pwm.ar.arpacinema.databinding.ActivityMainBinding
 
@@ -30,6 +29,8 @@ class MainActivity : AppCompatActivity() {
 
         val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
+        val toolbarCustom = layoutInflater.inflate(R.layout.dynamic_toolbar, null)
+
 
         toolbar.setNavigationOnClickListener{
             Toast.makeText(this, "Navigation icon clicked", Toast.LENGTH_SHORT).show()
@@ -38,8 +39,8 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.apply {
             title = "Benvenuto!"
             subtitle = "Accedi o crea un account."
-
-
+            customView = toolbarCustom
+            displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
             // TODO
         }
 
@@ -55,12 +56,15 @@ class MainActivity : AppCompatActivity() {
                 R.id.home -> {
                     val navController = findNavController(R.id.fragmentContainerView)
                     navController.navigate(R.id.homeFromProfile)
+                   // val navController2 = findNavController(R.id.fragmentContainerViewToolbar)
+                   //  navController2.navigate(R.id.action_toolbarIcon_to_toolbarTitle)
                     true
                 }
 
                 R.id.profile -> {
                     val navController = findNavController(R.id.fragmentContainerView)
                     navController.navigate(R.id.profileViewAction)
+                    findNavController(R.id.fragmentContainerViewToolbar).navigate(R.id.action1)
                     true
                 }
 

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navgraph_toolbar"
+    app:startDestination="@id/toolbarTitle">
+
+    <fragment
+        android:id="@+id/toolbarTitle"
+        android:name="pwm.ar.arpacinema.ToolbarTitle"
+        android:label="fragment_toolbar_title"
+        tools:layout="@layout/fragment_toolbar_title" >
+        <action
+            android:id="@+id/action1"
+            app:destination="@id/toolbarIcon"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/toolbarIcon"
+        android:name="pwm.ar.arpacinema.ToolbarIcon"
+        android:label="fragment_toolbar_icon"
+        tools:layout="@layout/fragment_toolbar_icon" >
+        <action
+            android:id="@+id/action_toolbarIcon_to_toolbarTitle"
+            app:destination="@id/toolbarTitle" />
+    </fragment>
+</navigation>

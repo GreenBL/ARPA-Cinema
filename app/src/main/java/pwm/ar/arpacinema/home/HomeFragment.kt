@@ -1,10 +1,13 @@
 package pwm.ar.arpacinema.home
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -54,6 +57,7 @@ class HomeFragment : Fragment() {
         arguments?.let {
             // might need arguments? keep it
         }
+
     }
 
     override fun onCreateView(
@@ -102,6 +106,9 @@ class HomeFragment : Fragment() {
 
         val snapHelper = CarouselSnapHelper()
         snapHelper.attachToRecyclerView(carousel)
+
+        //val mainNav = requireActivity().findNavController(R.id.fragmentContainerView2)
+        //mainNav.navigate(R.id.action_toolbarTitle_to_toolbarIcon)
     }
 
     override fun onDestroyView() {
