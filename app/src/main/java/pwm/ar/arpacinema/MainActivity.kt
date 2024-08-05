@@ -1,10 +1,13 @@
 package pwm.ar.arpacinema
 
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.navigation.findNavController
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import pwm.ar.arpacinema.databinding.ActivityMainBinding
@@ -27,10 +30,22 @@ class MainActivity : AppCompatActivity() {
 
         val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
+
+        toolbar.setNavigationOnClickListener{
+            Toast.makeText(this, "Navigation icon clicked", Toast.LENGTH_SHORT).show()
+        }
+
         supportActionBar?.apply {
             title = "Benvenuto!"
+            subtitle = "Accedi o crea un account."
 
+
+            // TODO
         }
+
+        // TODO - login stuff
+
+        //binding.bottomNavigationView.visibility = View.GONE
 
 
 

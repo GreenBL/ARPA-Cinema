@@ -12,6 +12,7 @@ import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.CarouselSnapHelper
 import com.google.android.material.carousel.HeroCarouselStrategy
 import com.google.android.material.carousel.MultiBrowseCarouselStrategy
+import com.google.android.material.carousel.UncontainedCarouselStrategy
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.databinding.ActivityMainBinding
 import pwm.ar.arpacinema.databinding.FragmentHomeBinding
@@ -26,12 +27,26 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     // TODO
-    private val catItems = listOf(CategoryItem(R.drawable.baseline_person_24, "Giallo"),
+    private val catItems = listOf(CategoryItem(R.drawable.baseline_person_24, "Azione"),
         CategoryItem(R.drawable.baseline_person_24, "Avventura"),
-        CategoryItem(R.drawable.baseline_person_24, "Fantasy"),
+        CategoryItem(R.drawable.outline_theater_comedy_24, "Commedia"),
+        CategoryItem(R.drawable.baseline_person_24, "Dramma"),
         CategoryItem(R.drawable.baseline_person_24, "Horror"),
         CategoryItem(R.drawable.baseline_person_24, "Sci-Fi"),
-        CategoryItem(R.drawable.baseline_person_24, "Thriller")
+        CategoryItem(R.drawable.baseline_person_24, "Fantasy"),
+        CategoryItem(R.drawable.baseline_person_24, "Romantico"),
+        CategoryItem(R.drawable.baseline_person_24, "Thriller"),
+        CategoryItem(R.drawable.baseline_person_24, "Mistero"),
+        CategoryItem(R.drawable.baseline_person_24, "Documentario"),
+        CategoryItem(R.drawable.baseline_person_24, "Animazione"),
+        CategoryItem(R.drawable.baseline_person_24, "Musical"),
+        CategoryItem(R.drawable.baseline_person_24, "Storico"),
+        CategoryItem(R.drawable.baseline_person_24, "Biografico"),
+        CategoryItem(R.drawable.baseline_person_24, "Crime"),
+        CategoryItem(R.drawable.baseline_person_24, "Western"),
+        CategoryItem(R.drawable.baseline_person_24, "Family"),
+        CategoryItem(R.drawable.baseline_person_24, "Noir")
+
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,23 +80,25 @@ class HomeFragment : Fragment() {
         }
 
         // TODO: EXAMPLE OF HOW TO USE THE CAROUSEL
-        val dataset = listOf(CarouselItem("Spider-Man", "https://i.ebayimg.com/images/g/3h0AAOSwwNpkAO7-/s-l1600.jpg"),
-            CarouselItem("Spider-Man 4", "https://i.ebayimg.com/images/g/3h0AAOSwwNpkAO7-/s-l1600.jpg"),
+        val dataset = listOf(CarouselItem("Spider-Man 2", "https://i.ebayimg.com/images/g/3h0AAOSwwNpkAO7-/s-l1600.jpg"),
+            CarouselItem("Avengers Endgame", "https://pad.mymovies.it/filmclub/2018/12/029/locandina.jpg"),
+            CarouselItem("Deadpool & Wolverine", "https://cdn.marvel.com/content/1x/dp3_1sht_digital_srgb_ka_swords_v5_resized.jpg"),
+            CarouselItem("Il Signore Degli Anelli: Il Ritorno Del Re", "https://static.posters.cz/image/1300/poster/il-signore-degli-anelli-il-ritorno-del-re-i104633.jpg"),
             CarouselItem("Spider-Man 6", "https://i.ebayimg.com/images/g/3h0AAOSwwNpkAO7-/s-l1600.jpg"),
             CarouselItem("Spider-Man 6", "https://i.ebayimg.com/images/g/3h0AAOSwwNpkAO7-/s-l1600.jpg"),
             CarouselItem("Spider-Man 6", "https://i.ebayimg.com/images/g/3h0AAOSwwNpkAO7-/s-l1600.jpg"),
-            CarouselItem("Spider-Man 6", "https://i.ebayimg.com/images/g/3h0AAOSwwNpkAO7-/s-l1600.jpg"),
-            CarouselItem("Spider-Man 6", "https://i.ebayimg.com/images/g/3h0AAOSwwNpkAO7-/s-l1600.jpg"),
-            CarouselItem("Spider-Man 6", "https://i.ebayimg.com/images/g/3h0AAOSwwNpkAO7-/s-l1600.jpg"))
+            CarouselItem("Spider-Man 6", "https://google.it"))
 
         val carAdapter = CarouselAdapter(dataset)
         val carousel = binding.carouselRV
-        val carouselLayoutManager = CarouselLayoutManager()
+        val carouselLayoutManager = CarouselLayoutManager(UncontainedCarouselStrategy())
         carouselLayoutManager.carouselAlignment = CarouselLayoutManager.ALIGNMENT_CENTER
         carousel.apply {
             adapter = carAdapter
             layoutManager = carouselLayoutManager
         }
+
+        carousel.scrollToPosition(2)
 
         val snapHelper = CarouselSnapHelper()
         snapHelper.attachToRecyclerView(carousel)
