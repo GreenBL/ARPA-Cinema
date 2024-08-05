@@ -59,7 +59,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
                 android:layout_marginEnd="16dp"
-                app:cardCornerRadius="60dp">
+                android:visibility="gone"
+                app:cardCornerRadius="60dp"
+                tools:visibility="gone">
 
                 <ImageView
                     android:id="@+id/imageView2"

@@ -13,15 +13,22 @@
         <action
             android:id="@+id/profileViewAction"
             app:destination="@id/profileMenuFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@id/profileMenuFragment" />
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/profileMenuFragment"
         android:name="pwm.ar.arpacinema.profile.ProfileMenuFragment"
         android:label="fragment_profile_menu"
-        tools:layout="@layout/fragment_profile_menu" />
+        tools:layout="@layout/fragment_profile_menu" >
+        <action
+            android:id="@+id/homeFromProfile"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"/>
+    </fragment>
 </navigation>

@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.home -> {
                     val navController = findNavController(R.id.fragmentContainerView)
-                    navController.navigate(R.id.homeFragment)
+                    navController.navigate(R.id.homeFromProfile)
                     true
                 }
 
