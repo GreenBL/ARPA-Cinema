@@ -48,7 +48,7 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
             android:alpha="1"
             android:background="@android:color/transparent"
             app:subtitleTextAppearance="@style/TextAppearance.AppCompat.Small"
@@ -59,7 +59,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
                 android:layout_marginEnd="16dp"
-                app:cardCornerRadius="60dp">
+                android:visibility="gone"
+                app:cardCornerRadius="60dp"
+                tools:visibility="gone">
 
                 <ImageView
                     android:id="@+id/imageView2"
