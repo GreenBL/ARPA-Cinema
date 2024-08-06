@@ -1,26 +1,31 @@
 package pwm.ar.arpacinema.auth
 
+import android.graphics.Color
 import androidx.fragment.app.viewModels
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.material.transition.MaterialContainerTransform
+import com.google.android.material.transition.platform.MaterialContainerTransform
 import pwm.ar.arpacinema.R
 
-class LoginFragment : Fragment() {
+class SignupFragment : Fragment() {
 
     companion object {
-        fun newInstance() = LoginFragment()
+        fun newInstance() = SignupFragment()
     }
 
-    private val viewModel: LoginViewModel by viewModels()
+    private val viewModel: SignupViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //val signupFragment = SignupFragment()
-        //signupFragment.sharedElementEnterTransition = MaterialContainerTransform()
+        this.sharedElementEnterTransition = MaterialContainerTransform().apply {
+            duration = 300L
+            isElevationShadowEnabled = false
+            scrimColor = Color.TRANSPARENT
+        }
+
         // TODO: Use the ViewModel
     }
 
@@ -28,6 +33,6 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_login, container, false)
+        return inflater.inflate(R.layout.fragment_signup, container, false)
     }
 }

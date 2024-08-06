@@ -31,4 +31,8 @@
             app:popEnterAnim="@anim/nav_default_enter_anim"
             app:popExitAnim="@anim/nav_default_exit_anim" />
     </fragment>
+    <fragment
+        android:id="@+id/closeAppBar"
+        android:name="pwm.ar.arpacinema.appbar.CloseAppBar"
+        android:label="CloseAppBar" />
 </navigation>
