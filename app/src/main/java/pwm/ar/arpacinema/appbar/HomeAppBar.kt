@@ -6,9 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import pwm.ar.arpacinema.R
+import pwm.ar.arpacinema.databinding.FragmentHomeAppBarBinding
 
 class HomeAppBar : Fragment() {
+
+    private var _binding: FragmentHomeAppBarBinding? = null
+    private val binding
+            get() = _binding!!
 
     companion object {
         fun newInstance() = HomeAppBar()
@@ -26,6 +32,21 @@ class HomeAppBar : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_home_app_bar, container, false)
+        _binding = FragmentHomeAppBarBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val badgeButton = binding.badge
+
+        badgeButton.setOnClickListener {
+            // TODO HEAVY
+            val mainNav = activity?.supportFragmentManager?.findFragmentById(R.id.fragmentContainerView)
+            val navController = mainNav?.findNavController()
+            navController?.navigate(R.id.authFragment)
+
+        }
     }
 }

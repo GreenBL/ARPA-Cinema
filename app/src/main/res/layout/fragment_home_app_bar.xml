@@ -30,13 +30,14 @@
         app:layout_constraintTop_toBottomOf="@+id/titleStr" />
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/badge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        android:foreground="?attr/selectableItemBackground"
         android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
         app:cardCornerRadius="100dp"
         app:cardUseCompatPadding="false"
         app:contentPadding="8dp"
@@ -45,13 +46,13 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageView5"
+            android:id="@+id/icon"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/round_login_24"
 
-            app:tint="@color/md_theme_onSurface"/>
+            app:tint="@color/md_theme_onSurface" />
     </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
