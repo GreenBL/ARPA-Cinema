@@ -67,9 +67,9 @@ class ProfileMenuFragment : Fragment() {
 
         //(activity as? AppCompatActivity)?.supportActionBar?.hide()
         // CUSTOM TOOLBAR VIEW
-        val profileToolbar = layoutInflater.inflate(R.layout.dynamic_toolbar, null)
-        toolbar?.customView = profileToolbar
-        toolbar?.displayOptions = androidx.appcompat.app.ActionBar.DISPLAY_SHOW_CUSTOM
+        //val profileToolbar = layoutInflater.inflate(R.layout.dynamic_toolbar, null)
+        //toolbar?.customView = profileToolbar
+        //toolbar?.displayOptions = androidx.appcompat.app.ActionBar.DISPLAY_SHOW_CUSTOM
 
 
         val topMenu = binding.topMenu
@@ -122,6 +122,6 @@ class ProfileMenuFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        (activity as? AppCompatActivity)?.supportActionBar?.displayOptions = androidx.appcompat.app.ActionBar.DISPLAY_SHOW_TITLE
+        //(activity as? AppCompatActivity)?.supportActionBar?.displayOptions = androidx.appcompat.app.ActionBar.DISPLAY_SHOW_TITLE
     }
 }
