@@ -119,7 +119,8 @@
                         android:id="@+id/dateField"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="datetime|date" />
+                        android:focusable="false"
+                        android:inputType="none" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout

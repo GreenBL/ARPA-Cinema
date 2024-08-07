@@ -51,5 +51,22 @@ open class TextValidator(
                 else -> ""
             }
         }
+
+        fun isValidName(name: String): String {
+            return when {
+                name.isEmpty() -> ""
+                !name.matches("^[a-zA-Z]+(([' ][a-zA-Z ])?[a-zA-Z]*)*\$".toRegex()) -> "Sei figlio di Elon Musk?"
+                else -> ""
+            }
+        }
+
+        fun isValidPhone(phone: String): String {
+            return when {
+                phone.isEmpty() -> ""
+                !phone.matches("^[0-9]{10}\$".toRegex()) -> "Il numero di telefono deve essere di 10 cifre"
+                else -> ""
+            }
+        }
+
     }
 }
