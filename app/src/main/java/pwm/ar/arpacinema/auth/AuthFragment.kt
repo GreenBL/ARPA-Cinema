@@ -1,5 +1,6 @@
 package pwm.ar.arpacinema.auth
 
+import android.graphics.Color
 import androidx.fragment.app.viewModels
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -16,6 +17,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.transition.platform.MaterialContainerTransform
 import pwm.ar.arpacinema.MainActivity
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.databinding.FragmentAuthBinding
@@ -37,11 +39,16 @@ class AuthFragment : Fragment() {
         // TODO DISAPPEAR TOOLBAR AND NAVBAR
         //val appBarNav = requireActivity().supportFragmentManager.findFragmentById(R.id.appbarContainer)
         //val navController = appBarNav?.findNavController()
-        val toolbar = requireActivity().actionBar?.customView
-        val closeButton = toolbar?.findViewById<Button>(R.id.close_button)
-        closeButton?.setOnClickListener {
-            binding.authCardContainer.findNavController().popBackStack()
+        //val toolbar = requireActivity().actionBar?.customView
+       // val closeButton = toolbar?.findViewById<Button>(R.id.close_button)
+
+        this.sharedElementEnterTransition = MaterialContainerTransform().apply {
+            duration = 300L
+            isElevationShadowEnabled = true
+            scrimColor = Color.TRANSPARENT
+            fadeMode = MaterialContainerTransform.FADE_MODE_CROSS
         }
+
 
         val navigationBar = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         navigationBar.visibility = View.GONE
@@ -61,20 +68,21 @@ class AuthFragment : Fragment() {
         val signUpButton = binding.signupFormBtn
 
         signUpButton.setOnClickListener {
-            val sharedElementView = requireActivity().findViewById<View>(R.id.signinBtn)
-            val cardHost = binding.authCardContainer
-            val cardNavController = cardHost.findNavController()
-            binding.signupFormBtn.visibility = View.GONE
+
+            val sharedElementView = binding.cardContentLogin.root
+            val nav = findNavController()
+
             val extras = FragmentNavigatorExtras(sharedElementView to "shared_element_container")
-            cardNavController.navigate(R.id.login_to_signup, null, null, extras)
+            nav.navigate(R.id.signupFragment, null, null, extras)
         }
 
+        binding.topBarInclude.button.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        val navigationBar = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        navigationBar.visibility = View.VISIBLE
         _binding = null
     }
 

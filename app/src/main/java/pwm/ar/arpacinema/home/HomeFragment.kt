@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
@@ -69,6 +70,8 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility = View.VISIBLE
+
         val recyclerView = binding.categoryRV
 
         val catAdapter = CategoryAdapter(catItems) { catItem ->
@@ -87,8 +90,7 @@ class HomeFragment : Fragment() {
             CarouselItem("Il Signore Degli Anelli: Il Ritorno Del Re", "https://static.posters.cz/image/1300/poster/il-signore-degli-anelli-il-ritorno-del-re-i104633.jpg"),
             CarouselItem("Spider-Man 6", "https://i.ebayimg.com/images/g/3h0AAOSwwNpkAO7-/s-l1600.jpg"),
             CarouselItem("Spider-Man 6", "https://i.ebayimg.com/images/g/3h0AAOSwwNpkAO7-/s-l1600.jpg"),
-            CarouselItem("Spider-Man 6", "https://i.ebayimg.com/images/g/3h0AAOSwwNpkAO7-/s-l1600.jpg"),
-            CarouselItem("Spider-Man 6", "https://google.it"))
+            CarouselItem("Spider-Man 6", "https://i.ebayimg.com/images/g/3h0AAOSwwNpkAO7-/s-l1600.jpg"))
 
         val carAdapter = CarouselAdapter(dataset)
         val carousel = binding.carouselRV
@@ -106,7 +108,13 @@ class HomeFragment : Fragment() {
 
         // handle badge click
         binding.tophome.badge.setOnClickListener {
-            findNavController().navigate(R.id.authFragment)
+             val sharedElementView = binding.tophome.badge
+
+             val cardNavController = findNavController()
+
+            val extras = FragmentNavigatorExtras(sharedElementView to "shared_card")
+            cardNavController.navigate(R.id.authFragment, null, null, extras)
+            //findNavController().navigate(R.id.authFragment)
         }
     }
 

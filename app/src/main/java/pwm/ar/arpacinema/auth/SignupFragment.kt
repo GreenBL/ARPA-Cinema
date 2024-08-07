@@ -26,6 +26,8 @@ class SignupFragment : Fragment() {
             duration = 300L
             isElevationShadowEnabled = false
             scrimColor = Color.TRANSPARENT
+            fadeMode = MaterialContainerTransform.FADE_MODE_THROUGH
+            scaleProgressThresholds = MaterialContainerTransform.ProgressThresholds(0.5f, 1f)
         }
 
 

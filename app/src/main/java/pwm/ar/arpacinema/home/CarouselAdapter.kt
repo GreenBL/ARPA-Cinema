@@ -7,6 +7,8 @@ import android.widget.TextView
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.runBlocking
 import pwm.ar.arpacinema.R
 
 // TODO: THIS IS AN OLD IMPLEMENTATION OF MINE FROM ANOTHER PROJECT, FIX AND REFACTOR BEFORE APP DELIVERY
@@ -35,10 +37,13 @@ class CarouselAdapter(private val heroList: List<CarouselItem>): RecyclerView.Ad
     override fun onBindViewHolder(holder: CarouselViewHolder, position: Int) {
         val currentHero = heroList[position]
 
-        // get image with glide
+
         Glide.with(holder.itemView.context)
             .load(currentHero.movieImageUrl)
             .into(holder.image)
+
+        // get image with glide
+
 
         holder.title.text = currentHero.movieTitle
     }
