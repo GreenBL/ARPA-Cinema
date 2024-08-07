@@ -1,7 +1,7 @@
-package pwm.ar.arpacinema.appbar
+package pwm.ar.arpacinema.auth
 
 import androidx.lifecycle.ViewModel
 
-class NavAppBarViewModel : ViewModel() {
+class SignupViewModel : ViewModel() {
     // TODO: Implement the ViewModel
 }

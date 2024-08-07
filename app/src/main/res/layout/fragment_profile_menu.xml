@@ -5,7 +5,7 @@
     android:id="@+id/frameLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="false"
+    android:fitsSystemWindows="true"
     tools:context=".profile.ProfileMenuFragment">
 
     <com.google.android.material.card.MaterialCardView
@@ -27,7 +27,6 @@
             android:tint="@color/colorGoldContainer_mediumContrast"
             app:srcCompat="@drawable/outline_star_half_24" />
     </com.google.android.material.card.MaterialCardView>
-
 
 
     <com.google.android.material.divider.MaterialDivider
@@ -124,8 +123,8 @@
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
             app:srcCompat="@mipmap/ic_launcher"
             tools:layout_editor_absoluteX="138dp"
             tools:layout_editor_absoluteY="98dp"

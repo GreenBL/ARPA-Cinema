@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.CarouselSnapHelper
@@ -64,6 +66,8 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility = View.VISIBLE
+
         val recyclerView = binding.categoryRV
 
         val catAdapter = CategoryAdapter(catItems) { catItem ->
@@ -87,6 +91,7 @@ class HomeFragment : Fragment() {
 
             )
 
+
         val carAdapter = CarouselAdapter(dataset)
         val carousel = binding.carouselRV
         val carouselLayoutManager = CarouselLayoutManager(UncontainedCarouselStrategy())
@@ -100,6 +105,17 @@ class HomeFragment : Fragment() {
 
         val snapHelper = CarouselSnapHelper()
         snapHelper.attachToRecyclerView(carousel)
+
+        // handle badge click
+        binding.tophome.badge.setOnClickListener {
+             val sharedElementView = binding.tophome.badge
+
+             val cardNavController = findNavController()
+
+            val extras = FragmentNavigatorExtras(sharedElementView to "shared_card")
+            cardNavController.navigate(R.id.authFragment, null, null, extras)
+            //findNavController().navigate(R.id.authFragment)
+        }
     }
 
     override fun onDestroyView() {
