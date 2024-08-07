@@ -26,7 +26,7 @@ class AndroidBug5497Workaround private constructor(activity: Activity) {
             val heightDifference = usableHeightSansKeyboard - usableHeightNow
             if (heightDifference > (usableHeightSansKeyboard / 4)) {
                 // keyboard probably just became visible
-                frameLayoutParams.height = usableHeightSansKeyboard - heightDifference + 128
+                frameLayoutParams.height = usableHeightSansKeyboard - heightDifference + 76
             } else {
                 // keyboard probably just became hidden
                 frameLayoutParams.height = usableHeightSansKeyboard

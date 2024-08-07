@@ -5,6 +5,7 @@
     android:id="@+id/frameLayout95"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
+    android:fitsSystemWindows="true"
     tools:context=".appbar.CloseAppBar">
 
     <com.google.android.material.button.MaterialButton
@@ -13,8 +14,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
+        android:fitsSystemWindows="false"
         app:icon="@drawable/round_close_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="LABEL_STRING"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
