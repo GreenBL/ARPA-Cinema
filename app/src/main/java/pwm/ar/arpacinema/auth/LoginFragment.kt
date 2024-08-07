@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.MaterialContainerTransform
 import pwm.ar.arpacinema.R
 
@@ -22,6 +24,8 @@ class LoginFragment : Fragment() {
         //val signupFragment = SignupFragment()
         //signupFragment.sharedElementEnterTransition = MaterialContainerTransform()
         // TODO: Use the ViewModel
+
+
     }
 
     override fun onCreateView(

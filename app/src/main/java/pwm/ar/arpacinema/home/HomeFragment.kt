@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -102,6 +103,11 @@ class HomeFragment : Fragment() {
 
         val snapHelper = CarouselSnapHelper()
         snapHelper.attachToRecyclerView(carousel)
+
+        // handle badge click
+        binding.tophome.badge.setOnClickListener {
+            findNavController().navigate(R.id.authFragment)
+        }
     }
 
     override fun onDestroyView() {

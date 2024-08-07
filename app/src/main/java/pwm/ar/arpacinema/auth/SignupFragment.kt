@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import pwm.ar.arpacinema.R
 
@@ -25,6 +27,7 @@ class SignupFragment : Fragment() {
             isElevationShadowEnabled = false
             scrimColor = Color.TRANSPARENT
         }
+
 
         // TODO: Use the ViewModel
     }

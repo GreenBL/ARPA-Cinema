@@ -57,7 +57,7 @@
         style="@style/Widget.Material3.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="56dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:text="Password dimenticata?"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
@@ -66,12 +66,12 @@
         android:id="@+id/signinBtn"
         android:layout_width="0dp"
         android:layout_height="56dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:text="Accedi"
+        android:transitionGroup="true"
+        android:transitionName="shared_element_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:transitionName="shared_element_container"
-        android:transitionGroup="true"
 
         app:layout_constraintTop_toBottomOf="@+id/passwordResetBtn" />
 </androidx.constraintlayout.widget.ConstraintLayout>
