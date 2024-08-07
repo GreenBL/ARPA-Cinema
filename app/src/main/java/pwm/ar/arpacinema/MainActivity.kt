@@ -62,18 +62,19 @@ class MainActivity : AppCompatActivity() {
 
             when (item.itemId) {
                 R.id.home -> {
-                    val navController = findNavController(R.id.fragmentContainerView)
                     navController.navigate(R.id.homeFromProfile)
                     true
                 }
 
                 R.id.profile -> {
-                    val navController = findNavController(R.id.fragmentContainerView)
                     navController.navigate(R.id.profileViewAction)
                     true
                 }
 
-                else -> { false }
+                else -> {
+                    navController.navigate(R.id.ticketsFragment)
+                    true
+                }
             }
 
         }
