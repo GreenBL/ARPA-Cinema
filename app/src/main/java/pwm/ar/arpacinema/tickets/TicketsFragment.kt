@@ -7,14 +7,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.NavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.divider.MaterialDividerItemDecoration
+import com.google.android.material.imageview.ShapeableImageView
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.databinding.FragmentTicketsBinding
 import pwm.ar.arpacinema.dev.TicketItem
 
 class TicketsFragment : Fragment() {
+
+    private val navController: NavController by lazy {
+        findNavController()
+    }
 
     // TEMP DATA SET
     private val tickets = listOf(TicketItem("Ciao", "06/04/2000", "16:30", "nan"),
@@ -61,8 +69,11 @@ class TicketsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
         val adapter = TicketAdapter(tickets) { ticket ->
             // HANDLE THE ITEM BEING CLICKED
+            navController.navigate(R.id.action_global_viewTicketFragment)
             Toast.makeText(requireContext(), "Clicked: ${ticket.title}", Toast.LENGTH_SHORT).show()
         }
 
