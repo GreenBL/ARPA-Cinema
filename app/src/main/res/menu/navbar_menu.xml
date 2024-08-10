@@ -2,15 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/home"
+        android:id="@+id/homeFragment"
         android:icon="@drawable/outline_home_24"
         android:title="Home" />
     <item
-        android:id="@+id/tickets"
+        android:id="@+id/ticketsFragment"
         android:icon="@drawable/outline_local_activity_24"
         android:title="Biglietti" />
     <item
-        android:id="@+id/profile"
+        android:id="@+id/profileMenuFragment"
         android:icon="@drawable/outline_person_24"
         android:title="Profilo" />
 </menu>
