@@ -11,17 +11,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.imageview.ShapeableImageView
 
 class TicketAdapter(
     private val menuItems: List<TicketItem>,
-    private val onItemClick: (TicketItem) -> Unit
+    private val onItemClick: (TicketItem, ShapeableImageView) -> Unit
 ) : RecyclerView.Adapter<TicketAdapter.TicketViewHolder>() {
 
     inner class TicketViewHolder(val binding: TicketItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
-                onItemClick(menuItems[adapterPosition])
+                onItemClick(menuItems[adapterPosition], binding.moviePoster)
             }
         }
     }
@@ -39,6 +40,7 @@ class TicketAdapter(
         holder.binding.filmDate.text = ticketItem.date
         holder.binding.movieTime.text = ticketItem.time
         holder.binding.movieTitle.text = ticketItem.title
+        holder.binding.moviePoster.transitionName = "shared_poster_${ticketItem.title}"
     }
 
     override fun getItemCount(): Int = menuItems.size

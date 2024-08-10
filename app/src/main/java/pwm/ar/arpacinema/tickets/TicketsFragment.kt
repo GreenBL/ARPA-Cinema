@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.ViewCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.google.android.material.imageview.ShapeableImageView
+import kotlinx.coroutines.Dispatchers
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.databinding.FragmentTicketsBinding
 import pwm.ar.arpacinema.dev.TicketItem
@@ -28,19 +31,7 @@ class TicketsFragment : Fragment() {
     private val tickets = listOf(TicketItem("Ciao", "06/04/2000", "16:30", "nan"),
         TicketItem("Deadpool & Wolverine", "06/04/2000", "16:30", "nan"),
         TicketItem("Il Signore Degli Anelli: Il Ritorno Del Re", "06/04/2000", "16:30", "nan"),
-        TicketItem("Star Wars: The Force Awakens", "06/04/2000", "16:30", "nan"),
-        TicketItem("Ciao", "06/04/2000", "16:30", "nan"),
-        TicketItem("Ciao", "06/04/2000", "16:30", "nan"),
-        TicketItem("Ciao", "06/04/2000", "16:30", "nan"),
-        TicketItem("Ciao", "06/04/2000", "16:30", "nan"),
-        TicketItem("Ciao", "06/04/2000", "16:30", "nan"),
-        TicketItem("Ciao", "06/04/2000", "16:30", "nan"),
-        TicketItem("Ciao", "06/04/2000", "16:30", "nan"),
-        TicketItem("Ciao", "06/04/2000", "16:30", "nan"),
-        TicketItem("Ciao", "06/04/2000", "16:30", "nan"),
-        TicketItem("Ciao", "06/04/2000", "16:30", "nan"),
-        TicketItem("Ciao", "06/04/2000", "16:30", "nan"),
-        TicketItem("Ciao", "06/04/2000", "16:30", "nan"))
+        TicketItem("Star Wars: The Force Awakens", "06/04/2000", "16:30", "nan"))
 
     private var _binding : FragmentTicketsBinding? = null
     private val binding
@@ -69,12 +60,23 @@ class TicketsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // we must ensure this otherwise it may look jarring when popping from ticket view
+        val navBar = requireActivity().findViewById<View>(R.id.bottomNavigationView)
+        navBar.visibility = View.VISIBLE
 
 
-        val adapter = TicketAdapter(tickets) { ticket ->
+
+        val adapter = TicketAdapter(tickets) { ticket, image ->
+
             // HANDLE THE ITEM BEING CLICKED
-            navController.navigate(R.id.action_global_viewTicketFragment)
-            Toast.makeText(requireContext(), "Clicked: ${ticket.title}", Toast.LENGTH_SHORT).show()
+            ViewCompat.setTransitionName(image, "shared_poster_${ticket.title}")
+            val action = TicketsFragmentDirections.actionGlobalViewTicketFragment("shared_poster_${ticket.title}")
+            //val destiny = R.id.viewTicketFragment
+            val extras = FragmentNavigatorExtras(
+                image to "shared_poster_${ticket.title}"
+            )
+            navController.navigate(action, extras)
+            Toast.makeText(requireContext(), "Clicked: ${image.transitionName}", Toast.LENGTH_SHORT).show()
         }
 
         val dividerItemDecoration = MaterialDividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)

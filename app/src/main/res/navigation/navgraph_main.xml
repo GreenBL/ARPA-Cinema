@@ -66,12 +66,15 @@
         android:id="@+id/viewTicketFragment"
         android:name="pwm.ar.arpacinema.tickets.ViewTicketFragment"
         android:label="fragment_view_ticket"
-        tools:layout="@layout/fragment_view_ticket" />
+        tools:layout="@layout/fragment_view_ticket" >
+        <argument
+            android:name="transition"
+            app:argType="string"
+            android:defaultValue="replace_or_exception!" />
+    </fragment>
     <action
         android:id="@+id/action_global_viewTicketFragment"
         app:destination="@id/viewTicketFragment"
-        app:enterAnim="@android:animator/fade_in"
-        app:exitAnim="@android:animator/fade_out"
-        app:popEnterAnim="@android:animator/fade_out"
-        app:popExitAnim="@android:animator/fade_in" />
+        app:popExitAnim="@animator/nav_default_pop_exit_anim"
+        app:popUpTo="@id/ticketsFragment" />
 </navigation>
