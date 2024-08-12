@@ -31,7 +31,12 @@ class TicketsFragment : Fragment() {
     private val tickets = listOf(TicketItem("Ciao", "06/04/2000", "16:30", "nan"),
         TicketItem("Deadpool & Wolverine", "06/04/2000", "16:30", "nan"),
         TicketItem("Il Signore Degli Anelli: Il Ritorno Del Re", "06/04/2000", "16:30", "nan"),
-        TicketItem("Star Wars: The Force Awakens", "06/04/2000", "16:30", "nan"))
+        TicketItem("Star Wars: The Force Awakens", "06/04/2000", "16:30", "nan"),
+        TicketItem("Star Wars: 2", "06/04/2000", "16:30", "nan"),
+        TicketItem("Star Wars: The Force Awakens 4", "06/04/2000", "16:30", "nan"),
+        TicketItem("Star Wars: The Force Awakens 6", "06/04/2000", "16:30", "nan"))
+
+
 
     private var _binding : FragmentTicketsBinding? = null
     private val binding
@@ -79,13 +84,13 @@ class TicketsFragment : Fragment() {
             Toast.makeText(requireContext(), "Clicked: ${image.transitionName}", Toast.LENGTH_SHORT).show()
         }
 
-        val dividerItemDecoration = MaterialDividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+        //val dividerItemDecoration = MaterialDividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
 
         binding.ticketsRV.apply {
             this.adapter = adapter
             overScrollMode = View.OVER_SCROLL_NEVER
             layoutManager = LinearLayoutManager(requireContext())
-            addItemDecoration(dividerItemDecoration)
+            //addItemDecoration(dividerItemDecoration)
         }
     }
 
