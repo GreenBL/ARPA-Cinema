@@ -1,10 +1,17 @@
 package pwm.ar.arpacinema
 
 import android.content.pm.ActivityInfo
+import android.graphics.RenderEffect
+import android.graphics.Shader
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsAnimationCompat
@@ -13,9 +20,11 @@ import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import eightbitlab.com.blurview.BlurController
+import eightbitlab.com.blurview.RenderEffectBlur
+import eightbitlab.com.blurview.RenderScriptBlur
 import pwm.ar.arpacinema.databinding.ActivityMainBinding
 import pwm.ar.arpacinema.util.AndroidBug5497Workaround
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,6 +43,16 @@ class MainActivity : AppCompatActivity() {
 
         val navigationBar = binding.bottomNavigationView
 
+        val blurView = binding.blurView
+
+        val decorView = window.decorView as ViewGroup
+        val rootView = binding.root
+
+
+        blurView.setupWith(decorView, RenderEffectBlur())
+            .setBlurRadius(20f)
+
+
         WindowCompat.setDecorFitsSystemWindows(window, false)
         AndroidBug5497Workaround.assistActivity(this)
 
@@ -48,6 +67,8 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.setupWithNavController(navController)
 
         // TODO - login stuff
+
+        Log.d("Logged: ", Session.loggedInUser.name)
 
     }
 }

@@ -9,6 +9,7 @@ import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.ViewOutlineProvider
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
@@ -36,7 +37,8 @@ class TicketAdapter(
 
     override fun onBindViewHolder(holder: TicketViewHolder, position: Int) {
         val ticketItem = menuItems[position]
-
+        holder.binding.root.outlineProvider = ViewOutlineProvider.BACKGROUND
+        holder.binding.root.clipToOutline = true
         holder.binding.filmDate.text = ticketItem.date
         holder.binding.movieTime.text = ticketItem.time
         holder.binding.movieTitle.text = ticketItem.title

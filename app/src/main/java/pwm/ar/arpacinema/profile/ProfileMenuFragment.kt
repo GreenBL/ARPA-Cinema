@@ -3,20 +3,24 @@ package pwm.ar.arpacinema.profile
 import android.app.ActionBar
 import androidx.fragment.app.viewModels
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import pwm.ar.arpacinema.MenuAdapter
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.common.MenuItem
 import pwm.ar.arpacinema.databinding.FragmentHomeBinding
 import pwm.ar.arpacinema.databinding.FragmentProfileMenuBinding
+import pwm.ar.arpacinema.model.User
 
 class ProfileMenuFragment : Fragment() {
 
@@ -47,7 +51,13 @@ class ProfileMenuFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        //if (binding == null) {
+            Log.d(
+                "Nah", "Nope!"
+            )
+        //}
+        //binding.lifecycleOwner = viewLifecycleOwner
+        //binding.viewModel = viewModel
 
         // TODO: Use the ViewModel
     }
@@ -63,13 +73,16 @@ class ProfileMenuFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val profileImage : ImageView = binding.profileImg
+        Glide.with(this)
+            .load(viewModel.loggedUser.value?.profileImageUri)
+            .into(profileImage)
+
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+
         val toolbar = (activity as? AppCompatActivity)?.supportActionBar
 
-        //(activity as? AppCompatActivity)?.supportActionBar?.hide()
-        // CUSTOM TOOLBAR VIEW
-        //val profileToolbar = layoutInflater.inflate(R.layout.dynamic_toolbar, null)
-        //toolbar?.customView = profileToolbar
-        //toolbar?.displayOptions = androidx.appcompat.app.ActionBar.DISPLAY_SHOW_CUSTOM
 
 
         val topMenu = binding.topMenu
