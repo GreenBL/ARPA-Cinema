@@ -84,7 +84,7 @@ class AuthFragment() : Fragment() {
 
         signUpButton.setOnClickListener {
 
-            val sharedElementView = binding.cardContentLogin.root
+            val sharedElementView = binding.imageView
             val nav = findNavController()
 
             val extras = FragmentNavigatorExtras(sharedElementView to "shared_element_container")

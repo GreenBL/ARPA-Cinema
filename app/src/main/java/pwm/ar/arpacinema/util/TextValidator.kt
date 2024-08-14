@@ -33,7 +33,7 @@ open class TextValidator(
                 if (android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     ""
                 } else {
-                    "L'E-mail non è valida"
+                    "L'e-mail non è valida"
                 }
             } else {
                 ""

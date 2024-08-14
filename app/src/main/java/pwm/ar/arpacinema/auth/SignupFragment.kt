@@ -20,6 +20,7 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.databinding.FragmentSignupBinding
+import pwm.ar.arpacinema.util.TextValidator
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -40,11 +41,21 @@ class SignupFragment : Fragment() {
         super.onCreate(savedInstanceState)
         // animation container transform
         this.sharedElementEnterTransition = MaterialContainerTransform().apply {
-            duration = 300L
+            duration = 1000L
             isElevationShadowEnabled = false
             scrimColor = Color.TRANSPARENT
             fadeMode = MaterialContainerTransform.FADE_MODE_CROSS
-            scaleProgressThresholds = MaterialContainerTransform.ProgressThresholds(0.5f, 1f)
+            //scaleProgressThresholds = MaterialContainerTransform.ProgressThresholds(0.5f, 1f)
+            interpolator = android.view.animation.AccelerateDecelerateInterpolator()
+        }
+
+        this.sharedElementReturnTransition = MaterialContainerTransform().apply {
+            duration = 1000L
+            isElevationShadowEnabled = false
+            scrimColor = Color.TRANSPARENT
+            fadeMode = MaterialContainerTransform.FADE_MODE_THROUGH
+            //scaleProgressThresholds = MaterialContainerTransform.ProgressThresholds(0.5f, 1f)
+            interpolator = android.view.animation.AccelerateDecelerateInterpolator()
         }
 
 
@@ -63,8 +74,30 @@ class SignupFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val closeButton = binding.topBarInclude.closeButton
-        val sexChooser = binding.sexField
-        val dateField = binding.dateField
+        val nameField = binding.nameFieldLayout
+        val surnameField = binding.surnameFieldLayout
+        val phoneField = binding.phoneFieldLayout
+        val emailField = binding.emailFieldLayout
+        val passwordField = binding.passwordFieldLayout
+
+        // TODO ERRORS ADDS MARGINS THAT DONT CLEAR WHEN NO ERROR IS PRESENT!!!!!
+
+        emailField.editText!!.addTextChangedListener(
+            TextValidator(emailField, TextValidator.Companion::isValidEmail)
+        )
+        passwordField.editText!!.addTextChangedListener(
+            TextValidator(passwordField, TextValidator.Companion::isValidPassword)
+        )
+        nameField.editText!!.addTextChangedListener(
+            TextValidator(nameField, TextValidator.Companion::isValidName)
+        )
+        surnameField.editText!!.addTextChangedListener(
+            TextValidator(surnameField, TextValidator.Companion::isValidName)
+        )
+        phoneField.editText!!.addTextChangedListener(
+            TextValidator(phoneField, TextValidator.Companion::isValidPhone)
+        )
+
 
 
         // handle closing of this
@@ -74,13 +107,6 @@ class SignupFragment : Fragment() {
         }
         binding.topBarInclude.label.text = "Inserisci i tuoi dati"
 
-        dateField.setOnClickListener {
-            dateSelectionPopup()
-        }
-
-        val sexAdapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, sexOptions)
-        sexChooser.setAdapter(sexAdapter)
 
 
     }
@@ -90,44 +116,45 @@ class SignupFragment : Fragment() {
         _binding = null
     }
 
-    private fun dateSelectionPopup() {
-
-        val today = MaterialDatePicker.todayInUtcMilliseconds()
-        val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
-
-        calendar.timeInMillis = today
-        calendar[Calendar.MONTH] = Calendar.JANUARY
-        val janThisYear = calendar.timeInMillis
-
-        calendar.timeInMillis = today
-        calendar[Calendar.MONTH] = Calendar.DECEMBER
-        val decThisYear = calendar.timeInMillis
-
-        val constraintsBuilder =
-            CalendarConstraints.Builder()
-                .setStart(janThisYear)
-                .setEnd(decThisYear)
-
-        val dateBox = MaterialDatePicker.Builder.datePicker()
-            .setTitleText("Seleziona la tua data di nascita")
-            .setSelection(Calendar.getInstance().timeInMillis)
-            .build()
-
-
-
-        dateBox.addOnPositiveButtonClickListener { selection ->
-
-            val selectionCalendar = Calendar.getInstance().apply {
-                timeInMillis = selection
-            }
-            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-            val formattedDate = sdf.format(calendar.time)
-
-            binding.dateField.setText(formattedDate)
-        }
-
-        dateBox.show(parentFragmentManager, "DATE_PICKER")
-
-    }
+//
+//    private fun dateSelectionPopup() {
+//
+//        val today = MaterialDatePicker.todayInUtcMilliseconds()
+//        val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+//
+//        calendar.timeInMillis = today
+//        calendar[Calendar.MONTH] = Calendar.JANUARY
+//        val janThisYear = calendar.timeInMillis
+//
+//        calendar.timeInMillis = today
+//        calendar[Calendar.MONTH] = Calendar.DECEMBER
+//        val decThisYear = calendar.timeInMillis
+//
+//        val constraintsBuilder =
+//            CalendarConstraints.Builder()
+//                .setStart(janThisYear)
+//                .setEnd(decThisYear)
+//
+//        val dateBox = MaterialDatePicker.Builder.datePicker()
+//            .setTitleText("Seleziona la tua data di nascita")
+//            .setSelection(Calendar.getInstance().timeInMillis)
+//            .build()
+//
+//
+//
+//        dateBox.addOnPositiveButtonClickListener { selection ->
+//
+//            val selectionCalendar = Calendar.getInstance().apply {
+//                timeInMillis = selection
+//            }
+//            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+//            val formattedDate = sdf.format(calendar.time)
+//
+//            binding.dateField.setText(formattedDate)
+//        }
+//
+//        dateBox.show(parentFragmentManager, "DATE_PICKER")
+//
+//    }
 
 }

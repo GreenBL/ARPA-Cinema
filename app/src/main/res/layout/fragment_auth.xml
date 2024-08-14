@@ -21,7 +21,7 @@
 
         <include
             android:id="@+id/topBarInclude"
-            layout="@layout/fragment_nav_app_bar"
+            layout="@layout/include_nav_app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -53,10 +53,13 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="match_parent"
+                android:layout_width="256dp"
                 android:layout_height="246dp"
+                android:layout_gravity="center_horizontal"
                 android:clipToOutline="false"
+                android:transitionName="shared_element_container"
                 app:srcCompat="@drawable/arpa_cinema_logo_ai" />
+
 
             <include
                 android:id="@+id/cardContentLogin"
@@ -66,7 +69,7 @@
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:transitionName="shared_element_container" />
+                 />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
