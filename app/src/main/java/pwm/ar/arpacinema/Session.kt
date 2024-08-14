@@ -13,6 +13,10 @@ import pwm.ar.arpacinema.model.User
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore("session")
 
+/**
+ * Implemented with *Jetpack DataStore* (might change to SharedPreferences idk)
+ */
+
 object Session {
 
     private val USER_KEY = stringPreferencesKey("user")

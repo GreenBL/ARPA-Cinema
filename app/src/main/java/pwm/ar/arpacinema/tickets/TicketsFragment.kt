@@ -14,6 +14,10 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.SnapHelper
+import com.google.android.material.carousel.CarouselSnapHelper
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.google.android.material.imageview.ShapeableImageView
 import kotlinx.coroutines.Dispatchers
@@ -89,9 +93,18 @@ class TicketsFragment : Fragment() {
         binding.ticketsRV.apply {
             this.adapter = adapter
             overScrollMode = View.OVER_SCROLL_NEVER
-            layoutManager = LinearLayoutManager(requireContext())
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             //addItemDecoration(dividerItemDecoration)
         }
+        // add snap helper to horizontal recycler linear layout view
+        val snapHelper = PagerSnapHelper()
+        snapHelper.attachToRecyclerView(binding.ticketsRV)
+
+        val dots = binding.dotsy
+        dots.attachToRecyclerView(binding.ticketsRV, snapHelper)
+
+
+
     }
 
     override fun onDestroyView() {
