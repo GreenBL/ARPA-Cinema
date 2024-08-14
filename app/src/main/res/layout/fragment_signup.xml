@@ -5,17 +5,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToOutline="false"
+    android:clipToPadding="false"
     android:fitsSystemWindows="false"
-    android:transitionName="shared_element_container"
+    android:isScrollContainer="false"
     android:transitionGroup="true"
-    android:isScrollContainer="true">
+    android:transitionName="shared_element_container">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:fitsSystemWindows="false"
+        android:fitsSystemWindows="true"
         android:paddingTop="16dp"
         app:liftOnScroll="true">
 
@@ -23,7 +26,8 @@
             android:id="@+id/topBarInclude"
             layout="@layout/include_close_app_bar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize" />
+            android:layout_height="64dp"
+            android:layout_gravity="bottom" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -36,7 +40,7 @@
         android:clipToPadding="false"
         android:fillViewport="true"
         android:isScrollContainer="false"
-        android:paddingHorizontal="16dp"
+        android:paddingHorizontal="0dp"
         android:scrollbars="vertical"
         android:transitionGroup="true"
 
@@ -49,7 +53,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
+            android:clipChildren="false"
+            android:clipToOutline="false"
             android:clipToPadding="false"
+            android:paddingHorizontal="32dp"
             tools:context=".auth.LoginFragment">
 
             <TextView
@@ -201,22 +208,28 @@
                 app:layout_constraintStart_toEndOf="@+id/textView11"
                 app:layout_constraintTop_toTopOf="@+id/textView11" />
 
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/floatingActionButton"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="32dp"
+                android:clickable="true"
+                android:paddingTop="8dp"
+                android:text="Registrati"
+                app:elevation="8dp"
+                app:icon="@drawable/round_mode_edit_24"
+                app:layout_behavior="@string/fab_transformation_scrim_behavior"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/passwordFieldLayout" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/floatingActionButton"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_gravity="bottom|end"
-        android:clickable="true"
-        android:text="Registrati"
-        app:icon="@drawable/round_send_24"
-        app:layout_behavior="@string/fab_transformation_scrim_behavior" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

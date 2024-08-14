@@ -150,7 +150,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/materialDivider3" />
 
                     <TextView
-                        android:id="@+id/filmDate"
+                        android:id="@+id/filmSala"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="3"
@@ -178,9 +178,13 @@
                         app:layout_constraintTop_toBottomOf="@+id/materialDivider6" />
 
                     <TextView
-                        android:id="@+id/dot"
+                        android:id="@+id/filmSeat"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:drawableStart="@drawable/outline_info_24"
+                        android:drawablePadding="8dp"
+                        android:drawableTint="@color/md_theme_onSurface"
                         android:text="F5 | P5"
                         app:layout_constraintBaseline_toBaselineOf="@+id/seat"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -228,7 +232,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/materialDivider252" />
 
                     <TextView
-                        android:id="@+id/textView13"
+                        android:id="@+id/filmDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:shadowColor="#000000"
@@ -305,9 +309,10 @@
             <ImageView
                 android:id="@+id/imageView7"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="76dp"
                 android:layout_gravity="bottom"
                 android:layout_marginHorizontal="32dp"
+                android:layout_marginBottom="24dp"
                 app:srcCompat="@drawable/barcode" />
         </com.google.android.material.card.MaterialCardView>
 
