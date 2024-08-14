@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/abeezee"
+        android:text="Accedi al tuo profilo"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="48dp"
+        android:foregroundGravity="center"
+        android:gravity="center">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:foregroundGravity="center">
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Non hai un account?"
+                android:textAlignment="viewStart"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5" />
+
+            <Button
+                android:id="@+id/signUpBtn"
+                style="@style/Widget.Material3.Button.TextButton.Dialog"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Registrati"
+                app:layout_constraintBaseline_toBaselineOf="@+id/textView8"
+                app:layout_constraintStart_toEndOf="@+id/textView8" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/emailFieldLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="E-mail"
+            app:passwordToggleEnabled="false"
+            app:startIconDrawable="@drawable/outline_email_24">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/emailField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text|textWebEmailAddress" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/pwdFieldLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Password"
+            app:passwordToggleEnabled="true"
+            app:startIconDrawable="@drawable/outline_lock_24">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text|textWebPassword"
+                android:maxLength="15"
+                android:password="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/passwordResetBtn"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="8dp"
+        android:text="Password dimenticata?"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pwdFieldLayout" />
+
+        <Button
+            android:id="@+id/signinBtn"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="8dp"
+            android:text="Accedi"
+            android:transitionGroup="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+
+            app:layout_constraintTop_toBottomOf="@+id/passwordResetBtn"
+            app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="16dp"
+        android:visibility="gone"
+        tools:visibility="gone">
+
+    </com.google.android.material.divider.MaterialDivider>
+
+
+</LinearLayout>
+

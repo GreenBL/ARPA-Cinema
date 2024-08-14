@@ -72,7 +72,7 @@ class AuthFragment() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val signUpButton = binding.signupFormBtn
+        val signUpButton = binding.cardContentLogin.signUpBtn
         val emailFieldLayout = binding.cardContentLogin.emailFieldLayout
         val passwordFieldLayout = binding.cardContentLogin.pwdFieldLayout
 
