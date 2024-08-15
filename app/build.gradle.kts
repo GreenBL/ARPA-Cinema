@@ -44,7 +44,7 @@ android {
 }
 
 dependencies {
-    implementation("me.relex:circleindicator:2.1.6")
+    implementation(libs.circleindicator)
     implementation(libs.androidx.datastore)
     implementation(libs.androidx.datastore.core)
     implementation(libs.androidx.datastore.preferences)

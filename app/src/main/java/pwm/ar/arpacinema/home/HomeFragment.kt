@@ -1,6 +1,7 @@
 package pwm.ar.arpacinema.home
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.CarouselSnapHelper
 import com.google.android.material.carousel.UncontainedCarouselStrategy
+import com.google.android.material.transition.platform.MaterialContainerTransform
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.databinding.FragmentHomeBinding
 
@@ -50,9 +52,6 @@ class HomeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            // might need arguments? keep it
-        }
     }
 
     override fun onCreateView(

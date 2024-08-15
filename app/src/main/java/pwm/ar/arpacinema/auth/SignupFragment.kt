@@ -26,8 +26,6 @@ import java.util.Locale
 
 class SignupFragment : Fragment() {
 
-    val sexOptions = listOf("Maschio", "Femmina", "LGBTQ+")
-
     private var _binding: FragmentSignupBinding? = null
     private val binding get() = _binding!!
 
@@ -41,20 +39,18 @@ class SignupFragment : Fragment() {
         super.onCreate(savedInstanceState)
         // animation container transform
         this.sharedElementEnterTransition = MaterialContainerTransform().apply {
-            duration = 1000L
+            duration = 300L
             isElevationShadowEnabled = false
             scrimColor = Color.TRANSPARENT
             fadeMode = MaterialContainerTransform.FADE_MODE_CROSS
-            //scaleProgressThresholds = MaterialContainerTransform.ProgressThresholds(0.5f, 1f)
             interpolator = android.view.animation.AccelerateDecelerateInterpolator()
         }
 
         this.sharedElementReturnTransition = MaterialContainerTransform().apply {
-            duration = 1000L
+            duration = 200L
             isElevationShadowEnabled = false
             scrimColor = Color.TRANSPARENT
             fadeMode = MaterialContainerTransform.FADE_MODE_THROUGH
-            //scaleProgressThresholds = MaterialContainerTransform.ProgressThresholds(0.5f, 1f)
             interpolator = android.view.animation.AccelerateDecelerateInterpolator()
         }
 
@@ -79,8 +75,6 @@ class SignupFragment : Fragment() {
         val phoneField = binding.phoneFieldLayout
         val emailField = binding.emailFieldLayout
         val passwordField = binding.passwordFieldLayout
-
-        // TODO ERRORS ADDS MARGINS THAT DONT CLEAR WHEN NO ERROR IS PRESENT!!!!!
 
         emailField.editText!!.addTextChangedListener(
             TextValidator(emailField, TextValidator.Companion::isValidEmail)

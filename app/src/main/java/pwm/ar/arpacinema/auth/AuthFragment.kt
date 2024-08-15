@@ -1,28 +1,25 @@
 package pwm.ar.arpacinema.auth
 
-import android.annotation.SuppressLint
+
 import android.graphics.Color
 import androidx.fragment.app.viewModels
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsAnimationCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
+
+import androidx.lifecycle.lifecycleScope
+
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.internal.TextWatcherAdapter
+
 import com.google.android.material.transition.platform.MaterialContainerTransform
-import pwm.ar.arpacinema.MainActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.databinding.FragmentAuthBinding
 import pwm.ar.arpacinema.util.TextValidator
@@ -72,6 +69,9 @@ class AuthFragment() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+
         val signUpButton = binding.cardContentLogin.signUpBtn
         val emailFieldLayout = binding.cardContentLogin.emailFieldLayout
         val passwordFieldLayout = binding.cardContentLogin.pwdFieldLayout
@@ -93,6 +93,12 @@ class AuthFragment() : Fragment() {
 
         binding.topBarInclude.button.setOnClickListener {
             findNavController().popBackStack()
+        }
+
+        binding.cardContentLogin.signinBtn.setOnClickListener {
+            lifecycleScope.launch(Dispatchers.IO) {
+                viewModel.execLogin()
+            }
         }
     }
 
