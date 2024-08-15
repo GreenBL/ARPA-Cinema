@@ -72,7 +72,7 @@ class AuthFragment() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val signUpButton = binding.signupFormBtn
+        val signUpButton = binding.cardContentLogin.signUpBtn
         val emailFieldLayout = binding.cardContentLogin.emailFieldLayout
         val passwordFieldLayout = binding.cardContentLogin.pwdFieldLayout
 
@@ -84,7 +84,7 @@ class AuthFragment() : Fragment() {
 
         signUpButton.setOnClickListener {
 
-            val sharedElementView = binding.cardContentLogin.root
+            val sharedElementView = binding.imageView
             val nav = findNavController()
 
             val extras = FragmentNavigatorExtras(sharedElementView to "shared_element_container")

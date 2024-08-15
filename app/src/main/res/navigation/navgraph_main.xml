@@ -77,4 +77,8 @@
         app:destination="@id/viewTicketFragment"
         app:popExitAnim="@animator/nav_default_pop_exit_anim"
         app:popUpTo="@id/ticketsFragment" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="pwm.ar.arpacinema.discovery.SearchFragment"
+        android:label="SearchFragment" />
 </navigation>

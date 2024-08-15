@@ -9,7 +9,7 @@
         android:id="@+id/loginFragment"
         android:name="pwm.ar.arpacinema.auth.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
+        tools:layout="@layout/include_login" >
         <action
             android:id="@+id/action_loginFragment_to_signupFragment"
             app:destination="@id/login_to_signup" />

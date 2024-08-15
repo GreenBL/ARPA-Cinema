@@ -3,7 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
+    android:clipChildren="false"
+    android:clipToOutline="false"
+    android:clipToPadding="false"
+    android:fitsSystemWindows="false"
     android:isScrollContainer="true">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -13,11 +16,12 @@
         android:background="@android:color/transparent"
         android:fitsSystemWindows="false"
         android:paddingTop="16dp"
-        app:liftOnScroll="true">
+        app:liftOnScroll="true"
+        app:liftOnScrollTargetViewId="@id/cardContentLogin">
 
         <include
             android:id="@+id/topBarInclude"
-            layout="@layout/fragment_nav_app_bar"
+            layout="@layout/include_nav_app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -30,10 +34,11 @@
         android:clipChildren="false"
         android:clipToOutline="false"
         android:clipToPadding="false"
-        android:transitionName="shared_card"
         android:fillViewport="true"
         android:isScrollContainer="false"
+        android:overScrollMode="never"
         android:scrollbars="vertical"
+        android:transitionName="shared_card"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <LinearLayout
@@ -43,25 +48,28 @@
             android:clipChildren="false"
             android:clipToOutline="false"
             android:clipToPadding="false"
+            android:gravity="top"
             android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="256dp"
+                android:layout_height="246dp"
+                android:layout_gravity="center_horizontal"
+                android:clipToOutline="false"
+                android:transitionName="shared_element_container"
+                app:srcCompat="@drawable/arpa_cinema_logo_ai" />
+
 
             <include
                 android:id="@+id/cardContentLogin"
-                layout="@layout/fragment_login"
+                layout="@layout/include_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:transitionName="shared_element_container"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp" />
-
-            <Button
-                android:id="@+id/signupFormBtn"
-                style="@style/Widget.Material3.Button.TextButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:text="Non hai un account? Registrati" />
+                android:layout_marginEnd="16dp"
+                 />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

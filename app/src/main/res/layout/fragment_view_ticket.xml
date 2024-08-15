@@ -66,7 +66,7 @@
 
     <include
         android:id="@+id/include"
-        layout="@layout/fragment_nav_app_bar"
+        layout="@layout/include_nav_app_bar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"

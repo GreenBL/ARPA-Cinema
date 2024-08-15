@@ -69,6 +69,14 @@ class HomeFragment : Fragment() {
 
         requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility = View.VISIBLE
 
+        binding.searchBar.setOnClickListener {
+            val sharedElementView = binding.searchBar
+            val nav = findNavController()
+
+            val extras = FragmentNavigatorExtras(sharedElementView to "shared_search")
+            nav.navigate(R.id.searchFragment, null, null, extras)
+        }
+
         val recyclerView = binding.categoryRV
 
         val catAdapter = CategoryAdapter(catItems) { catItem ->

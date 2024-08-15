@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frameLayout95"
     android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
-    android:fitsSystemWindows="true"
-    tools:context=".appbar.CloseAppBar">
+    android:layout_height="64dp"
+    android:fitsSystemWindows="false">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/close_button"
@@ -26,7 +25,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="LABEL_STRING"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
 </androidx.constraintlayout.widget.ConstraintLayout>

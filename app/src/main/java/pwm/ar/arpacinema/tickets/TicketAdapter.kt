@@ -8,10 +8,22 @@ import pwm.ar.arpacinema.dev.TicketItem
 import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.RoundedCorner
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomappbar.BottomAppBarTopEdgeTreatment
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.shape.CornerFamily
+import com.google.android.material.shape.CornerTreatment
+import com.google.android.material.shape.CutCornerTreatment
+import com.google.android.material.shape.MarkerEdgeTreatment
+import com.google.android.material.shape.MaterialShapeDrawable
+import com.google.android.material.shape.OffsetEdgeTreatment
+import com.google.android.material.shape.RoundedCornerTreatment
+import com.google.android.material.shape.ShapeAppearanceModel
+import com.google.android.material.shape.TriangleEdgeTreatment
+import pwm.ar.arpacinema.util.CircleEdgeTreatment
 
 class TicketAdapter(
     private val menuItems: List<TicketItem>,
@@ -31,6 +43,29 @@ class TicketAdapter(
         val binding = TicketItemBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
+
+        val bottomCard = binding.bottomCard
+        val topCard = binding.topCard
+        val poster = binding.moviePoster
+
+        val shapeAppearanceModelTop = ShapeAppearanceModel.builder()
+            .setTopLeftCorner(CornerFamily.ROUNDED, 80f)
+            .setTopRightCorner(CornerFamily.ROUNDED, 80f)
+            .setBottomLeftCorner(CircleEdgeTreatment(50f))
+            .setBottomRightCorner(CircleEdgeTreatment(50f))
+            .build()
+
+        val shapeAppearanceModelBottom = ShapeAppearanceModel.builder()
+            .setTopLeftCorner(CircleEdgeTreatment(50f))
+            .setTopRightCorner(CircleEdgeTreatment(50f))
+            .setBottomLeftCorner(CornerFamily.ROUNDED, 80f)
+            .setBottomRightCorner(CornerFamily.ROUNDED, 80f)
+            .build()
+
+
+        poster.shapeAppearanceModel = shapeAppearanceModelTop
+        bottomCard.shapeAppearanceModel = shapeAppearanceModelBottom
+        topCard.shapeAppearanceModel = shapeAppearanceModelTop
         return TicketViewHolder(binding)
     }
 
