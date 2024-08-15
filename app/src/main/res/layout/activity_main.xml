@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:background="@color/md_theme_surfaceDim_highContrast"
         android:fitsSystemWindows="false"
-        app:backgroundTint="#80151515"
+        app:backgroundTint="#00000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

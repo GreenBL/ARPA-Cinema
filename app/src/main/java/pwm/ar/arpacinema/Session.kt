@@ -19,43 +19,35 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore("session")
 
 object Session {
 
-    private val USER_KEY = stringPreferencesKey("user")
-    private val gson = Gson()
+    private val USER_ID_KEY = stringPreferencesKey("user_id")
 
-    // store the user [important: store it after logging in else it will be lost]
-    suspend fun storeUser(context: Context, user: User) {
-        val userJson = gson.toJson(user)
+    // store the user ID [important: store it after logging in else it will be lost]
+    suspend fun storeUserId(context: Context, userId: String) {
         context.dataStore.edit { settings ->
-            settings[USER_KEY] = userJson
+            settings[USER_ID_KEY] = userId
         }
     }
 
-    // get the stored user (if there is one kek, also its a good way to check if the user is logged)
-    suspend fun getUser(context: Context): User? {
+    // get the stored user ID (if there is one kek, also it's a good way to check if the user is logged)
+    suspend fun getUserId(context: Context): String? {
         val preferences = context.dataStore.data.first()
-        val userJson = preferences[USER_KEY]
-        return if (userJson != null) {
-            gson.fromJson(userJson, User::class.java)
-        } else {
-            null
-        }
+        return preferences[USER_ID_KEY]
     }
 
-    // invalidate the stored user (logout)
-    suspend fun invalidateUser(context: Context) {
+    // invalidate the stored user ID (logout)
+    suspend fun invalidateUserId(context: Context) {
         context.dataStore.edit { settings ->
-            settings.remove(USER_KEY)
+            settings.remove(USER_ID_KEY)
         }
     }
 
-    // DEBUG: print the stored user to the console [CHECK LOGCAT!]
-    suspend fun printUser(context: Context) {
-        val user = getUser(context)
-        if (user != null) {
-            Log.d("Session", "Stored user: ${user.id}, ${user.name} ${user.surname}")
+    // DEBUG: print the stored user ID to the console [CHECK LOGCAT!]
+    suspend fun printUserId(context: Context) {
+        val userId = getUserId(context)
+        if (userId != null) {
+            Log.d("Session", "Stored user ID: $userId")
         } else {
-            Log.e("Session", "No user found")
+            Log.e("Session", "No user ID found")
         }
     }
-
 }

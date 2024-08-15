@@ -3,6 +3,7 @@ package pwm.ar.arpacinema
 import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -38,6 +39,7 @@ class MenuAdapter(
             val color = ContextCompat.getColor(holder.itemView.context, R.color.md_theme_error)
             textView.setTextColor(color)
             holder.binding.menuItemIcon.setColorFilter(color)
+            holder.binding.chevron.visibility = View.GONE
         }
         holder.binding.menuItemTitle.text = menuItem.label
     }

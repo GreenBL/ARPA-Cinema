@@ -8,7 +8,7 @@
     android:clipChildren="false"
     android:clipToOutline="false"
     android:clipToPadding="false"
-    android:fitsSystemWindows="true"
+    android:fitsSystemWindows="false"
     tools:context=".home.HomeFragment">
 
     <include
@@ -30,6 +30,7 @@
         android:drawableEnd="@drawable/round_search_24"
         android:drawableTint="@color/md_theme_onSurface"
         android:ems="10"
+        android:transitionName="shared_search"
         android:hint="Cerca film..."
         android:inputType="text|textFilter"
         android:paddingHorizontal="16dp"
@@ -78,19 +79,20 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/carouselRV"
         android:layout_width="match_parent"
-        android:layout_height="380dp"
-        android:layout_marginStart="8dp"
+        android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:clipChildren="false"
+        android:clipToOutline="false"
         android:clipToPadding="false"
-        android:overScrollMode="never"
+        android:overScrollMode="ifContentScrolls"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5"
-        tools:itemCount="1"
+        tools:itemCount="3"
         tools:listitem="@layout/carousel_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
