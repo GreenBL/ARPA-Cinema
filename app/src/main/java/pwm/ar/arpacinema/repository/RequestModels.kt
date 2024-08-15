@@ -13,13 +13,13 @@ import com.google.gson.annotations.SerializedName
 class RequestModels {
 
     data class LoginRequest(
-        @SerializedName("email") val email: String,
-        @SerializedName("password") val password: String
+        @SerializedName("email") val email: String?,
+        @SerializedName("password") val password: String?
     )
 
     // do we need this? i don't know but writing code is free
     data class SerializedBool(
-        @SerializedName("boolean") val bool: Boolean
+        @SerializedName("boolean") val bool: Boolean?
     )
 
 }

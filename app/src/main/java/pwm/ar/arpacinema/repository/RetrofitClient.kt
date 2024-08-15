@@ -1,11 +1,11 @@
 package pwm.ar.arpacinema.repository
 
-import retrofit.GsonConverterFactory
-import retrofit.Retrofit
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
 
-    private const val SERVER_URL = "SERVER URL" // TODO : Add actual server URL to flaskize
+    private const val SERVER_URL = "http://10.0.2.2:9000" // TODO : Add actual server URL to flaskize
 
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
