@@ -2,33 +2,27 @@ package pwm.ar.arpacinema.auth
 
 
 import android.graphics.Color
-import androidx.fragment.app.viewModels
 import android.os.Bundle
 import android.util.Log
-
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsets
-import android.widget.Toast
-
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
+import kotlinx.coroutines.withContext
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.databinding.FragmentAuthBinding
-import pwm.ar.arpacinema.util.TextValidator
 
-class AuthFragment() : Fragment() {
+class AuthFragment : Fragment() {
 
     private var _binding: FragmentAuthBinding? = null
     private val binding get() = _binding!!
@@ -48,7 +42,7 @@ class AuthFragment() : Fragment() {
         //val appBarNav = requireActivity().supportFragmentManager.findFragmentById(R.id.appbarContainer)
         //val navController = appBarNav?.findNavController()
         //val toolbar = requireActivity().actionBar?.customView
-       // val closeButton = toolbar?.findViewById<Button>(R.id.close_button)
+        // val closeButton = toolbar?.findViewById<Button>(R.id.close_button)
 
         this.sharedElementEnterTransition = MaterialContainerTransform().apply {
             duration = 300L
@@ -58,7 +52,8 @@ class AuthFragment() : Fragment() {
         }
 
 
-        val navigationBar = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        val navigationBar =
+            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         navigationBar.visibility = View.GONE
     }
 
@@ -76,8 +71,12 @@ class AuthFragment() : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
+        val scrollView = binding.nestedScrollView
+        val image = binding.imageView
+
         val loadingBar = binding.cardContentLogin.loadingBar
         val loginButton = binding.cardContentLogin.signinBtn
+        val recoverPwd = binding.cardContentLogin.passwordResetBtn
 
         val signUpButton = binding.cardContentLogin.signUpBtn
         val emailFieldLayout = binding.cardContentLogin.emailFieldLayout
@@ -86,10 +85,13 @@ class AuthFragment() : Fragment() {
         val emailField = binding.cardContentLogin.emailField
         val passwordField = binding.cardContentLogin.passwordField
 
-        emailField.addTextChangedListener(TextValidator(emailFieldLayout, TextValidator.Companion::isValidEmail))
-        passwordField.addTextChangedListener(TextValidator(passwordFieldLayout, TextValidator.Companion::isValidPassword))
+        //emailField.addTextChangedListener(TextValidator(emailFieldLayout, TextValidator.Companion::isValidEmail))
+        //passwordField.addTextChangedListener(TextValidator(passwordFieldLayout, TextValidator.Companion::isValidPassword))
 
         signUpButton.setOnClickListener {
+            // force ime close altrimenti breaks
+            val windowInsetsController = view.windowInsetsController
+            windowInsetsController?.hide(WindowInsets.Type.ime())
 
             val sharedElementView = binding.imageView
             val nav = findNavController()
@@ -98,12 +100,48 @@ class AuthFragment() : Fragment() {
             nav.navigate(R.id.signupFragment, null, null, extras)
         }
 
-        binding.topBarInclude.button.setOnClickListener {
+        binding.topBarInclude.navBack.setOnClickListener {
             findNavController().popBackStack()
+        }
+
+        view.setOnApplyWindowInsetsListener { v, insets ->
+            val imeVisible = insets.isVisible(WindowInsets.Type.ime())
+
+            if (imeVisible) {
+                scrollView.post {
+                    scrollView.fullScroll(View.FOCUS_DOWN)
+                }
+                image.visibility = View.GONE
+            } else {
+                image.visibility = View.VISIBLE
+            }
+            v.onApplyWindowInsets(insets)
+        }
+
+        // Password recovery action
+        recoverPwd.setOnClickListener {
+            findNavController().navigate(R.id.action_global_passwordRecoveryFragment)
         }
 
         // Login action
         loginButton.setOnClickListener {
+            // are the text fields empty?
+            if (emailField.text.isNullOrBlank()) {
+                emailFieldLayout.error = "Campo obbligatorio"
+                emailFieldLayout.isErrorEnabled = true
+            }
+            if (passwordField.text.isNullOrBlank()) {
+                passwordFieldLayout.error = "Campo obbligatorio"
+                passwordFieldLayout.isErrorEnabled = true
+            }
+
+            if (emailFieldLayout.isErrorEnabled || passwordFieldLayout.isErrorEnabled) {
+                return@setOnClickListener
+            }
+
+            // todo validate
+
+
             // close the ime
             requireActivity().currentFocus?.clearFocus()
             val windowInsetsController = view.windowInsetsController
@@ -116,13 +154,14 @@ class AuthFragment() : Fragment() {
                     isClickable = false
                 }
                 try {
-                    val message = viewModel.execLogin()
+                    val message = withContext(Dispatchers.IO) {
+                        viewModel.execLogin()
+                    }
                 } catch (e: Exception) {
                     // TODO: meglio un popupp
-                    Toast.makeText(requireContext(), "Errore di connessione", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(view, "Errore di connessione", Snackbar.LENGTH_SHORT).show()
                     Log.e("LOGIN", "onViewCreated: ", e)
                 }
-                //delay(4521)
                 loadingBar.visibility = View.GONE
                 loginButton.apply {
                     text = "Accedi"
@@ -139,3 +178,4 @@ class AuthFragment() : Fragment() {
 
 
 }
+
