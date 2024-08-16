@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.delay
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.databinding.FragmentPasswordRecoveryBinding
 
@@ -40,68 +41,22 @@ class PasswordRecoveryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val emailField = binding.emailReccoverLayout
-        val sendButton = binding.sendEmail
-        val answerField = binding.answerLayout
-        val passwordField = binding.newPasswordLayout
-        val confirmationButton = binding.confirmBtn
-        val title = binding.domanda
-        val text = binding.domandaText
+        val firstStepGroup = binding.stepOne
+        val secondStepGroup = binding.stepTwo
+        val sendButton = binding.stepOne.sendEmail
+
+        secondStepGroup.root.alpha = 0f
 
         sendButton.setOnClickListener {
-            title.alpha = 0f
-            title.visibility = View.VISIBLE
-            title.animate()
-                .alpha(1f)
-                .setDuration(500L)
-                .start()
+            // fade out first step
+            firstStepGroup.root.animate().alpha(0f).setDuration(500).start()
+            firstStepGroup.root.visibility = View.GONE
 
-            // Fai apparire il testo della domanda con una animazione fade-in
-            text.alpha = 0f
-            text.visibility = View.VISIBLE
-            text.animate()
-                .alpha(1f)
-                .setDuration(500L)
-                .start()
+            // todo RECOVERY LOGIC!!!
 
-            // Nascondi il campo dell'email con un effetto fade-out
-            emailField.animate()
-                .alpha(0f)
-                .setDuration(500L)
-                .withEndAction {
-                    emailField.visibility = View.GONE
-                }
-                .start()
-
-            // Mostra il campo della risposta con un effetto fade-in
-            answerField.alpha = 0f
-            answerField.visibility = View.VISIBLE
-            answerField.animate()
-                .alpha(1f)
-                .setDuration(500L)
-                .start()
-
-            confirmationButton.alpha = 0f
-            confirmationButton.visibility = View.VISIBLE
-            confirmationButton.animate()
-                .alpha(1f)
-                .setDuration(500L)
-                .start()
-
-            passwordField.alpha = 0f
-            passwordField.visibility = View.VISIBLE
-            passwordField.animate()
-                .alpha(1f)
-                .setDuration(500L)
-                .start()
-
-            sendButton.animate()
-                .alpha(0f)
-                .setDuration(500L)
-                .withEndAction {
-                    sendButton.visibility = View.GONE
-                }
-
+            secondStepGroup.root.visibility = View.VISIBLE
+            // fade in second step
+            secondStepGroup.root.animate().alpha(1f).setDuration(500).start()
         }
 
 

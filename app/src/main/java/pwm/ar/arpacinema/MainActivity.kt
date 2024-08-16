@@ -3,22 +3,21 @@ package pwm.ar.arpacinema
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsAnimationCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavOptions
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.databinding.ActivityMainBinding
-import pwm.ar.arpacinema.util.AndroidBug5497Workaround
+import pwm.ar.arpacinema.model.User
 
 
 class MainActivity : AppCompatActivity() {
@@ -51,11 +50,28 @@ class MainActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
         binding.bottomNavigationView.setupWithNavController(navController)
 
         // TODO - login stuff
+        val user = User(1, 1, "Riccardo", "Parisi", "riccardo@mail.it", 2, 452)
+        lifecycleScope.launch {
+            Session.storeUser(this@MainActivity, user)
+        }
+        lifecycleScope.launch {
+            delay(1000L)
+            Session.printUserId(this@MainActivity)
+            if (Session.getUserId(this@MainActivity) == null) {
+                Toast.makeText(this@MainActivity, "No user ID found", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // TODO TEST
+
+
+
 
     }
 
