@@ -4,11 +4,14 @@ package pwm.ar.arpacinema.auth
 import android.graphics.Color
 import androidx.fragment.app.viewModels
 import android.os.Bundle
+import android.util.Log
 
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowInsets
+import android.widget.Toast
 
 import androidx.lifecycle.lifecycleScope
 
@@ -18,6 +21,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 import pwm.ar.arpacinema.R
@@ -72,6 +76,9 @@ class AuthFragment() : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
+        val loadingBar = binding.cardContentLogin.loadingBar
+        val loginButton = binding.cardContentLogin.signinBtn
+
         val signUpButton = binding.cardContentLogin.signUpBtn
         val emailFieldLayout = binding.cardContentLogin.emailFieldLayout
         val passwordFieldLayout = binding.cardContentLogin.pwdFieldLayout
@@ -95,9 +102,32 @@ class AuthFragment() : Fragment() {
             findNavController().popBackStack()
         }
 
-        binding.cardContentLogin.signinBtn.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
-                viewModel.execLogin()
+        // Login action
+        loginButton.setOnClickListener {
+            // close the ime
+            requireActivity().currentFocus?.clearFocus()
+            val windowInsetsController = view.windowInsetsController
+            windowInsetsController?.hide(WindowInsets.Type.ime())
+
+            lifecycleScope.launch(Dispatchers.Main) {
+                loadingBar.visibility = View.VISIBLE
+                loginButton.apply {
+                    text = "Accesso in corso..."
+                    isClickable = false
+                }
+                try {
+                    val message = viewModel.execLogin()
+                } catch (e: Exception) {
+                    // TODO: meglio un popupp
+                    Toast.makeText(requireContext(), "Errore di connessione", Toast.LENGTH_SHORT).show()
+                    Log.e("LOGIN", "onViewCreated: ", e)
+                }
+                //delay(4521)
+                loadingBar.visibility = View.GONE
+                loginButton.apply {
+                    text = "Accedi"
+                    isClickable = true
+                }
             }
         }
     }

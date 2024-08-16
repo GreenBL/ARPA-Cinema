@@ -1,17 +1,13 @@
 package pwm.ar.arpacinema.auth
 
 import android.util.Log
-import android.widget.Toast
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import pwm.ar.arpacinema.repository.RequestModels
+import pwm.ar.arpacinema.repository.DTO
 import pwm.ar.arpacinema.repository.RetrofitClient
+import retrofit2.Response
 
 class LoginViewModel : ViewModel() {
     // TODO: Implement the ViewModel
@@ -26,22 +22,15 @@ class LoginViewModel : ViewModel() {
 
     private val api = RetrofitClient.service
 
-    private lateinit var loginRequest: RequestModels.LoginRequest
+    private lateinit var loginRequest: DTO.LoginRequest
 
-    fun execLogin() {
+    suspend fun execLogin() : String? {
         // TODO: implement login
-        viewModelScope.launch {
-            try {
-                val request = RequestModels.LoginRequest(userEmail.value, userPassword.value)
-                val response = api.loginUser(request).body()
-                Log.e("LOGIN", "execLogin: $response")
-            } catch (e: Exception) {
-                Log.e("LOGIN", "execLogin: ", e)
-            }
-        }
-        Log.i(
-            "LOGIN", "execLogin: " + "email: " + _userEmail.value + " password: " + _userPassword.value
-        )
+
+            val response = api.ack()
+            return response.body()?.message
+
+
     }
 
 }
