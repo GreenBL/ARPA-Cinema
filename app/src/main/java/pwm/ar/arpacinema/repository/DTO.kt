@@ -1,6 +1,7 @@
 package pwm.ar.arpacinema.repository
 
 import com.google.gson.annotations.SerializedName
+import org.jetbrains.annotations.ApiStatus.Internal
 
 /**
  * This class holds the serializable data classes to be sent to the server
@@ -10,16 +11,21 @@ import com.google.gson.annotations.SerializedName
  * Also Sicily is pretty hot lately not gonna lie.
  */
 
-class RequestModels {
+class DTO {
 
     data class LoginRequest(
-        @SerializedName("email") val email: String,
-        @SerializedName("password") val password: String
+        @SerializedName("email") val email: String?,
+        @SerializedName("password") val password: String?
     )
 
     // do we need this? i don't know but writing code is free
     data class SerializedBool(
-        @SerializedName("boolean") val bool: Boolean
+        @SerializedName("boolean") val bool: Boolean?
+    )
+
+    @Internal
+    data class GenericResponse(
+        @SerializedName("message") val message: String?
     )
 
 }

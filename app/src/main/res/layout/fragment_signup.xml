@@ -18,8 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:fitsSystemWindows="true"
-        android:paddingTop="16dp"
+        android:fitsSystemWindows="false"
         app:liftOnScroll="true">
 
         <include
@@ -27,7 +26,8 @@
             layout="@layout/include_close_app_bar"
             android:layout_width="match_parent"
             android:layout_height="64dp"
-            android:layout_gravity="bottom" />
+            android:layout_gravity="bottom"
+            android:layout_marginTop="43dp" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

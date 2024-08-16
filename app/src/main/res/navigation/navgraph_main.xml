@@ -81,4 +81,16 @@
         android:id="@+id/searchFragment"
         android:name="pwm.ar.arpacinema.discovery.SearchFragment"
         android:label="SearchFragment" />
+    <fragment
+        android:id="@+id/passwordRecoveryFragment"
+        android:name="pwm.ar.arpacinema.auth.PasswordRecoveryFragment"
+        android:label="fragment_password_recovery"
+        tools:layout="@layout/fragment_password_recovery" />
+    <action
+        android:id="@+id/action_global_passwordRecoveryFragment"
+        app:destination="@id/passwordRecoveryFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
 </navigation>

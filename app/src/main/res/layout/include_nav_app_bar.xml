@@ -5,10 +5,11 @@
     android:id="@+id/frameLayout4"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:fitsSystemWindows="true">
+    android:layout_marginTop="43dp"
+    android:fitsSystemWindows="false">
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/button"
+        android:id="@+id/navBack"
         style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

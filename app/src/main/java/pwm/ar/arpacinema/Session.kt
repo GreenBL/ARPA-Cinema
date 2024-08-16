@@ -20,9 +20,13 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore("session")
 object Session {
 
     private val USER_ID_KEY = stringPreferencesKey("user_id")
+    private var _user: User? = null
+    val user: User? get() = _user
 
     // store the user ID [important: store it after logging in else it will be lost]
-    suspend fun storeUserId(context: Context, userId: String) {
+    suspend fun storeUser(context: Context, user: User) {
+        val userId = user.id.toString()
+        _user = user
         context.dataStore.edit { settings ->
             settings[USER_ID_KEY] = userId
         }
@@ -35,7 +39,8 @@ object Session {
     }
 
     // invalidate the stored user ID (logout)
-    suspend fun invalidateUserId(context: Context) {
+    suspend fun invalidateUser(context: Context) {
+        _user = null
         context.dataStore.edit { settings ->
             settings.remove(USER_ID_KEY)
         }
