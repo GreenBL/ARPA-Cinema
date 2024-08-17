@@ -115,4 +115,14 @@
         android:id="@+id/accountFragment"
         android:name="pwm.ar.arpacinema.profile.AccountFragment"
         android:label="AccountFragment" />
+    <fragment
+        android:id="@+id/networkErrorFragment"
+        android:name="pwm.ar.arpacinema.common.NetworkErrorFragment"
+        android:label="fragment_network_error"
+        tools:layout="@layout/fragment_network_error" />
+    <action
+        android:id="@+id/action_global_networkErrorFragment"
+        app:destination="@id/networkErrorFragment"
+        app:enterAnim="@anim/zoom_fade_in"
+        app:popExitAnim="@anim/zoom_fade_out" />
 </navigation>

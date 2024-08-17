@@ -24,10 +24,14 @@ class AccountFragment : Fragment() {
     private val accountMenuItems = listOf(
         MenuItem(R.drawable.outline_email_24, "Modifica e-mail"),
         MenuItem(R.drawable.outline_lock_24, "Modifica password"),
-        MenuItem(R.drawable.outline_security_24, "Sicurezza"),
+        MenuItem(R.drawable.outline_security_24, "Sicurezza")
+    )
+
+    private val otherItems = listOf(
         MenuItem(R.drawable.outline_help_outline_24, "Ho bisogno di aiuto", false),
         MenuItem(R.drawable.outline_delete_forever_24, "Cancella account", false)
     )
+
 
     companion object {
         fun newInstance() = AccountFragment()
@@ -53,8 +57,15 @@ class AccountFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         (activity as MainActivity).hideBottomNavigation()
         val menu = binding.accountMenu
+        val bottomMenu = binding.otherMenu
+
         val menuAdapter = MenuAdapter(accountMenuItems) { menuItem ->
             // HANDLE THE ITEM BEING CLICKED
+            Toast.makeText(requireContext(), "Clicked: ${menuItem.label}", Toast.LENGTH_SHORT).show()
+        }
+
+        val bottomMenuAdapter = MenuAdapter(otherItems) { menuItem ->
+            // handle the item being clicked
             Toast.makeText(requireContext(), "Clicked: ${menuItem.label}", Toast.LENGTH_SHORT).show()
         }
 
@@ -67,6 +78,14 @@ class AccountFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(dividerItemDecoration)
         }
+
+        bottomMenu.apply {
+            adapter = bottomMenuAdapter
+            overScrollMode = View.OVER_SCROLL_NEVER
+            layoutManager = LinearLayoutManager(requireContext())
+            addItemDecoration(dividerItemDecoration)
+        }
+
     }
 
     override fun onDestroy() {

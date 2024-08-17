@@ -51,10 +51,19 @@ class MainActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
 
+
+
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
         binding.bottomNavigationView.setupWithNavController(navController)
+
+        // SE NON C'E' CONNESSIONE AL SERVER O A INTERNET
+        // todo
+        if (true) {
+            navController.navigate(R.id.action_global_networkErrorFragment)
+            hideBottomNavigation()
+        }
 
         // TODO - login stuff
         val user = User(1, 1, "Riccardo", "Parisi", "riccardo@mail.it", 2, 452)
