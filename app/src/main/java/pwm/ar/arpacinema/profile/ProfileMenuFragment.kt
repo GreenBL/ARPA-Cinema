@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.divider.MaterialDividerItemDecoration
@@ -89,6 +90,11 @@ class ProfileMenuFragment : Fragment() {
 
         val centerMenuAdapter = MenuAdapter(centerMenuItems) { menuItem ->
             // HANDLE THE ITEM BEING CLICKED
+            when (menuItem.label) {
+                "Informazioni Profilo" -> {
+                    findNavController().navigate(R.id.action_profileMenuFragment_to_infoFragment)
+                }
+            }
             Toast.makeText(requireContext(), "Clicked: ${menuItem.label}", Toast.LENGTH_SHORT)
                 .show()
         }

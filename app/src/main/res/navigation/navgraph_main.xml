@@ -36,6 +36,9 @@
         <action
             android:id="@+id/action_profileMenuFragment_to_ticketsFragment"
             app:destination="@id/ticketsFragment" />
+        <action
+            android:id="@+id/action_profileMenuFragment_to_infoFragment"
+            app:destination="@id/infoFragment" />
     </fragment>
     <fragment
         android:id="@+id/authFragment"
@@ -93,4 +96,8 @@
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right" />
+    <fragment
+        android:id="@+id/infoFragment"
+        android:name="pwm.ar.arpacinema.profile.InfoFragment"
+        android:label="InfoFragment" />
 </navigation>
