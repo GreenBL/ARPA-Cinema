@@ -11,18 +11,14 @@ import retrofit2.http.Path
 
 interface Service {
 
+   // @GET("pwm/users/{userId}")
+   // suspend fun getUser(@Path("userId") id: Int): Deferred<User>
 
-
-
-
-    @GET("pwm/users/{userId}")
-    suspend fun getUser(@Path("userId") id: Int): Deferred<User>
-
-    @POST("pwm/users/new")
-    suspend fun createUser(user: User): Deferred<Boolean>
+   // @POST("pwm/users/new")
+   // suspend fun createUser(user: User): Deferred<Boolean>
 
     @POST("pwm/users/login")
-    suspend fun loginUser(@Body loginRequest: DTO.LoginRequest): Response<Int>
+    suspend fun loginUser(@Body loginRequest: DTO.LoginRequest): Response<DTO.LoginResponse>
 
     // ====================================================================================
     //                                     DEBUG

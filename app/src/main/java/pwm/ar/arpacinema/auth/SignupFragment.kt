@@ -33,7 +33,7 @@ class SignupFragment : Fragment() {
         fun newInstance() = SignupFragment()
     }
 
-    private val viewModel: SignupViewModel by viewModels()
+    //private val viewModel: SignupViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

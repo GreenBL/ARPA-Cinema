@@ -18,6 +18,11 @@ class DTO {
         @SerializedName("password") val password: String?
     )
 
+    data class LoginResponse(
+        @SerializedName("status") val status: String?,
+        @SerializedName("userId") val userId: Int?
+    )
+
     // do we need this? i don't know but writing code is free
     data class SerializedBool(
         @SerializedName("boolean") val bool: Boolean?
