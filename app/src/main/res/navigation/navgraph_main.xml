@@ -38,7 +38,18 @@
             app:destination="@id/ticketsFragment" />
         <action
             android:id="@+id/action_profileMenuFragment_to_infoFragment"
-            app:destination="@id/infoFragment" />
+            app:destination="@id/infoFragment"
+            app:enterAnim="@anim/zoom_fade_in"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/zoom_fade_out" />
+        <action
+            android:id="@+id/action_profileMenuFragment_to_accountFragment"
+            app:destination="@id/accountFragment"
+            app:enterAnim="@anim/zoom_fade_in"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/zoom_fade_out"/>
     </fragment>
     <fragment
         android:id="@+id/authFragment"
@@ -100,4 +111,8 @@
         android:id="@+id/infoFragment"
         android:name="pwm.ar.arpacinema.profile.InfoFragment"
         android:label="InfoFragment" />
+    <fragment
+        android:id="@+id/accountFragment"
+        android:name="pwm.ar.arpacinema.profile.AccountFragment"
+        android:label="AccountFragment" />
 </navigation>

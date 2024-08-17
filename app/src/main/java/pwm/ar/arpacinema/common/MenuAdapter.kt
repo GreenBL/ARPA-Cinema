@@ -34,11 +34,13 @@ class MenuAdapter(
     override fun onBindViewHolder(holder: MenuViewHolder, position: Int) {
         val menuItem = menuItems[position]
         holder.binding.menuItemIcon.setImageResource(menuItem.iconResId)
-        if(menuItem.label == "Logout") {
+        if((menuItem.label == "Logout") or (menuItem.label == "Cancella account")) {
             val textView = holder.binding.menuItemTitle
             val color = ContextCompat.getColor(holder.itemView.context, R.color.md_theme_error)
             textView.setTextColor(color)
             holder.binding.menuItemIcon.setColorFilter(color)
+        }
+        if(!menuItem.showChevron) {
             holder.binding.chevron.visibility = View.GONE
         }
         holder.binding.menuItemTitle.text = menuItem.label
