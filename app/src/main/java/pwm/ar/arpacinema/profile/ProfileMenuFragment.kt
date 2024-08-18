@@ -11,8 +11,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.MenuAdapter
@@ -29,18 +31,18 @@ class ProfileMenuFragment : Fragment() {
 
     private val topMenuItems = listOf(
         MenuItem(R.drawable.outline_fastfood_24, "Premi"),
-        MenuItem(R.drawable.round_history_24, "Storico Acquisti")
+        MenuItem(R.drawable.round_history_24, "Cronologia")
         // TODO
     )
 
     private val centerMenuItems = listOf(
-        MenuItem(R.drawable.outline_person_24, "Informazioni Profilo"),
+        MenuItem(R.drawable.outline_person_24, "Profilo"),
         MenuItem(R.drawable.outline_manage_accounts_24, "Gestione Account"),
         MenuItem(R.drawable.outline_account_balance_wallet_24, "Portafoglio")
     )
 
     private val logoutItem = listOf(
-        MenuItem(R.drawable.outline_logout_24, "Logout")
+        MenuItem(R.drawable.outline_logout_24, "Logout", false)
     )
 
     companion object {
@@ -69,6 +71,9 @@ class ProfileMenuFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // force show nav bar
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility = View.VISIBLE
+
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
@@ -89,6 +94,14 @@ class ProfileMenuFragment : Fragment() {
 
         val centerMenuAdapter = MenuAdapter(centerMenuItems) { menuItem ->
             // HANDLE THE ITEM BEING CLICKED
+            when (menuItem.label) {
+                "Profilo" -> {
+                    findNavController().navigate(R.id.action_profileMenuFragment_to_infoFragment)
+                }
+                "Gestione Account" -> {
+                    findNavController().navigate(R.id.action_profileMenuFragment_to_accountFragment)
+                }
+            }
             Toast.makeText(requireContext(), "Clicked: ${menuItem.label}", Toast.LENGTH_SHORT)
                 .show()
         }

@@ -4,6 +4,7 @@ import kotlinx.coroutines.Deferred
 import pwm.ar.arpacinema.model.User
 import retrofit2.Response
 import retrofit2.http.Body
+import pwm.ar.arpacinema.repository.DTO.*
 
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -18,11 +19,11 @@ interface Service {
    // suspend fun createUser(user: User): Deferred<Boolean>
 
     @POST("pwm/users/login")
-    suspend fun loginUser(@Body loginRequest: DTO.LoginRequest): Response<DTO.LoginResponse>
+    suspend fun loginUser(@Body loginRequest: LoginRequest): Response<LoginResponse>
 
     // ====================================================================================
     //                                     DEBUG
     @GET("dev/ack")
-    suspend fun ack() : Response<DTO.GenericResponse>
+    suspend fun ack() : Response<GenericResponse>
     // ====================================================================================
 }

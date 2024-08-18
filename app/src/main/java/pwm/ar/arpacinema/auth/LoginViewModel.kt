@@ -3,6 +3,8 @@ package pwm.ar.arpacinema.auth
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.Deferred
+import pwm.ar.arpacinema.model.User
 
 import pwm.ar.arpacinema.repository.DTO
 import pwm.ar.arpacinema.repository.RetrofitClient
@@ -28,14 +30,14 @@ class LoginViewModel : ViewModel() {
 
     // TODO: Approccio un po confusionario si deve decidere come gestire lo status
 
-    suspend fun execLogin() {
+    suspend fun execLogin() : User? {
         // TODO: implement login
         val loginRequest = DTO.LoginRequest(userEmail.value, userPassword.value)
         val response = api.loginUser(loginRequest)
 
         if (!response.isSuccessful) {
             _loginResult.postValue(LoginResult.Error("Login failed"))
-            return
+            return null
         }
 
         response.body()?.status.let {
@@ -45,6 +47,9 @@ class LoginViewModel : ViewModel() {
                 "PSW_ERROR" -> _loginResult.postValue(LoginResult.Error("Incorrect password"))
             }
         }
+
+        // TODO fetch user data
+        return User(1, 1, "", "", "", 0, 0)
 
     }
 

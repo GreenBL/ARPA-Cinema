@@ -83,5 +83,9 @@ open class TextValidator(
             }
         }
 
+        fun silent(string: String): String? {
+            return null
+        }
+
     }
 }

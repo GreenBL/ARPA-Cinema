@@ -21,6 +21,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.databinding.FragmentAuthBinding
+import pwm.ar.arpacinema.util.TextValidator
 
 class AuthFragment : Fragment() {
 
@@ -85,8 +86,10 @@ class AuthFragment : Fragment() {
         val emailField = binding.cardContentLogin.emailField
         val passwordField = binding.cardContentLogin.passwordField
 
-        //emailField.addTextChangedListener(TextValidator(emailFieldLayout, TextValidator.Companion::isValidEmail))
-        //passwordField.addTextChangedListener(TextValidator(passwordFieldLayout, TextValidator.Companion::isValidPassword))
+        // clears errors on text change
+
+        emailField.addTextChangedListener(TextValidator(emailFieldLayout, TextValidator.Companion::silent))
+        passwordField.addTextChangedListener(TextValidator(passwordFieldLayout, TextValidator.Companion::silent))
 
         signUpButton.setOnClickListener {
             // force ime close altrimenti breaks

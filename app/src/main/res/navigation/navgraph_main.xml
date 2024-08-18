@@ -36,6 +36,20 @@
         <action
             android:id="@+id/action_profileMenuFragment_to_ticketsFragment"
             app:destination="@id/ticketsFragment" />
+        <action
+            android:id="@+id/action_profileMenuFragment_to_infoFragment"
+            app:destination="@id/infoFragment"
+            app:enterAnim="@anim/zoom_fade_in"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/zoom_fade_out" />
+        <action
+            android:id="@+id/action_profileMenuFragment_to_accountFragment"
+            app:destination="@id/accountFragment"
+            app:enterAnim="@anim/zoom_fade_in"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/zoom_fade_out"/>
     </fragment>
     <fragment
         android:id="@+id/authFragment"
@@ -93,4 +107,22 @@
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right" />
+    <fragment
+        android:id="@+id/infoFragment"
+        android:name="pwm.ar.arpacinema.profile.InfoFragment"
+        android:label="InfoFragment" />
+    <fragment
+        android:id="@+id/accountFragment"
+        android:name="pwm.ar.arpacinema.profile.AccountFragment"
+        android:label="AccountFragment" />
+    <fragment
+        android:id="@+id/networkErrorFragment"
+        android:name="pwm.ar.arpacinema.common.NetworkErrorFragment"
+        android:label="fragment_network_error"
+        tools:layout="@layout/fragment_network_error" />
+    <action
+        android:id="@+id/action_global_networkErrorFragment"
+        app:destination="@id/networkErrorFragment"
+        app:enterAnim="@anim/zoom_fade_in"
+        app:popExitAnim="@anim/zoom_fade_out" />
 </navigation>
