@@ -50,6 +50,11 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/zoom_fade_out"/>
+        <action
+            android:id="@+id/action_profileMenuFragment_to_walletFragment"
+            app:destination="@id/walletFragment"
+            app:enterAnim="@anim/zoom_fade_in"
+            app:popExitAnim="@anim/zoom_fade_out" />
     </fragment>
     <fragment
         android:id="@+id/authFragment"
@@ -125,4 +130,8 @@
         app:destination="@id/networkErrorFragment"
         app:enterAnim="@anim/zoom_fade_in"
         app:popExitAnim="@anim/zoom_fade_out" />
+    <fragment
+        android:id="@+id/walletFragment"
+        android:name="pwm.ar.arpacinema.profile.WalletFragment"
+        android:label="WalletFragment" />
 </navigation>

@@ -101,6 +101,9 @@ class ProfileMenuFragment : Fragment() {
                 "Gestione Account" -> {
                     findNavController().navigate(R.id.action_profileMenuFragment_to_accountFragment)
                 }
+                "Portafoglio" -> {
+                    findNavController().navigate(R.id.action_profileMenuFragment_to_walletFragment)
+                }
             }
             Toast.makeText(requireContext(), "Clicked: ${menuItem.label}", Toast.LENGTH_SHORT)
                 .show()

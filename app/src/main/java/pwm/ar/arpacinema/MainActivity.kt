@@ -3,6 +3,8 @@ package pwm.ar.arpacinema
 import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -47,25 +49,17 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-        val navController = navHostFragment.navController
-        binding.bottomNavigationView.setupWithNavController(navController)
+        val navController = getNavController()
 
         observeStatus(this, navController)
 
-        val retrofit = RetrofitClient
+        setupBottomBarBehavior(navController)
 
+        val retrofit = RetrofitClient
 
         val navigationBar = binding.bottomNavigationView
 
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-
-        // disable screen orientation [globally]
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        // forcing dark theme, because who uses light theme?
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-
+        setupWindowDecorations()
 
 
         // SE NON C'E' CONNESSIONE AL SERVER O A INTERNET
@@ -96,6 +90,49 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun setupWindowDecorations() {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        // disable screen orientation [globally]
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        // forcing dark theme, because who uses light theme?
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+    }
+
+    private fun getNavController(): NavController {
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        val navController = navHostFragment.navController
+        binding.bottomNavigationView.setupWithNavController(navController)
+        return navController
+    }
+
+    private fun setupBottomBarBehavior(navController: NavController) {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            val handler = Handler(Looper.getMainLooper())
+            handler.post{ // avoid calling it before the fragment is created and shown
+                when (destination.id) {
+                    R.id.homeFragment -> {
+                        showBottomNavigation()
+                    }
+
+                    R.id.profileMenuFragment -> {
+                        showBottomNavigation()
+                    }
+
+                    R.id.ticketsFragment -> {
+                        showBottomNavigation()
+                    }
+
+                    else -> {
+                        hideBottomNavigation()
+                    }
+                }
+            }
+
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         RetrofitClient.interloper.status.removeObservers(this)
@@ -111,7 +148,7 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.visibility = View.VISIBLE
     }
 
-    fun observeStatus(owner: LifecycleOwner, navController: NavController) {
+    private fun observeStatus(owner: LifecycleOwner, navController: NavController) {
         val interloper = RetrofitClient.interloper
         // check if there is already an observer
         interloper.status.observe(owner) { status ->
