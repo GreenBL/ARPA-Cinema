@@ -1,5 +1,6 @@
 package pwm.ar.arpacinema.repository
 
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -13,9 +14,16 @@ object RetrofitClient {
         "http://10.0.2.2:9000"  // URL for production
     }
 
+    val interloper = Status() // we need only one instance of this btw
+
+    private val okHttpClient = OkHttpClient.Builder()
+        .addInterceptor(interloper)
+        .build()
+
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(SERVER_URL)
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

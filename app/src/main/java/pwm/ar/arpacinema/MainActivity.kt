@@ -1,5 +1,6 @@
 package pwm.ar.arpacinema
 
+import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
@@ -12,15 +13,19 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import pwm.ar.arpacinema.common.Dialog
 import pwm.ar.arpacinema.databinding.ActivityMainBinding
 import pwm.ar.arpacinema.model.User
 import pwm.ar.arpacinema.repository.RetrofitClient
+import pwm.ar.arpacinema.repository.Status
 
 
 class MainActivity : AppCompatActivity() {
@@ -42,6 +47,13 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        val navController = navHostFragment.navController
+        binding.bottomNavigationView.setupWithNavController(navController)
+
+        observeStatus(this, navController)
+
         val retrofit = RetrofitClient
 
 
@@ -54,18 +66,13 @@ class MainActivity : AppCompatActivity() {
         // forcing dark theme, because who uses light theme?
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-        val navController = navHostFragment.navController
-        binding.bottomNavigationView.setupWithNavController(navController)
+
 
         // SE NON C'E' CONNESSIONE AL SERVER O A INTERNET
         // todo
         runBlocking {
             delay(200L) // slight delay
-            if (!retrofit.checkConnection()) {
-                navController.navigate(R.id.action_global_networkErrorFragment)
-            }
+            retrofit.checkConnection()
         }
 
 
@@ -89,6 +96,11 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        RetrofitClient.interloper.status.removeObservers(this)
+    }
+
     fun hideBottomNavigation() {
         // hide bottom nav
         binding.bottomNavigationView.visibility = View.GONE
@@ -98,5 +110,22 @@ class MainActivity : AppCompatActivity() {
         // show bottom nav
         binding.bottomNavigationView.visibility = View.VISIBLE
     }
+
+    fun observeStatus(owner: LifecycleOwner, navController: NavController) {
+        val interloper = RetrofitClient.interloper
+        // check if there is already an observer
+        interloper.status.observe(owner) { status ->
+            if(status) {
+                Log.i("MainActivity", "Status: $status")
+            } else {
+                Dialog.showNetworkErrorDialog(this)
+                interloper.status.removeObservers(owner) // important if we are restarting
+                navController.navigate(R.id.action_global_networkErrorFragment)
+                Log.e("MainActivity", "Status: $status")
+            }
+        }
+    }
+
+
 
 }

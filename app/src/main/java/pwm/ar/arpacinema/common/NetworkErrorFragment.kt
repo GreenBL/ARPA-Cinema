@@ -60,8 +60,9 @@ class NetworkErrorFragment : Fragment() {
             lifecycleScope.launch {
                 weConnected = retrofit.checkConnection()
                 if (weConnected) {
-                    startActivity(intent)
                     (activity as MainActivity).finish()
+                    startActivity(intent)
+
                 } else {
                     Toast.makeText(
                         requireContext(),
