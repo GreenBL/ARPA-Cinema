@@ -12,15 +12,20 @@ import android.view.WindowInsets
 import android.view.inputmethod.InputMethodManager
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.transition.platform.MaterialContainerTransform
+import pwm.ar.arpacinema.MainActivity
 
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.databinding.FragmentAuthBinding
 import pwm.ar.arpacinema.databinding.FragmentSearchBinding
+import pwm.ar.arpacinema.dev.ShowingItem
 
 class SearchFragment : Fragment() {
+
+    private val aah = listOf(ShowingItem(), ShowingItem(), ShowingItem(), ShowingItem())
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
@@ -59,10 +64,16 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as MainActivity).hideBottomNavigation()
 
-        requireActivity().findViewById<BottomNavigationView>(
-            R.id.bottomNavigationView
-        ).visibility = View.GONE
+        val recyclerView = binding.resultsRV
+        recyclerView.adapter = ShowingAdapter(aah) {
+            // nada
+        }
+
+        recyclerView.apply {
+            layoutManager = GridLayoutManager(requireContext(), 2)
+        }
 
         val searchBarField = binding.searchBarLayout
 
@@ -75,6 +86,7 @@ class SearchFragment : Fragment() {
         // TODO: only if u are from home fragment
 
         searchBarField.postDelayed({
+            searchBarField.requestFocus()
             val windowInsetsController = view.windowInsetsController
             windowInsetsController?.show(WindowInsets.Type.ime())
         }, 200)

@@ -17,8 +17,10 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import pwm.ar.arpacinema.databinding.ActivityMainBinding
 import pwm.ar.arpacinema.model.User
+import pwm.ar.arpacinema.repository.RetrofitClient
 
 
 class MainActivity : AppCompatActivity() {
@@ -40,6 +42,8 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        val retrofit = RetrofitClient
+
 
         val navigationBar = binding.bottomNavigationView
 
@@ -50,9 +54,6 @@ class MainActivity : AppCompatActivity() {
         // forcing dark theme, because who uses light theme?
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
-
-
-
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
@@ -60,10 +61,13 @@ class MainActivity : AppCompatActivity() {
 
         // SE NON C'E' CONNESSIONE AL SERVER O A INTERNET
         // todo
-        if (true) {
-            navController.navigate(R.id.action_global_networkErrorFragment)
-            hideBottomNavigation()
+        runBlocking {
+            delay(200L) // slight delay
+            if (!retrofit.checkConnection()) {
+                navController.navigate(R.id.action_global_networkErrorFragment)
+            }
         }
+
 
         // TODO - login stuff
         val user = User(1, 1, "Riccardo", "Parisi", "riccardo@mail.it", 2, 452)
