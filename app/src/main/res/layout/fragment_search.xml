@@ -6,6 +6,7 @@
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/md_theme_background"
     android:clipChildren="false"
     android:clipToOutline="false"
     android:clipToPadding="false">
@@ -20,7 +21,7 @@
         android:clipToOutline="false"
         android:clipToPadding="false"
         android:overScrollMode="never"
-        android:paddingHorizontal="16dp"
+        android:paddingHorizontal="0dp"
         android:paddingTop="16dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
@@ -32,7 +33,9 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:scaleType="fitXY"
-        app:srcCompat="@drawable/gradient_bg_search_" />
+        android:visibility="gone"
+        app:srcCompat="@drawable/gradient_bg_search_"
+        tools:visibility="gone" />
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
@@ -40,8 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#00FFFFFF"
-        android:fitsSystemWindows="false"
-        app:liftOnScrollColor="#00040404">
+        android:fitsSystemWindows="false">
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -52,6 +54,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="43dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
             android:hint="Cerca film..."
             android:transitionGroup="true"
             android:transitionName="shared_search"
