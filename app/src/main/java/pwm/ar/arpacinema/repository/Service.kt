@@ -18,6 +18,9 @@ interface Service {
    // @POST("pwm/users/new")
    // suspend fun createUser(user: User): Deferred<Boolean>
 
+    @POST("dev/signup")
+    suspend fun signUp(@Body signUpRequest: SignUpRequest): Response<GenericResponse>
+
     @POST("pwm/users/login")
     suspend fun loginUser(@Body loginRequest: LoginRequest): Response<LoginResponse>
 

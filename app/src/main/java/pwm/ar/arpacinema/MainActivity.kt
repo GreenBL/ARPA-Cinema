@@ -161,9 +161,15 @@ class MainActivity : AppCompatActivity() {
                 Log.i("MainActivity", "Status: $status")
             } else {
                 Dialog.showNetworkErrorDialog(this)
-                interloper.status.removeObservers(owner) // important if we are restarting
-                navController.navigate(R.id.action_global_networkErrorFragment)
                 Log.e("MainActivity", "Status: $status")
+            }
+        }
+        interloper.globalStatus.observe(owner) { globalStatus ->
+            if(!globalStatus) {
+                Log.e("MainActivity", "Connection lost, Status: $globalStatus")
+                interloper.globalStatus.removeObservers(owner)
+                interloper.status.removeObservers(owner)// important if we are restarting
+                navController.navigate(R.id.action_global_networkErrorFragment)
             }
         }
     }

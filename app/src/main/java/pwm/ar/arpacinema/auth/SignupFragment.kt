@@ -13,12 +13,18 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView.Validator
 import android.widget.DatePicker
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.transition.platform.MaterialContainerTransform
+import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.R
+import pwm.ar.arpacinema.common.Dialog
 import pwm.ar.arpacinema.databinding.FragmentSignupBinding
 import pwm.ar.arpacinema.util.TextValidator
 import java.text.SimpleDateFormat
@@ -29,11 +35,18 @@ class SignupFragment : Fragment() {
     private var _binding: FragmentSignupBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var nameField: TextInputLayout
+    private lateinit var surnameField: TextInputLayout
+    private lateinit var phoneField: TextInputLayout
+    private lateinit var emailField: TextInputLayout
+    private lateinit var passwordField: TextInputLayout
+    private lateinit var signUpButton: ExtendedFloatingActionButton
+
     companion object {
         fun newInstance() = SignupFragment()
     }
 
-    //private val viewModel: SignupViewModel by viewModels()
+    private val viewModel: SignupViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,13 +82,76 @@ class SignupFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val closeButton = binding.topBarInclude.closeButton
-        val nameField = binding.nameFieldLayout
-        val surnameField = binding.surnameFieldLayout
-        val phoneField = binding.phoneFieldLayout
-        val emailField = binding.emailFieldLayout
-        val passwordField = binding.passwordFieldLayout
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
 
+        val closeButton = binding.topBarInclude.closeButton
+        nameField = binding.nameFieldLayout
+        surnameField = binding.surnameFieldLayout
+        phoneField = binding.phoneFieldLayout
+        emailField = binding.emailFieldLayout
+        passwordField = binding.passwordFieldLayout
+        signUpButton = binding.floatingActionButton
+
+        errorHighlight(emailField, passwordField, nameField, surnameField, phoneField)
+        // handle closing of this
+        setupNavBack(closeButton)
+        signUpAction(signUpButton)
+        // temporarily disable the text fields
+
+
+        binding.topBarInclude.label.text = "Inserisci i tuoi dati"
+
+
+
+    }
+
+    private fun signUpAction(signUpButton: ExtendedFloatingActionButton) {
+        signUpButton.setOnClickListener {
+            disableFields()
+            lifecycleScope.launch {
+                val result = viewModel.signUp()
+                if(result.error == null && result.message == null){
+                    Dialog.showSignupSuccessDialog(requireContext())
+                    findNavController().popBackStack()
+                }
+                // on response either way do
+                enableFields()
+            }
+        }
+    }
+
+    private fun disableFields() {
+        emailField.editText!!.isEnabled = false
+        passwordField.editText!!.isEnabled = false
+        nameField.editText!!.isEnabled = false
+        surnameField.editText!!.isEnabled = false
+        phoneField.editText!!.isEnabled = false
+        signUpButton.isEnabled = false
+    }
+
+    private fun enableFields() {
+        emailField.editText!!.isEnabled = true
+        passwordField.editText!!.isEnabled = true
+        nameField.editText!!.isEnabled = true
+        surnameField.editText!!.isEnabled = true
+        phoneField.editText!!.isEnabled = true
+        signUpButton.isEnabled = true
+    }
+
+    private fun setupNavBack(closeButton: MaterialButton) {
+        closeButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
+    }
+
+    private fun errorHighlight(
+        emailField: TextInputLayout,
+        passwordField: TextInputLayout,
+        nameField: TextInputLayout,
+        surnameField: TextInputLayout,
+        phoneField: TextInputLayout
+    ) {
         emailField.editText!!.addTextChangedListener(
             TextValidator(emailField, TextValidator.Companion::isValidEmail)
         )
@@ -91,18 +167,6 @@ class SignupFragment : Fragment() {
         phoneField.editText!!.addTextChangedListener(
             TextValidator(phoneField, TextValidator.Companion::isValidPhone)
         )
-
-
-
-        // handle closing of this
-
-        closeButton.setOnClickListener {
-            findNavController().popBackStack()
-        }
-        binding.topBarInclude.label.text = "Inserisci i tuoi dati"
-
-
-
     }
 
     override fun onDestroyView() {

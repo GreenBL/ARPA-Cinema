@@ -34,4 +34,17 @@ object Dialog {
         dialog.show()
 
     }
+
+    fun showSignupSuccessDialog(context: Context) {
+        val builder = MaterialAlertDialogBuilder(context, com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered)
+        builder.setTitle("Account creato")
+        builder.setMessage("Il tuo account è stato creato con successo ed è pronto all'uso.")
+        builder.setIcon(R.drawable.baseline_check_circle_outline_24)
+        builder.setPositiveButton("Ok") {
+                dialog, _ -> dialog.dismiss()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
+    }
 }
