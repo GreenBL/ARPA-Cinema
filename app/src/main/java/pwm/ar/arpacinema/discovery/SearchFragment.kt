@@ -26,7 +26,7 @@ import pwm.ar.arpacinema.dev.ShowingItem
 
 class SearchFragment : Fragment() {
 
-    private val aah = listOf(ShowingItem(), ShowingItem(), ShowingItem(), ShowingItem())
+    private val aah = listOf(ShowingItem(), ShowingItem(), ShowingItem(), ShowingItem(), ShowingItem(), ShowingItem(), ShowingItem(), ShowingItem())
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
@@ -39,21 +39,10 @@ class SearchFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.sharedElementEnterTransition = MaterialContainerTransform().apply {
-            duration = 300L
-            isElevationShadowEnabled = true
-            scrimColor = Color.TRANSPARENT
-            fadeMode = MaterialContainerTransform.FADE_MODE_CROSS
-        }
-
-        this.sharedElementReturnTransition = MaterialContainerTransform().apply {
-            duration = 600L
-            isElevationShadowEnabled = true
-            scrimColor = Color.TRANSPARENT
-            fadeMode = MaterialContainerTransform.FADE_MODE_CROSS
-        }
-
+        setupTransitions()
     }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -113,5 +102,21 @@ class SearchFragment : Fragment() {
         }
 
 
+    }
+
+    private fun setupTransitions() {
+        this.sharedElementEnterTransition = MaterialContainerTransform().apply {
+            duration = 300L
+            isElevationShadowEnabled = true
+            scrimColor = Color.TRANSPARENT
+            fadeMode = MaterialContainerTransform.FADE_MODE_CROSS
+        }
+
+        this.sharedElementReturnTransition = MaterialContainerTransform().apply {
+            duration = 600L
+            isElevationShadowEnabled = true
+            scrimColor = Color.TRANSPARENT
+            fadeMode = MaterialContainerTransform.FADE_MODE_CROSS
+        }
     }
 }

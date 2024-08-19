@@ -73,7 +73,7 @@ class AuthFragment : Fragment() {
         binding.lifecycleOwner = this
 
         val scrollView = binding.nestedScrollView
-        val image = binding.imageView
+
 
         val loadingBar = binding.cardContentLogin.loadingBar
         val loginButton = binding.cardContentLogin.signinBtn
@@ -96,7 +96,7 @@ class AuthFragment : Fragment() {
             val windowInsetsController = view.windowInsetsController
             windowInsetsController?.hide(WindowInsets.Type.ime())
 
-            val sharedElementView = binding.imageView
+            val sharedElementView = binding.cardContentLogin.signUpBtn
             val nav = findNavController()
 
             val extras = FragmentNavigatorExtras(sharedElementView to "shared_element_container")
@@ -107,19 +107,19 @@ class AuthFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-        view.setOnApplyWindowInsetsListener { v, insets ->
-            val imeVisible = insets.isVisible(WindowInsets.Type.ime())
-
-            if (imeVisible) {
-                scrollView.post {
-                    scrollView.fullScroll(View.FOCUS_DOWN)
-                }
-                image.visibility = View.GONE
-            } else {
-                image.visibility = View.VISIBLE
-            }
-            v.onApplyWindowInsets(insets)
-        }
+//        view.setOnApplyWindowInsetsListener { v, insets ->
+//            val imeVisible = insets.isVisible(WindowInsets.Type.ime())
+//
+//            if (imeVisible) {
+//                scrollView.post {
+//                    scrollView.fullScroll(View.FOCUS_DOWN)
+//                }
+//                image.visibility = View.GONE
+//            } else {
+//                image.visibility = View.VISIBLE
+//            }
+//            v.onApplyWindowInsets(insets)
+//        }
 
         // Password recovery action
         recoverPwd.setOnClickListener {
