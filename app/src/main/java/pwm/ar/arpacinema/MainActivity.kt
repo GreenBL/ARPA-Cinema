@@ -30,8 +30,11 @@ import pwm.ar.arpacinema.model.User
 import pwm.ar.arpacinema.repository.RetrofitClient
 import pwm.ar.arpacinema.repository.Status
 
+private const val DEBUG_MODE = true
 
 class MainActivity : AppCompatActivity() {
+
+
 
     private lateinit var binding: ActivityMainBinding
 
@@ -65,6 +68,14 @@ class MainActivity : AppCompatActivity() {
         val navigationBar = binding.bottomNavigationView
 
         setupWindowDecorations()
+
+        // create a fake user if debug mode is on
+        if(DEBUG_MODE) {
+            val user = User(1, 1, "Riccardo", "Parisi", "riccardo@mail.it", "3334445566", 2, 3)
+            lifecycleScope.launch {
+                Session.storeUser(this@MainActivity, user)
+            }
+        }
 
 
         // SE NON C'E' CONNESSIONE AL SERVER O A INTERNET
