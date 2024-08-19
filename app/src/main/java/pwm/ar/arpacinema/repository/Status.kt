@@ -14,7 +14,10 @@ class Status : Interceptor {
             val catchedResponse = chain.proceed(chain.request())
 
             // we pass the response value to thje LD so we can **observe it**
-            _status.postValue(catchedResponse.isSuccessful)
+            if (catchedResponse.code() == 404) {
+                _status.postValue(false)
+            }
+            //_status.postValue(catchedResponse.isSuccessful)
 
             catchedResponse
         } catch (e: Exception) {
