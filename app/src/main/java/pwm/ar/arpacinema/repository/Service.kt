@@ -21,7 +21,7 @@ interface Service {
     @POST("dev/signup")
     suspend fun signUp(@Body signUpRequest: SignUpRequest): Response<GenericResponse>
 
-    @POST("pwm/users/login")
+    @POST("dev/login")
     suspend fun loginUser(@Body loginRequest: LoginRequest): Response<LoginResponse>
 
     // ====================================================================================

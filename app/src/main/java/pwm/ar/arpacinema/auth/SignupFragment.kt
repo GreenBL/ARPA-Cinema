@@ -22,6 +22,7 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.transition.platform.MaterialContainerTransform
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.common.Dialog
@@ -103,13 +104,13 @@ class SignupFragment : Fragment() {
         binding.topBarInclude.label.text = "Inserisci i tuoi dati"
 
 
-
     }
 
     private fun signUpAction(signUpButton: ExtendedFloatingActionButton) {
         signUpButton.setOnClickListener {
             disableFields()
             lifecycleScope.launch {
+                delay(1000L)
                 val result = viewModel.signUp()
                 if(result.error == null && result.message == null){
                     Dialog.showSignupSuccessDialog(requireContext())

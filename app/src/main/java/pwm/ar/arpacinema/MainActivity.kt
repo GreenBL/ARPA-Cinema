@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
 
         observeStatus(this, navController)
 
-        setupBottomBarBehavior(navController)
+
 
         val retrofit = RetrofitClient
 
@@ -72,14 +72,22 @@ class MainActivity : AppCompatActivity() {
         runBlocking {
             delay(200L) // slight delay
             retrofit.checkConnection()
+
+            if(Session.user != null) {
+                // hide bottom nav
+                Log.i("MainActivity", "User FOUND")
+                navigationBar.visibility = View.VISIBLE
+
+            }
+            setupBottomBarBehavior(navController)
         }
 
 
         // TODO - login stuff
-        val user = User(1, 1, "Riccardo", "Parisi", "riccardo@mail.it", 2, 452)
-        lifecycleScope.launch {
-            Session.storeUser(this@MainActivity, user)
-        }
+        //val user = User(1, 1, "Riccardo", "Parisi", "riccardo@mail.it", 2, 452)
+       // lifecycleScope.launch {
+        //    Session.storeUser(this@MainActivity, user)
+       // }
         lifecycleScope.launch {
             delay(1000L)
             Session.printUserId(this@MainActivity)
@@ -114,6 +122,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupBottomBarBehavior(navController: NavController) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
+            if(Session.user == null) {
+                // cause we dont want the bar appearing again
+                hideBottomNavigation()
+                return@addOnDestinationChangedListener
+            }
             val handler = Handler(Looper.getMainLooper())
             handler.post{ // avoid calling it before the fragment is created and shown
                 when (destination.id) {

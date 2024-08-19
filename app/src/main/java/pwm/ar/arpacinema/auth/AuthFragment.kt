@@ -20,6 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pwm.ar.arpacinema.R
+import pwm.ar.arpacinema.Session
 import pwm.ar.arpacinema.databinding.FragmentAuthBinding
 import pwm.ar.arpacinema.util.TextValidator
 
@@ -78,11 +79,9 @@ class AuthFragment : Fragment() {
         val loadingBar = binding.cardContentLogin.loadingBar
         val loginButton = binding.cardContentLogin.signinBtn
         val recoverPwd = binding.cardContentLogin.passwordResetBtn
-
         val signUpButton = binding.cardContentLogin.signUpBtn
         val emailFieldLayout = binding.cardContentLogin.emailFieldLayout
         val passwordFieldLayout = binding.cardContentLogin.pwdFieldLayout
-
         val emailField = binding.cardContentLogin.emailField
         val passwordField = binding.cardContentLogin.passwordField
 
@@ -126,6 +125,25 @@ class AuthFragment : Fragment() {
             findNavController().navigate(R.id.action_global_passwordRecoveryFragment)
         }
 
+        viewModel.loginResult.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                "SUCCESS" -> {}
+                "USER_NOT_REGISTERED" -> {
+                    emailFieldLayout.error = "Utente non registrato"
+                    emailFieldLayout.isErrorEnabled = true
+                }
+                "PSW_ERROR" -> {
+                    passwordFieldLayout.error = "Password errata"
+                    passwordFieldLayout.isErrorEnabled = true
+                }
+                else -> {
+                    Snackbar.make(view, "Errore sconosciuto", Snackbar.LENGTH_SHORT).show()
+                }
+
+            }
+
+        }
+
         // Login action
         loginButton.setOnClickListener {
             // are the text fields empty?
@@ -156,14 +174,12 @@ class AuthFragment : Fragment() {
                     text = "Accesso in corso..."
                     isClickable = false
                 }
-                try {
-                    val message = withContext(Dispatchers.IO) {
-                        viewModel.execLogin()
-                    }
-                } catch (e: Exception) {
-                    // TODO: meglio un popupp
-                    Snackbar.make(view, "Errore di connessione", Snackbar.LENGTH_SHORT).show()
-                    Log.e("LOGIN", "onViewCreated: ", e)
+                val result = withContext(Dispatchers.IO) {
+                    viewModel.execLogin()
+                }
+                if(result != null) {
+                    Session.storeUser(requireContext(), result)
+                    findNavController().popBackStack()
                 }
                 loadingBar.visibility = View.GONE
                 loginButton.apply {

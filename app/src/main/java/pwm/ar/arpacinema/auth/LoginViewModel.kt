@@ -3,6 +3,7 @@ package pwm.ar.arpacinema.auth
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.gson.Gson
 import kotlinx.coroutines.Deferred
 import pwm.ar.arpacinema.model.User
 
@@ -25,8 +26,8 @@ class LoginViewModel : ViewModel() {
     private lateinit var loginRequest: DTO.LoginRequest
 
 
-    private val _loginResult = MutableLiveData<LoginResult>()
-    val loginResult: LiveData<LoginResult> = _loginResult
+    private val _loginResult = MutableLiveData<String>()
+    val loginResult: LiveData<String> = _loginResult
 
     // TODO: Approccio un po confusionario si deve decidere come gestire lo status
 
@@ -35,21 +36,32 @@ class LoginViewModel : ViewModel() {
         val loginRequest = DTO.LoginRequest(userEmail.value, userPassword.value)
         val response = api.loginUser(loginRequest)
 
-        if (!response.isSuccessful) {
-            _loginResult.postValue(LoginResult.Error("Login failed"))
-            return null
-        }
+//        if (!response.isSuccessful) {
+//            _loginResult.postValue("FAILED")
+//            return null
+//        }
+        val status = response.body()?.status
+        _loginResult.postValue(status!!)
 
         response.body()?.status.let {
             when (it) {
-                "SUCCESS" -> _loginResult.postValue(LoginResult.Success(response.body()?.userId!!))
-                "USER_NOT_REGISTERED" -> _loginResult.postValue(LoginResult.Error("User not registered"))
-                "PSW_ERROR" -> _loginResult.postValue(LoginResult.Error("Incorrect password"))
+                "SUCCESS" -> {
+                    _loginResult.postValue(it)
+                    response.body()?.let { response ->
+                        val gson = Gson()
+                        val user = gson.fromJson(gson.toJson(response), User::class.java)
+                        return user
+                    }
+                }
+                "USER_NOT_REGISTERED" -> _loginResult.postValue(it)
+                "PSW_ERROR" -> _loginResult.postValue(it)
+                else -> {
+                    _loginResult.postValue("UNKNOWN_ERROR")
+                }
             }
         }
 
-        // TODO fetch user data
-        return User(1, 1, "", "", "", 0, 0)
+        return null
 
     }
 
@@ -92,8 +104,8 @@ class LoginViewModel : ViewModel() {
 //        }
 //    }
 
-    sealed class LoginResult {
-        data class Success(val userId: Int) : LoginResult()
-        data class Error(val message: String) : LoginResult()
-    }
+//    sealed class LoginResult {
+//        data class Success(val userId: Int) : LoginResult()
+//        data class Error(val message: String) : LoginResult()
+//    }
 }
