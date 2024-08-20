@@ -53,7 +53,6 @@ class MainActivity : AppCompatActivity() {
             val imeHeight = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
             v.setPadding(systemBars.left, 0, systemBars.right, 0)
             v.updatePadding(bottom = if (imeVisible) imeHeight else 0)
-            Log.d("MainActivity", "${systemBars.bottom}")
             insets
         }
 
@@ -82,7 +81,7 @@ class MainActivity : AppCompatActivity() {
         // todo
         runBlocking {
             delay(200L) // slight delay
-            retrofit.checkConnection()
+            //retrofit.checkConnection()
 
             if(Session.user != null) {
                 // hide bottom nav
