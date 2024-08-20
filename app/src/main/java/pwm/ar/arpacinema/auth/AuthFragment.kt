@@ -20,6 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pwm.ar.arpacinema.R
+import pwm.ar.arpacinema.Session
 import pwm.ar.arpacinema.databinding.FragmentAuthBinding
 import pwm.ar.arpacinema.util.TextValidator
 
@@ -73,16 +74,14 @@ class AuthFragment : Fragment() {
         binding.lifecycleOwner = this
 
         val scrollView = binding.nestedScrollView
-        val image = binding.imageView
+
 
         val loadingBar = binding.cardContentLogin.loadingBar
         val loginButton = binding.cardContentLogin.signinBtn
         val recoverPwd = binding.cardContentLogin.passwordResetBtn
-
         val signUpButton = binding.cardContentLogin.signUpBtn
         val emailFieldLayout = binding.cardContentLogin.emailFieldLayout
         val passwordFieldLayout = binding.cardContentLogin.pwdFieldLayout
-
         val emailField = binding.cardContentLogin.emailField
         val passwordField = binding.cardContentLogin.passwordField
 
@@ -96,7 +95,7 @@ class AuthFragment : Fragment() {
             val windowInsetsController = view.windowInsetsController
             windowInsetsController?.hide(WindowInsets.Type.ime())
 
-            val sharedElementView = binding.imageView
+            val sharedElementView = binding.cardContentLogin.signUpBtn
             val nav = findNavController()
 
             val extras = FragmentNavigatorExtras(sharedElementView to "shared_element_container")
@@ -107,23 +106,42 @@ class AuthFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-        view.setOnApplyWindowInsetsListener { v, insets ->
-            val imeVisible = insets.isVisible(WindowInsets.Type.ime())
-
-            if (imeVisible) {
-                scrollView.post {
-                    scrollView.fullScroll(View.FOCUS_DOWN)
-                }
-                image.visibility = View.GONE
-            } else {
-                image.visibility = View.VISIBLE
-            }
-            v.onApplyWindowInsets(insets)
-        }
+//        view.setOnApplyWindowInsetsListener { v, insets ->
+//            val imeVisible = insets.isVisible(WindowInsets.Type.ime())
+//
+//            if (imeVisible) {
+//                scrollView.post {
+//                    scrollView.fullScroll(View.FOCUS_DOWN)
+//                }
+//                image.visibility = View.GONE
+//            } else {
+//                image.visibility = View.VISIBLE
+//            }
+//            v.onApplyWindowInsets(insets)
+//        }
 
         // Password recovery action
         recoverPwd.setOnClickListener {
             findNavController().navigate(R.id.action_global_passwordRecoveryFragment)
+        }
+
+        viewModel.loginResult.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                "SUCCESS" -> {}
+                "USER_NOT_REGISTERED" -> {
+                    emailFieldLayout.error = "Utente non registrato"
+                    emailFieldLayout.isErrorEnabled = true
+                }
+                "PSW_ERROR" -> {
+                    passwordFieldLayout.error = "Password errata"
+                    passwordFieldLayout.isErrorEnabled = true
+                }
+                else -> {
+                    Snackbar.make(view, "Errore sconosciuto", Snackbar.LENGTH_SHORT).show()
+                }
+
+            }
+
         }
 
         // Login action
@@ -156,14 +174,12 @@ class AuthFragment : Fragment() {
                     text = "Accesso in corso..."
                     isClickable = false
                 }
-                try {
-                    val message = withContext(Dispatchers.IO) {
-                        viewModel.execLogin()
-                    }
-                } catch (e: Exception) {
-                    // TODO: meglio un popupp
-                    Snackbar.make(view, "Errore di connessione", Snackbar.LENGTH_SHORT).show()
-                    Log.e("LOGIN", "onViewCreated: ", e)
+                val result = withContext(Dispatchers.IO) {
+                    viewModel.execLogin()
+                }
+                if(result != null) {
+                    Session.storeUser(requireContext(), result)
+                    findNavController().popBackStack()
                 }
                 loadingBar.visibility = View.GONE
                 loginButton.apply {

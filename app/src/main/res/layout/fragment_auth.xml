@@ -12,12 +12,13 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clipChildren="false"
-    android:clipToOutline="false"
-    android:clipToPadding="false"
-    android:fitsSystemWindows="false"
-    android:isScrollContainer="true">
+        android:layout_height="match_parent"
+        android:background="@color/md_theme_background"
+        android:clipChildren="false"
+        android:clipToOutline="false"
+        android:clipToPadding="false"
+        android:fitsSystemWindows="false"
+        android:isScrollContainer="true">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/topBar"
@@ -37,55 +38,45 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nestedScrollView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipChildren="false"
-        android:clipToOutline="false"
-        android:clipToPadding="false"
-        android:fillViewport="true"
-        android:isScrollContainer="false"
-        android:overScrollMode="never"
-        android:scrollbars="vertical"
-        android:transitionName="shared_card"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
-
-        <LinearLayout
-            android:id="@+id/scroller"
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:clipChildren="false"
             android:clipToOutline="false"
             android:clipToPadding="false"
-            android:gravity="top"
-            android:orientation="vertical">
+            android:fillViewport="true"
+            android:isScrollContainer="false"
+            android:overScrollMode="never"
+            android:scrollbars="vertical"
+            android:transitionName="shared_card"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="256dp"
-                android:layout_height="246dp"
-                android:layout_gravity="center_horizontal"
-                android:clipToOutline="false"
-                android:transitionName="shared_element_container"
-                app:srcCompat="@drawable/arpa_cinema_logo_ai" />
-
-
-            <include
-                android:id="@+id/cardContentLogin"
-                layout="@layout/include_login"
-                app:viewModel="@{viewModel}"
+            <LinearLayout
+                android:id="@+id/scroller"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                />
+                android:clipChildren="false"
+                android:clipToOutline="false"
+                android:clipToPadding="false"
+                android:gravity="top"
+                android:orientation="vertical">
 
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+                <include
+                    android:id="@+id/cardContentLogin"
+                    layout="@layout/include_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    app:viewModel="@{viewModel}" />
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
 

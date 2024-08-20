@@ -44,6 +44,7 @@ android {
 }
 
 dependencies {
+    implementation("androidx.core:core-splashscreen:1.0.1")
     implementation(libs.circleindicator)
     implementation(libs.androidx.datastore)
     implementation(libs.androidx.datastore.core)

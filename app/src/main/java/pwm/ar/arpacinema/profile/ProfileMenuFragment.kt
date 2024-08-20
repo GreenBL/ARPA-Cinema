@@ -72,7 +72,7 @@ class ProfileMenuFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // force show nav bar
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility = View.VISIBLE
+        //requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility = View.VISIBLE
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
@@ -101,6 +101,9 @@ class ProfileMenuFragment : Fragment() {
                 "Gestione Account" -> {
                     findNavController().navigate(R.id.action_profileMenuFragment_to_accountFragment)
                 }
+                "Portafoglio" -> {
+                    findNavController().navigate(R.id.action_profileMenuFragment_to_walletFragment)
+                }
             }
             Toast.makeText(requireContext(), "Clicked: ${menuItem.label}", Toast.LENGTH_SHORT)
                 .show()
@@ -112,6 +115,7 @@ class ProfileMenuFragment : Fragment() {
                 if (Session.getUserId(requireContext()) != null) {
                     Session.invalidateUser(requireContext())
                     Session.printUserId(requireContext())
+                    viewModel.clearUser()
                 }
             }
             Toast.makeText(requireContext(), "Clicked: ${menuItem.label}", Toast.LENGTH_SHORT)

@@ -30,4 +30,11 @@ class ProfileMenuViewModel : ViewModel() {
         _userPoints.value = user.stars
     }
 
+    fun clearUser() { // debug only
+        _userName.value = ""
+        _userSurname.value = ""
+        _userLevel.value = 0
+        _userPoints.value = 0
+    }
+
 }

@@ -10,12 +10,14 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.CarouselSnapHelper
 import com.google.android.material.carousel.UncontainedCarouselStrategy
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import pwm.ar.arpacinema.R
+import pwm.ar.arpacinema.Session
 import pwm.ar.arpacinema.databinding.FragmentHomeBinding
 
 private const val ARG_PARAM1 = "param1"
@@ -66,7 +68,16 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility = View.VISIBLE
+        //requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility = View.VISIBLE
+        if(Session.user != null) {
+            binding.tophome.titleStr.text = "Bentornato, ${Session.user!!.name}"
+            binding.tophome.textView.visibility = View.GONE
+            binding.tophome.badge.isEnabled = false
+            Glide.with(requireContext())
+                .load(R.drawable.banner_placeholder)
+                .into(binding.tophome.icon)
+        }
+
 
         binding.searchBar.setOnClickListener {
             val sharedElementView = binding.searchBar

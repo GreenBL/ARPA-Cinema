@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
 
-    private const val DEBUG_MODE = true
+    private const val DEBUG_MODE = false
 
     private val SERVER_URL = if (DEBUG_MODE) {
         "https://arpa-api.onrender.com"  // URL for debugging

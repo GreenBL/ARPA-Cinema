@@ -2,26 +2,42 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
+    android:transitionGroup="true"
+    android:transitionName="shared_search"
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/md_theme_background"
     android:clipChildren="false"
     android:clipToOutline="false"
-    android:clipToPadding="false">
+    android:clipToPadding="false"
+    android:fitsSystemWindows="false">
 
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:clickable="true"
+        app:layout_anchor="@+id/appbar"
+        app:layout_anchorGravity="end|bottom"
+        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.ExtraLarge"
+        app:srcCompat="@drawable/round_filter_alt_24" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/resultsRV"
         android:layout_width="match_parent"
 
         android:layout_height="match_parent"
-        android:clipChildren="false"
-        android:clipToOutline="false"
-        android:clipToPadding="false"
+        android:layout_marginTop="0dp"
+        android:clipChildren="true"
+        android:clipToOutline="true"
+        android:clipToPadding="true"
+        android:fitsSystemWindows="false"
         android:overScrollMode="never"
-        android:paddingHorizontal="16dp"
-        android:paddingTop="16dp"
+        android:paddingHorizontal="0dp"
+        android:paddingTop="0dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         tools:itemCount="4"
@@ -30,9 +46,11 @@
     <ImageView
         android:id="@+id/imageView8"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:scaleType="fitXY"
-        app:srcCompat="@drawable/gradient_bg_search_" />
+        android:layout_height="279dp"
+        android:scaleType="centerInside"
+        android:visibility="gone"
+        app:srcCompat="@drawable/gradient_bg_search_"
+        tools:visibility="gone" />
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
@@ -41,8 +59,7 @@
         android:layout_height="wrap_content"
         android:background="#00FFFFFF"
         android:fitsSystemWindows="false"
-        app:liftOnScrollColor="#00040404">
-
+        app:liftOnScrollColor="#00000000">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/searchBarLayout"
@@ -50,11 +67,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="43dp"
+            android:layout_marginTop="56dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp"
             android:hint="Cerca film..."
-            android:transitionGroup="true"
-            android:transitionName="shared_search"
+
             app:boxBackgroundMode="filled"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
@@ -74,6 +91,8 @@
                 android:imeOptions="flagNoAccessoryAction|actionSearch"
                 android:inputType="text|textUri" />
         </com.google.android.material.textfield.TextInputLayout>
+
+
     </com.google.android.material.appbar.AppBarLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

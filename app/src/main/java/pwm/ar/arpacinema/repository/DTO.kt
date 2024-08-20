@@ -13,6 +13,14 @@ import org.jetbrains.annotations.ApiStatus.Internal
 
 class DTO {
 
+    data class SignUpRequest(
+        @SerializedName("name") val name: String?,
+        @SerializedName("surname") val surname: String?,
+        @SerializedName("phone_number") val phoneNumber: String?,
+        @SerializedName("email") val email: String?,
+        @SerializedName("password") val password: String?
+    )
+
     data class LoginRequest(
         @SerializedName("email") val email: String?,
         @SerializedName("password") val password: String?
@@ -20,7 +28,12 @@ class DTO {
 
     data class LoginResponse(
         @SerializedName("status") val status: String?,
-        @SerializedName("userId") val userId: Int?
+        @SerializedName("id") val userId: Int?,
+        @SerializedName("name") val name: String?,
+        @SerializedName("surname") val surname: String?,
+        @SerializedName("phone_number") val phoneNumber: String?,
+        @SerializedName("email") val email: String?,
+        @SerializedName("password") val password: String?
     )
 
     // do we need this? i don't know but writing code is free
@@ -30,7 +43,8 @@ class DTO {
 
     @Internal
     data class GenericResponse(
-        @SerializedName("message") val message: String?
+        @SerializedName("message") val message: String? = null,
+        @SerializedName("error") val error: String? = null
     )
 
 }

@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import pwm.ar.arpacinema.MainActivity
 import pwm.ar.arpacinema.MenuAdapter
@@ -55,18 +57,34 @@ class AccountFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as MainActivity).hideBottomNavigation()
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+        //(activity as MainActivity).hideBottomNavigation()
         val menu = binding.accountMenu
         val bottomMenu = binding.otherMenu
+        val back = binding.include.navBack.setOnClickListener{
+            findNavController().popBackStack()
+        }
+        binding.include.viewTitle.text = "Account"
+        setupMenus(menu, bottomMenu)
+        viewModel.init()
 
+    }
+
+    private fun setupMenus(
+        menu: RecyclerView,
+        bottomMenu: RecyclerView
+    ) {
         val menuAdapter = MenuAdapter(accountMenuItems) { menuItem ->
             // HANDLE THE ITEM BEING CLICKED
-            Toast.makeText(requireContext(), "Clicked: ${menuItem.label}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Clicked: ${menuItem.label}", Toast.LENGTH_SHORT)
+                .show()
         }
 
         val bottomMenuAdapter = MenuAdapter(otherItems) { menuItem ->
             // handle the item being clicked
-            Toast.makeText(requireContext(), "Clicked: ${menuItem.label}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Clicked: ${menuItem.label}", Toast.LENGTH_SHORT)
+                .show()
         }
 
         val dividerItemDecoration =
@@ -85,7 +103,6 @@ class AccountFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(dividerItemDecoration)
         }
-
     }
 
     override fun onDestroy() {

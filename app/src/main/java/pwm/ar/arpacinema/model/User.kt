@@ -11,6 +11,7 @@ data class User(
     @SerializedName("name") val name: String,
     @SerializedName("surname") val surname: String,
     @SerializedName("email") val email: String,
+    @SerializedName("phone") val phone: String,
     @SerializedName("level") val level: Int,
     @SerializedName("starPoints") val stars: Int
 ) : Parcelable

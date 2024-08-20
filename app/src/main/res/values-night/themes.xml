@@ -78,5 +78,9 @@
         <item name="colorOnAquamarine">@color/colorOnAquamarine</item>
         <item name="colorAquamarineContainer">@color/colorAquamarineContainer</item>
         <item name="colorOnAquamarineContainer">@color/colorOnAquamarineContainer</item>
+        <item name="windowSplashScreenBackground">@color/md_theme_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/avd_splash</item>
+        <item name="windowSplashScreenAnimationDuration">1000</item>
+        <item name="android:windowSplashScreenBehavior">icon_preferred</item>
     </style>
 </resources>
