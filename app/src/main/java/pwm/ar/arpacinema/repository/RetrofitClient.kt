@@ -9,7 +9,7 @@ object RetrofitClient {
     private const val DEBUG_MODE = false
 
     private val SERVER_URL = if (DEBUG_MODE) {
-        "https://arpa-api.onrender.com"  // URL for debugging
+        "http://192.168.1.134:9000"  // URL for debugging
     } else {
         "http://10.0.2.2:9000"  // URL for production
     }

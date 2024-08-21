@@ -1,5 +1,6 @@
 package pwm.ar.arpacinema.profile
 
+import android.app.AlertDialog
 import androidx.fragment.app.viewModels
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -15,6 +16,7 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 import pwm.ar.arpacinema.MainActivity
 import pwm.ar.arpacinema.MenuAdapter
 import pwm.ar.arpacinema.R
+import pwm.ar.arpacinema.Session
 import pwm.ar.arpacinema.common.MenuItem
 import pwm.ar.arpacinema.databinding.FragmentAccountBinding
 
@@ -81,10 +83,27 @@ class AccountFragment : Fragment() {
                 .show()
         }
 
-        val bottomMenuAdapter = MenuAdapter(otherItems) { menuItem ->
+        /*val bottomMenuAdapter = MenuAdapter(otherItems) { menuItem ->
             // handle the item being clicked
             Toast.makeText(requireContext(), "Clicked: ${menuItem.label}", Toast.LENGTH_SHORT)
                 .show()
+        }*/
+        val bottomMenuAdapter = MenuAdapter(otherItems) { menuItem ->
+            when (menuItem.label) {
+                "Cancella account" -> {
+                    // Call the function to delete the user account
+                    deleteUserAccount()
+                }
+
+                else -> {
+                    // Handle other items
+                    Toast.makeText(
+                        requireContext(),
+                        "Clicked: ${menuItem.label}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
         }
 
         val dividerItemDecoration =
@@ -109,4 +128,18 @@ class AccountFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
+    private fun deleteUserAccount() {
+        val userId = Session.user?.id ?: return // Ensure you have the user ID
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Confirma cancellazione")
+            .setMessage("Sei sicuro di voler cancellare il tuo account?")
+            .setPositiveButton("Si") { _, _ ->
+                // Call ViewModel function to delete user account
+                viewModel.deleteUserAccount(userId)
+            }
+            .setNegativeButton("No", null)
+            .show()
+    }
+
 }

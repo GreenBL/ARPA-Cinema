@@ -37,11 +37,11 @@ class SignupViewModel: ViewModel() {
         // TODO VALIDATE DATA BEFORE POST!
 
         val request = DTO.SignUpRequest(
-            _userEmail.value,
-            _userPassword.value,
-            _userSurname.value,
             _userName.value,
-            _userPhone.value
+            _userSurname.value,
+            _userPhone.value,
+            _userEmail.value,
+            _userPassword.value
         )
 
         val response = service.signUp(request)

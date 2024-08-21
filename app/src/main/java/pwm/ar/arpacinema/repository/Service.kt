@@ -5,6 +5,7 @@ import pwm.ar.arpacinema.model.User
 import retrofit2.Response
 import retrofit2.http.Body
 import pwm.ar.arpacinema.repository.DTO.*
+import retrofit2.http.DELETE
 
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -18,15 +19,20 @@ interface Service {
    // @POST("pwm/users/new")
    // suspend fun createUser(user: User): Deferred<Boolean>
 
-    @POST("dev/signup")
+    @POST("pwm/signup")
     suspend fun signUp(@Body signUpRequest: SignUpRequest): Response<GenericResponse>
 
-    @POST("dev/login")
+
+    @POST("pwm/login")
     suspend fun loginUser(@Body loginRequest: LoginRequest): Response<LoginResponse>
+
+
+    @DELETE("delete_user/{user_id}")
+    suspend fun deleteUser(@Path("user_id") userId: Int): Response<GenericResponse>
 
     // ====================================================================================
     //                                     DEBUG
-    @GET("dev/ack")
+    @GET("pwm/ack")
     suspend fun ack() : Response<GenericResponse>
     // ====================================================================================
 }

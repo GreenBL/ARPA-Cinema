@@ -94,7 +94,7 @@ class SignupFragment : Fragment() {
         passwordField = binding.passwordFieldLayout
         signUpButton = binding.floatingActionButton
 
-        errorHighlight(emailField, passwordField, nameField, surnameField, phoneField)
+        errorHighlight(nameField, surnameField, phoneField, emailField, passwordField)
         // handle closing of this
         setupNavBack(closeButton)
         signUpAction(signUpButton)
@@ -123,20 +123,20 @@ class SignupFragment : Fragment() {
     }
 
     private fun disableFields() {
-        emailField.editText!!.isEnabled = false
-        passwordField.editText!!.isEnabled = false
         nameField.editText!!.isEnabled = false
         surnameField.editText!!.isEnabled = false
         phoneField.editText!!.isEnabled = false
+        emailField.editText!!.isEnabled = false
+        passwordField.editText!!.isEnabled = false
         signUpButton.isEnabled = false
     }
 
     private fun enableFields() {
-        emailField.editText!!.isEnabled = true
-        passwordField.editText!!.isEnabled = true
         nameField.editText!!.isEnabled = true
         surnameField.editText!!.isEnabled = true
         phoneField.editText!!.isEnabled = true
+        emailField.editText!!.isEnabled = true
+        passwordField.editText!!.isEnabled = true
         signUpButton.isEnabled = true
     }
 
@@ -147,18 +147,13 @@ class SignupFragment : Fragment() {
     }
 
     private fun errorHighlight(
-        emailField: TextInputLayout,
-        passwordField: TextInputLayout,
         nameField: TextInputLayout,
         surnameField: TextInputLayout,
-        phoneField: TextInputLayout
+        phoneField: TextInputLayout,
+        emailField: TextInputLayout,
+        passwordField: TextInputLayout
     ) {
-        emailField.editText!!.addTextChangedListener(
-            TextValidator(emailField, TextValidator.Companion::isValidEmail)
-        )
-        passwordField.editText!!.addTextChangedListener(
-            TextValidator(passwordField, TextValidator.Companion::isValidPassword)
-        )
+
         nameField.editText!!.addTextChangedListener(
             TextValidator(nameField, TextValidator.Companion::isValidName)
         )
@@ -167,6 +162,12 @@ class SignupFragment : Fragment() {
         )
         phoneField.editText!!.addTextChangedListener(
             TextValidator(phoneField, TextValidator.Companion::isValidPhone)
+        )
+        emailField.editText!!.addTextChangedListener(
+            TextValidator(emailField, TextValidator.Companion::isValidEmail)
+        )
+        passwordField.editText!!.addTextChangedListener(
+            TextValidator(passwordField, TextValidator.Companion::isValidPassword)
         )
     }
 
