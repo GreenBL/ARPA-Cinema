@@ -41,6 +41,14 @@ class DTO {
         @SerializedName("boolean") val bool: String?
     )
 
+    data class UpdateUserRequest(
+        @SerializedName("id") val id: Int,
+        @SerializedName("name") val name: String?,
+        @SerializedName("surname") val surname: String?,
+        @SerializedName("phone") val phone: String?
+    )
+
+
     @Internal
     data class GenericResponse(
         @SerializedName("message") val message: String? = null,

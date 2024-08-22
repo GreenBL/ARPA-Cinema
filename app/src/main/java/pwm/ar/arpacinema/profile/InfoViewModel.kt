@@ -3,7 +3,11 @@ package pwm.ar.arpacinema.profile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.Session
+import pwm.ar.arpacinema.repository.DTO
+import pwm.ar.arpacinema.repository.RetrofitClient.service
 
 class InfoViewModel : ViewModel() {
 
@@ -25,5 +29,24 @@ class InfoViewModel : ViewModel() {
         _userPhone.value = Session.user?.phone
     }
 
+    fun updateUser(onSuccess: () -> Unit) {
+        val updateUserRequest = DTO.UpdateUserRequest(
+            id = Session.user?.id ?: 0,
+            name = _userName.value,
+            surname = _userSurname.value,
+            phone = _userPhone.value
+        )
 
+        viewModelScope.launch {
+            val response = service.updateUser(updateUserRequest)
+            if (response.isSuccessful) {
+                Session.user?.name = _userName.value.toString()
+                Session.user?.surname = _userSurname.value.toString()
+                Session.user?.phone = _userPhone.value.toString()
+                onSuccess() // Chiama il callback di successo
+            } else {
+                // Gestione degli errori, se necessario
+            }
+        }
+    }
 }

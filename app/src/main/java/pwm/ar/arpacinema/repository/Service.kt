@@ -25,6 +25,8 @@ interface Service {
     @POST("pwm/delete_user")
     suspend fun deleteUser(@Body deleteRequest: DeleteUserRequest): Response<GenericResponse>
 
+    @POST("pwm/update_user")
+    suspend fun updateUser(@Body updateUserRequest: UpdateUserRequest): Response<GenericResponse>
 
 
 
