@@ -1,5 +1,6 @@
 package pwm.ar.arpacinema.auth
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -26,47 +27,40 @@ class LoginViewModel : ViewModel() {
     private lateinit var loginRequest: DTO.LoginRequest
 
 
-    private val _loginResult = MutableLiveData<String>()
-    val loginResult: LiveData<String> = _loginResult
+    private val _loginResult = MutableLiveData<String?>()
+    val loginResult: MutableLiveData<String?> = _loginResult
 
     // TODO: Approccio un po confusionario si deve decidere come gestire lo status
 
-    suspend fun execLogin() : User? {
-        // TODO: implement login
+    suspend fun execLogin(): User? {
         val loginRequest = DTO.LoginRequest(userEmail.value, userPassword.value)
         val response = api.loginUser(loginRequest)
 
-//        if (!response.isSuccessful) {
-//            _loginResult.postValue("FAILED")
-//            return null
-//        }
         val status = response.body()?.status
         _loginResult.postValue(status!!)
 
-        response.body()?.status.let {
-            when (it) {
+        // Log the entire response body
+        Log.d("LoginViewModel", "Response Body: ${response.body()}")
+
+        response.body()?.let { loginResponse ->
+            when (status) {
                 "SUCCESS" -> {
-                    _loginResult.postValue(it)
-                    response.body()?.let { response ->
-                        val gson = Gson()
-                        val user = gson.fromJson(gson.toJson(response), User::class.java)
-                        return user
-                    }
+                    _loginResult.postValue(status)
+                    // Return the user from the response
+                    return loginResponse.user
                 }
-                "USER_NOT_REGISTERED" -> _loginResult.postValue(it)
-                "PSW_ERROR" -> _loginResult.postValue(it)
-                else -> {
-                    _loginResult.postValue("UNKNOWN_ERROR")
-                }
+                "USER_NOT_REGISTERED" -> _loginResult.postValue(status)
+                "PSW_ERROR" -> _loginResult.postValue(status)
+                else -> _loginResult.postValue("UNKNOWN_ERROR")
             }
         }
 
         return null
-
     }
+}
 
 
-    //private val authAPI: Call<JsonObject> = Auth.retrofit.login(AuthAPI::class.java)
+//private val authAPI: Call<JsonObject> = Auth.retrofit.login(AuthAPI::class.java)
 
 //    fun login(email: String, password: String) {
 //        val json = JsonObject().apply {
@@ -110,4 +104,4 @@ class LoginViewModel : ViewModel() {
 //    }
 
 
-}
+

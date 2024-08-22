@@ -46,6 +46,7 @@ object Session {
         }
     }
 
+
     // DEBUG: print the stored user ID to the console [CHECK LOGCAT!]
     suspend fun printUserId(context: Context) {
         val userId = getUserId(context)

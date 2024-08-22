@@ -32,8 +32,8 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:padding="4dp"
-                android:tint="@color/colorGoldContainer_mediumContrast"
-                app:srcCompat="@drawable/outline_star_half_24" />
+                app:srcCompat="@drawable/outline_star_half_24"
+                app:tint="@color/colorGoldContainer_mediumContrast" />
         </com.google.android.material.card.MaterialCardView>
 
 

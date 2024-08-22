@@ -3,17 +3,19 @@ package pwm.ar.arpacinema.profile
 import android.app.AlertDialog
 import androidx.fragment.app.viewModels
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
-import pwm.ar.arpacinema.MainActivity
+import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.MenuAdapter
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.Session
@@ -128,15 +130,17 @@ class AccountFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
-    private fun deleteUserAccount() {
-        val userId = Session.user?.id ?: return // Ensure you have the user ID
 
+
+    private fun deleteUserAccount() {
         AlertDialog.Builder(requireContext())
-            .setTitle("Confirma cancellazione")
+            .setTitle("Conferma cancellazione")
             .setMessage("Sei sicuro di voler cancellare il tuo account?")
             .setPositiveButton("Si") { _, _ ->
-                // Call ViewModel function to delete user account
-                viewModel.deleteUserAccount(userId)
+                Log.d("AccountFragment", "User confirmed account deletion")
+                lifecycleScope.launch {
+                    viewModel.deleteUserAccount(requireContext(), findNavController())
+                }
             }
             .setNegativeButton("No", null)
             .show()
