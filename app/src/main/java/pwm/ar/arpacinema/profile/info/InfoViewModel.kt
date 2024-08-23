@@ -1,5 +1,6 @@
 package pwm.ar.arpacinema.profile.info
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -28,24 +29,31 @@ class InfoViewModel : ViewModel() {
         _userPhone.value = Session.user?.phone
     }
 
-    fun updateUser(onSuccess: () -> Unit) {
+    suspend fun updateUser() : Boolean {
         val updateUserRequest = DTO.UpdateUserRequest(
             id = Session.user?.id ?: 0,
             name = _userName.value,
             surname = _userSurname.value,
             phone = _userPhone.value
         )
-
-        viewModelScope.launch {
+        try {
             val response = service.updateUser(updateUserRequest)
             if (response.isSuccessful) {
                 Session.user?.name = _userName.value.toString()
                 Session.user?.surname = _userSurname.value.toString()
                 Session.user?.phone = _userPhone.value.toString()
-                onSuccess() // Chiama il callback di successo
+                return true
             } else {
-                // Gestione degli errori, se necessario
+                return false
             }
+        } catch (e: Exception) {
+            Log.e("InfoViewModel", "Error updating user")
         }
+        return false
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        Log.d("InfoViewModel", "InfoViewModel cleared")
     }
 }

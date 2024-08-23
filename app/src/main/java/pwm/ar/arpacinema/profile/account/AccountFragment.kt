@@ -87,6 +87,9 @@ class AccountFragment : Fragment() {
                 "Modifica password" -> {
                     findNavController().navigate(R.id.action_accountFragment_to_editPasswordFragment)
                 }
+                "Sicurezza" -> {
+                    findNavController().navigate(R.id.action_accountFragment_to_securityFragment)
+                }
             }
         }
 
@@ -103,7 +106,7 @@ class AccountFragment : Fragment() {
                 }
 
                 else -> {
-                    // Handle other items
+                    // Handle other items ?? wtf
                     Toast.makeText(
                         requireContext(),
                         "Clicked: ${menuItem.label}",

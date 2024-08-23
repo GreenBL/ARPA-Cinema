@@ -1,8 +1,10 @@
 package pwm.ar.arpacinema.repository
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import okhttp3.Interceptor
 import okhttp3.Response
+import java.net.SocketTimeoutException
 
 class Status : Interceptor {
 
@@ -21,10 +23,10 @@ class Status : Interceptor {
             _globalStatus.postValue(true)
 
             catchedResponse
-        } catch (e: Exception) { // such as timeouts, etc.
+        } catch (e: SocketTimeoutException) { // such as timeouts, etc.
             _globalStatus.postValue(false)
-
-            chain.proceed(chain.request())
+            Log.e("Status", "Network timeout:", e)
+            throw e
         }
     }
 }

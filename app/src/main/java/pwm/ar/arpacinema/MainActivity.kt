@@ -30,7 +30,7 @@ import pwm.ar.arpacinema.model.User
 import pwm.ar.arpacinema.repository.RetrofitClient
 import pwm.ar.arpacinema.repository.Status
 
-private const val DEBUG_MODE = false
+private const val DEBUG_MODE = true
 
 class MainActivity : AppCompatActivity() {
 
@@ -188,9 +188,10 @@ class MainActivity : AppCompatActivity() {
         interloper.globalStatus.observe(owner) { globalStatus ->
             if(!globalStatus) {
                 Log.e("MainActivity", "Connection lost, Status: $globalStatus")
-                interloper.globalStatus.removeObservers(owner)
-                interloper.status.removeObservers(owner)// important if we are restarting
-                navController.navigate(R.id.action_global_networkErrorFragment)
+                //interloper.globalStatus.removeObservers(owner)
+                //interloper.status.removeObservers(owner)// important if we are restarting
+                //navController.navigate(R.id.action_global_networkErrorFragment)
+                Dialog.showNetworkErrorDialog(this)
             }
         }
     }
