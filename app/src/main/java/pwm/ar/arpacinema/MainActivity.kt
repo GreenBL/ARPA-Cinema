@@ -30,7 +30,7 @@ import pwm.ar.arpacinema.model.User
 import pwm.ar.arpacinema.repository.RetrofitClient
 import pwm.ar.arpacinema.repository.Status
 
-private const val DEBUG_MODE = true
+private const val DEBUG_MODE = false
 
 class MainActivity : AppCompatActivity() {
 
@@ -68,7 +68,12 @@ class MainActivity : AppCompatActivity() {
 
         setupWindowDecorations()
 
-
+        if(DEBUG_MODE) {
+            val user = User(1, 1, "Riccardo", "Parisi", "riccardo@mail.it", "3334445566", 2, 3)
+            lifecycleScope.launch {
+                Session.storeUser(this@MainActivity, user)
+            }
+        }
 
         // SE NON C'E' CONNESSIONE AL SERVER O A INTERNET
         // todo

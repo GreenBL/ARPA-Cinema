@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="pwm.ar.arpacinema.profile.InfoViewModel" />
+            type="pwm.ar.arpacinema.profile.info.InfoViewModel" />
     </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
 
@@ -41,7 +41,7 @@
                 android:id="@+id/frameLayout7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:context=".profile.InfoFragment">
+                tools:context=".profile.info.InfoFragment">
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/materialCardView3"

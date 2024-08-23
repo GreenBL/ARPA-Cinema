@@ -1,4 +1,4 @@
-package pwm.ar.arpacinema.profile
+package pwm.ar.arpacinema.profile.account
 
 import android.app.AlertDialog
 import androidx.fragment.app.viewModels
@@ -18,7 +18,6 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.MenuAdapter
 import pwm.ar.arpacinema.R
-import pwm.ar.arpacinema.Session
 import pwm.ar.arpacinema.common.MenuItem
 import pwm.ar.arpacinema.databinding.FragmentAccountBinding
 
@@ -81,8 +80,11 @@ class AccountFragment : Fragment() {
     ) {
         val menuAdapter = MenuAdapter(accountMenuItems) { menuItem ->
             // HANDLE THE ITEM BEING CLICKED
-            Toast.makeText(requireContext(), "Clicked: ${menuItem.label}", Toast.LENGTH_SHORT)
-                .show()
+            when (menuItem.label) {
+                "Modifica e-mail" -> {
+                    findNavController().navigate(R.id.action_accountFragment_to_editEmailFragment)
+                }
+            }
         }
 
         /*val bottomMenuAdapter = MenuAdapter(otherItems) { menuItem ->

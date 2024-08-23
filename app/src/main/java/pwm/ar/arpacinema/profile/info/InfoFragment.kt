@@ -1,4 +1,4 @@
-package pwm.ar.arpacinema.profile
+package pwm.ar.arpacinema.profile.info
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
@@ -7,12 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
-import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.databinding.FragmentInfoBinding
 
 class InfoFragment : Fragment() {
@@ -57,18 +54,21 @@ class InfoFragment : Fragment() {
         nameLayout.editText?.addTextChangedListener {
             if (initialized) {
                 fadeIn(saveButton)
+                initialized = false
             }
         }
 
         surnameLayout.editText?.addTextChangedListener {
             if (initialized) {
                 fadeIn(saveButton)
+                initialized = false
             }
         }
 
         phoneLayout.editText?.addTextChangedListener {
             if (initialized) {
                 fadeIn(saveButton)
+                initialized = false
             }
         }
 
