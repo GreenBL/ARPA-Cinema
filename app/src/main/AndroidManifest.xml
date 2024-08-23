@@ -20,7 +20,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/Theme.AnimatedSplash.Arpa">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
