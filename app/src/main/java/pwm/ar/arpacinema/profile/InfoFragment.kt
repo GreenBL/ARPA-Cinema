@@ -74,7 +74,6 @@ class InfoFragment : Fragment() {
 
         saveButton.setOnClickListener {
             viewModel.updateUser {
-                // Nascondi il saveButton e mostra il Toast dopo l'aggiornamento
                 fadeOut(saveButton)
                 Snackbar.make(
                     requireView(), // La view da cui il Snackbar deve essere ancorato

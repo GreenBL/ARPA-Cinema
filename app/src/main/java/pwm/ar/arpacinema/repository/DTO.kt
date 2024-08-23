@@ -22,6 +22,7 @@ class DTO {
         @SerializedName("password") val password: String?
     )
 
+
     data class LoginRequest(
         @SerializedName("email") val email: String?,
         @SerializedName("password") val password: String?
@@ -53,6 +54,13 @@ class DTO {
     data class GenericResponse(
         @SerializedName("message") val message: String? = null,
         @SerializedName("error") val error: String? = null
+    )
+
+    data class BalanceUpdateRequest(
+        @SerializedName("id") val id: String,
+        @SerializedName("name") val name: String?,
+        @SerializedName("surname") val surname: String?,
+        @SerializedName("amount") val amount: Float
     )
 
 }

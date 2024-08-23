@@ -14,14 +14,13 @@ class Status : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         return try {
-            val catchedResponse = chain.proceed(chain.request())
+            val response = chain.proceed(chain.request())
 
-            // we pass the response value to thje LD so we can **observe it**
-            _status.postValue(catchedResponse.isSuccessful)
+            _status.postValue(response.isSuccessful)
             _globalStatus.postValue(true)
 
-            catchedResponse
-        } catch (e: Exception) { // such as timeouts, etc.
+            response
+        } catch (e: Exception) {
             _globalStatus.postValue(false)
             throw e
         }
