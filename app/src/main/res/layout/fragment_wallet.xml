@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="top"
-            tools:context=".profile.AccountFragment">
+            tools:context=".profile.account.AccountFragment">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardView"
@@ -130,7 +130,9 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNone"
+                    android:inputType="number|numberDecimal" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -143,12 +145,12 @@
                 android:layout_marginTop="56dp"
                 android:layout_marginEnd="32dp"
                 android:drawableLeft="@drawable/icon_wallet"
-                android:drawableTint="@color/md_theme_onSurface"
                 android:text="Ricarica"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/increaseLayout" />
+                app:layout_constraintTop_toBottomOf="@id/increaseLayout"
+                tools:visibility="visible" />
 
 
 

@@ -23,7 +23,8 @@ class Status : Interceptor {
             catchedResponse
         } catch (e: Exception) { // such as timeouts, etc.
             _globalStatus.postValue(false)
-            throw e
+
+            chain.proceed(chain.request())
         }
     }
 }

@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="pwm.ar.arpacinema.profile.AccountViewModel" />
+            type="pwm.ar.arpacinema.profile.account.AccountViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -43,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="top"
-                tools:context=".profile.AccountFragment">
+                tools:context=".profile.account.AccountFragment">
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardView"

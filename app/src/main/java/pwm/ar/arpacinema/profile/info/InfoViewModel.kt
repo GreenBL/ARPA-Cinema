@@ -1,6 +1,5 @@
-package pwm.ar.arpacinema.profile
+package pwm.ar.arpacinema.profile.info
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -1,4 +1,4 @@
-package pwm.ar.arpacinema.profile
+package pwm.ar.arpacinema.profile.wallet
 
 import androidx.lifecycle.ViewModel
 

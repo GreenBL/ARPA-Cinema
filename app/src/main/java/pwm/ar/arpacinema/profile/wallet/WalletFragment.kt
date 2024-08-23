@@ -1,4 +1,4 @@
-package pwm.ar.arpacinema.profile
+package pwm.ar.arpacinema.profile.wallet
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
@@ -42,6 +42,11 @@ class WalletFragment : Fragment() {
         increaseLayout.editText?.addTextChangedListener {
             if (initialized) {
                 fadeIn(confirmButton)
+                initialized = false // avoid playing the animation again
+            }
+            if (it.isNullOrBlank()) {
+                fadeOut(confirmButton)
+                initialized = true
             }
         }
 
@@ -54,7 +59,10 @@ class WalletFragment : Fragment() {
 
     private fun fadeIn(button: Button) {
         button.visibility = View.VISIBLE
-        button.alpha = 1f
+        button.alpha = 0f
+        button.post {
+            button.animate().alpha(1f).setDuration(350)
+        }
     }
 
     private fun fadeOut(button: Button) {

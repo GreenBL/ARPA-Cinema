@@ -114,12 +114,20 @@
         app:popExitAnim="@anim/slide_out_right" />
     <fragment
         android:id="@+id/infoFragment"
-        android:name="pwm.ar.arpacinema.profile.InfoFragment"
+        android:name="pwm.ar.arpacinema.profile.info.InfoFragment"
         android:label="InfoFragment" />
     <fragment
         android:id="@+id/accountFragment"
-        android:name="pwm.ar.arpacinema.profile.AccountFragment"
-        android:label="AccountFragment" />
+        android:name="pwm.ar.arpacinema.profile.account.AccountFragment"
+        android:label="AccountFragment" >
+        <action
+            android:id="@+id/action_accountFragment_to_editEmailFragment"
+            app:destination="@id/editEmailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
     <fragment
         android:id="@+id/networkErrorFragment"
         android:name="pwm.ar.arpacinema.common.NetworkErrorFragment"
@@ -132,6 +140,11 @@
         app:popExitAnim="@anim/zoom_fade_out" />
     <fragment
         android:id="@+id/walletFragment"
-        android:name="pwm.ar.arpacinema.profile.WalletFragment"
+        android:name="pwm.ar.arpacinema.profile.wallet.WalletFragment"
         android:label="WalletFragment" />
+    <fragment
+        android:id="@+id/editEmailFragment"
+        android:name="pwm.ar.arpacinema.profile.account.EditEmailFragment"
+        android:label="fragment_edit_email"
+        tools:layout="@layout/fragment_edit_email" />
 </navigation>
