@@ -68,13 +68,6 @@ class MainActivity : AppCompatActivity() {
 
         setupWindowDecorations()
 
-        // create a fake user if debug mode is on
-        if(DEBUG_MODE) {
-            val user = User(1, 1, "Riccardo", "Parisi", "riccardo@mail.it", "3334445566", 2, 3)
-            lifecycleScope.launch {
-                Session.storeUser(this@MainActivity, user)
-            }
-        }
 
 
         // SE NON C'E' CONNESSIONE AL SERVER O A INTERNET

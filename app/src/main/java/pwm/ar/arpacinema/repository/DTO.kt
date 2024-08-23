@@ -2,6 +2,7 @@ package pwm.ar.arpacinema.repository
 
 import com.google.gson.annotations.SerializedName
 import org.jetbrains.annotations.ApiStatus.Internal
+import pwm.ar.arpacinema.model.User
 
 /**
  * This class holds the serializable data classes to be sent to the server
@@ -28,18 +29,25 @@ class DTO {
 
     data class LoginResponse(
         @SerializedName("status") val status: String?,
-        @SerializedName("id") val userId: Int?,
-        @SerializedName("name") val name: String?,
-        @SerializedName("surname") val surname: String?,
-        @SerializedName("phone_number") val phoneNumber: String?,
-        @SerializedName("email") val email: String?,
-        @SerializedName("password") val password: String?
+        @SerializedName("user") val user: User?
     )
 
-    // do we need this? i don't know but writing code is free
-    data class SerializedBool(
-        @SerializedName("boolean") val bool: Boolean?
+    data class DeleteUserRequest(
+        @SerializedName("user") val user: User
     )
+
+    // do we need this? i don't know but writing code is free - LOL :)
+    data class SerializedBool(
+        @SerializedName("boolean") val bool: String?
+    )
+
+    data class UpdateUserRequest(
+        @SerializedName("id") val id: Int,
+        @SerializedName("name") val name: String?,
+        @SerializedName("surname") val surname: String?,
+        @SerializedName("phone") val phone: String?
+    )
+
 
     @Internal
     data class GenericResponse(

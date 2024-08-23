@@ -70,7 +70,7 @@ class HomeFragment : Fragment() {
 
         //requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility = View.VISIBLE
         if(Session.user != null) {
-            binding.tophome.titleStr.text = "Bentornato, ${Session.user!!.name}"
+            binding.tophome.titleStr.text = "Bentornato/a, ${Session.user!!.name}"
             binding.tophome.textView.visibility = View.GONE
             binding.tophome.badge.isEnabled = false
             Glide.with(requireContext())

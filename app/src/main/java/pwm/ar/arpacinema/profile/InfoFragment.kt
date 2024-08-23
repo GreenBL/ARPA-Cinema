@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -19,18 +20,7 @@ class InfoFragment : Fragment() {
     private var _binding: FragmentInfoBinding? = null
     private val binding get() = _binding!!
 
-
-    companion object {
-        fun newInstance() = InfoFragment()
-    }
-
     private val viewModel: InfoViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // TODO: Use the ViewModel
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,8 +32,6 @@ class InfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // hide nav bar
-        //requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility = View.GONE
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
         viewModel.init()
@@ -65,6 +53,7 @@ class InfoFragment : Fragment() {
             findNavController().popBackStack()
         }
 
+        // Ascolta i cambiamenti nei campi per mostrare il saveButton
         nameLayout.editText?.addTextChangedListener {
             if (initialized) {
                 fadeIn(saveButton)
@@ -83,11 +72,17 @@ class InfoFragment : Fragment() {
             }
         }
 
-
-
-
-
-
+        saveButton.setOnClickListener {
+            viewModel.updateUser {
+                // Nascondi il saveButton e mostra il Toast dopo l'aggiornamento
+                fadeOut(saveButton)
+                Snackbar.make(
+                    requireView(), // La view da cui il Snackbar deve essere ancorato
+                    "Dati aggiornati con successo!",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 
     private fun fadeIn(saveButton: Button) {
@@ -95,6 +90,14 @@ class InfoFragment : Fragment() {
             saveButton.visibility = View.VISIBLE
             saveButton.alpha = 0f
             saveButton.animate().alpha(1f).setDuration(350).start()
+        }
+    }
+
+    private fun fadeOut(saveButton: Button) {
+        saveButton.post {
+            saveButton.animate().alpha(0f).setDuration(350).withEndAction {
+                saveButton.visibility = View.GONE
+            }.start()
         }
     }
 

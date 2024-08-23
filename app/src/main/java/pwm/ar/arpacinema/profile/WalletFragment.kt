@@ -6,26 +6,67 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import pwm.ar.arpacinema.R
+import android.widget.Button
+import androidx.core.widget.addTextChangedListener
+import com.google.android.material.snackbar.Snackbar
+import pwm.ar.arpacinema.databinding.FragmentWalletBinding
 
 class WalletFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = WalletFragment()
-    }
+    private var _binding: FragmentWalletBinding? = null
+    private val binding get() = _binding!!
 
     private val viewModel: WalletViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // TODO: Use the ViewModel
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_wallet, container, false)
+        _binding = FragmentWalletBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val confirmButton = binding.confirmButton
+        val increaseLayout = binding.increaseLayout
+
+        var initialized = false
+
+        view.post {
+            initialized = true
+        }
+
+        // Mostra il confirmButton quando l'utente inizia a digitare
+        increaseLayout.editText?.addTextChangedListener {
+            if (initialized) {
+                fadeIn(confirmButton)
+            }
+        }
+
+        confirmButton.setOnClickListener {
+            fadeOut(confirmButton)
+            Snackbar.make(requireView(), "Saldo caricato", Snackbar.LENGTH_SHORT).show()
+        }
+
+    }
+
+    private fun fadeIn(button: Button) {
+        button.visibility = View.VISIBLE
+        button.alpha = 1f
+    }
+
+    private fun fadeOut(button: Button) {
+        button.post {
+            button.animate().alpha(0f).setDuration(350).withEndAction {
+                button.visibility = View.GONE
+            }.start()
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
