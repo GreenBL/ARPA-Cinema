@@ -51,7 +51,7 @@ class EditEmailFragment : Fragment() {
 
         emailLayout.editText?.addTextChangedListener(TextValidator(emailLayout, TextValidator.Companion::isValidEmail))
         setEmailButton.setOnClickListener {
-            if (emailLayout.error != null && !emailLayout.editText?.text.isNullOrBlank()) {
+            if (emailLayout.error != null || emailLayout.editText?.text.isNullOrBlank()) {
                 Snackbar.make(view, "E-mail non valida", Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
             }

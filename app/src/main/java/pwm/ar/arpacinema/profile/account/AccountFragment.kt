@@ -84,6 +84,9 @@ class AccountFragment : Fragment() {
                 "Modifica e-mail" -> {
                     findNavController().navigate(R.id.action_accountFragment_to_editEmailFragment)
                 }
+                "Modifica password" -> {
+                    findNavController().navigate(R.id.action_accountFragment_to_editPasswordFragment)
+                }
             }
         }
 

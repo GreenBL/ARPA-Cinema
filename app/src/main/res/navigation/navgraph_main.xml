@@ -127,6 +127,13 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_accountFragment_to_editPasswordFragment"
+            app:destination="@id/editPasswordFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/networkErrorFragment"
@@ -147,4 +154,8 @@
         android:name="pwm.ar.arpacinema.profile.account.EditEmailFragment"
         android:label="fragment_edit_email"
         tools:layout="@layout/fragment_edit_email" />
+    <fragment
+        android:id="@+id/editPasswordFragment"
+        android:name="pwm.ar.arpacinema.profile.account.EditPasswordFragment"
+        android:label="EditPasswordFragment" />
 </navigation>
