@@ -7,6 +7,7 @@ import retrofit2.http.DELETE
 
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface Service {
 
@@ -27,7 +28,6 @@ interface Service {
 
     @POST("pwm/update_user")
     suspend fun updateUser(@Body updateUserRequest: UpdateUserRequest): Response<GenericResponse>
-
 
 
     // ====================================================================================
