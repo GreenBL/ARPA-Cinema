@@ -42,11 +42,17 @@ class DTO {
     )
 
     data class UpdateUserRequest(
-        @SerializedName("id") val id: Int,
+        @SerializedName("id") val id: Int?,
         @SerializedName("name") val name: String?,
         @SerializedName("surname") val surname: String?,
         @SerializedName("phone") val phone: String?
     )
+
+    data class BalanceUpdateRequest(
+        @SerializedName("user_id") val id: String?,
+        @SerializedName("amount") val amount: Double?
+    )
+
 
 
     @Internal
@@ -54,5 +60,19 @@ class DTO {
         @SerializedName("message") val message: String? = null,
         @SerializedName("error") val error: String? = null
     )
+
+    // status enum for responses
+
+    enum class Stat {
+        SUCCESS, // WHEN OP SUCCEEDS
+        DEFAULT, // WHEN NO REQUEST HAS BEEN MADE YET
+        UNFILLED, // WHEN SOME FIELD IS EMPTY / NULL
+        ERROR,// GENERIC ERROR
+        NETWORK_ERROR, // WHEN NETWORK ERROR
+        SERVER_ERROR, // WHEN SERVER ERROR
+        USER_NOT_REGISTERED, // WHEN USER IS NOT REGISTERED
+        PSW_ERROR, // WHEN PASSWORD IS INCORRECT
+        UNKNOWN_ERROR // WHEN SOMETHING ELSE HAPPENS WE DONT KNOW ABOUT
+    }
 
 }

@@ -29,6 +29,9 @@ interface Service {
     @POST("pwm/update_user")
     suspend fun updateUser(@Body updateUserRequest: UpdateUserRequest): Response<GenericResponse>
 
+    @POST("pwm/update_saldo")
+    suspend fun updateUserBalance(@Body balanceUpdateRequest: BalanceUpdateRequest): Response<GenericResponse>
+
 
     // ====================================================================================
     //                                     DEBUG

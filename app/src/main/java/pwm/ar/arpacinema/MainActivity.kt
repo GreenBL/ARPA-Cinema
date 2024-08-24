@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             //autologin // TODO API REQUEST!!!!
-            Session.storeUser(this@MainActivity, User(1, 1, "Riccardo", "Parisi", "riccardo@mail.it", "3334445566", 2, 3))
+            Session.storeUser(this@MainActivity, User(2, 1, "Riccardo", "Parisi", "riccardo@mail.it", "3334445566", 2, 3))
             navigationBar.visibility = View.VISIBLE
             delay(200L) // slight delay
 
