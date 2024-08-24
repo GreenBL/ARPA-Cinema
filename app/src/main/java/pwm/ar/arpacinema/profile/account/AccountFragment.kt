@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.MenuAdapter
@@ -62,7 +63,7 @@ class AccountFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
-        //(activity as MainActivity).hideBottomNavigation()
+
         val menu = binding.accountMenu
         val bottomMenu = binding.otherMenu
         val back = binding.include.navBack.setOnClickListener{
@@ -106,7 +107,7 @@ class AccountFragment : Fragment() {
                 }
 
                 else -> {
-                    // Handle other items ?? wtf
+                    // help thing
                     Toast.makeText(
                         requireContext(),
                         "Clicked: ${menuItem.label}",
@@ -141,7 +142,7 @@ class AccountFragment : Fragment() {
 
 
     private fun deleteUserAccount() {
-        AlertDialog.Builder(requireContext())
+        MaterialAlertDialogBuilder(requireContext(), com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered)
             .setTitle("Conferma cancellazione")
             .setMessage("Sei sicuro di voler cancellare il tuo account?")
             .setPositiveButton("Si") { _, _ ->

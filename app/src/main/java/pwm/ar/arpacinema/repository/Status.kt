@@ -23,7 +23,7 @@ class Status : Interceptor {
             _globalStatus.postValue(true)
 
             catchedResponse
-        } catch (e: SocketTimeoutException) { // such as timeouts, etc.
+        } catch (e: SocketTimeoutException) { // in the event of a connection timeout
             _globalStatus.postValue(false)
             Log.e("Status", "Network timeout:", e)
             throw e

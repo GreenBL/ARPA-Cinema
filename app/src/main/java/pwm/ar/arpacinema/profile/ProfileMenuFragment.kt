@@ -85,11 +85,15 @@ class ProfileMenuFragment : Fragment() {
 
         val topMenuAdapter = MenuAdapter(topMenuItems) { menuItem ->
             // HANDLE THE ITEM BEING CLICKED
-//            when (menuItem.title) {
-//                "Logout" -> finish()
-//            }
-            Toast.makeText(requireContext(), "Clicked: ${menuItem.label}", Toast.LENGTH_SHORT)
-                .show()
+                when (menuItem.label) {
+               "Premi" -> {
+                   findNavController().navigate(R.id.action_profileMenuFragment_to_rewardsFragment)
+               }
+               "Cronologia" -> {
+             //      findNavController().navigate(R.id.action_profileMenuFragment_to_historyFragment) todo
+               }
+            }
+
         }
 
         val centerMenuAdapter = MenuAdapter(centerMenuItems) { menuItem ->

@@ -57,6 +57,14 @@
             app:destination="@id/walletFragment"
             app:enterAnim="@anim/zoom_fade_in"
             app:popExitAnim="@anim/zoom_fade_out" />
+        <action
+            android:id="@+id/action_profileMenuFragment_to_rewardsFragment"
+            app:destination="@id/rewardsFragment"
+            app:enterAnim="@anim/zoom_fade_in"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/zoom_fade_out"/>
+
     </fragment>
     <fragment
         android:id="@+id/authFragment"
@@ -171,4 +179,8 @@
         android:id="@+id/securityFragment"
         android:name="pwm.ar.arpacinema.profile.account.SecurityFragment"
         android:label="SecurityFragment" />
+    <fragment
+        android:id="@+id/rewardsFragment"
+        android:name="pwm.ar.arpacinema.rewards.RewardsFragment"
+        android:label="RewardsFragment" />
 </navigation>

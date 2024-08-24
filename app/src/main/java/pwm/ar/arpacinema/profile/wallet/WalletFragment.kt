@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.databinding.FragmentWalletBinding
@@ -36,6 +37,14 @@ class WalletFragment : Fragment() {
 
         val confirmButton = binding.confirmButton
         val increaseLayout = binding.increaseLayout
+
+        val title = binding.include.viewTitle
+        title.text = "Portafoglio"
+
+        val backButton = binding.include.navBack
+        backButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
 
         var initialized = false
 
