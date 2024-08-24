@@ -35,6 +35,10 @@ class LoginViewModel : ViewModel() {
     suspend fun execLogin(): User? {
         val loginRequest = DTO.LoginRequest(userEmail.value, userPassword.value)
         val response = api.loginUser(loginRequest)
+        if (!response.isSuccessful) {
+            _loginResult.postValue("")
+            return null
+        }
 
         val status = response.body()?.status
         _loginResult.postValue(status!!)

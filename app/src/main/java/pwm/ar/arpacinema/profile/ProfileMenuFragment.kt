@@ -20,6 +20,7 @@ import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.MenuAdapter
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.Session
+import pwm.ar.arpacinema.common.Dialog
 import pwm.ar.arpacinema.common.MenuItem
 import pwm.ar.arpacinema.databinding.FragmentHomeBinding
 import pwm.ar.arpacinema.databinding.FragmentProfileMenuBinding
@@ -54,7 +55,7 @@ class ProfileMenuFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Session.user?.let { viewModel.setUser(it) }
+
 
 
         // TODO: Use the ViewModel
@@ -70,14 +71,13 @@ class ProfileMenuFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        Session.user?.let { viewModel.setUser(it) }
         // force show nav bar
         //requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility = View.VISIBLE
 
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
 
-        val toolbar = (activity as? AppCompatActivity)?.supportActionBar
 
         val topMenu = binding.topMenu
         val centerMenu = binding.centerMenu
@@ -111,15 +111,23 @@ class ProfileMenuFragment : Fragment() {
 
         val bottomMenuAdapter = MenuAdapter(logoutItem) { menuItem ->
             // HANDLE THE ITEM BEING CLICKED
-            lifecycleScope.launch {
-                if (Session.getUserId(requireContext()) != null) {
-                    Session.invalidateUser(requireContext())
-                    Session.printUserId(requireContext())
-                    viewModel.clearUser()
+            when (menuItem.label) {
+                "Logout" -> {
+                            Dialog.showLogoutConfirmationDialog(requireContext()) {
+                                Session.invalidateUser(requireContext())
+                                viewModel.clearUser()
+                                findNavController().navigate(R.id.homeFromProfile)
+                                findNavController().popBackStack()
+                            }
                 }
             }
-            Toast.makeText(requireContext(), "Clicked: ${menuItem.label}", Toast.LENGTH_SHORT)
-                .show()
+//            lifecycleScope.launch {
+//                if (Session.getUserId(requireContext()) != null) {
+//                    Session.invalidateUser(requireContext())
+//                    Session.printUserId(requireContext())
+//                    viewModel.clearUser()
+//                }
+//            }
         }
 
         val dividerItemDecoration =
