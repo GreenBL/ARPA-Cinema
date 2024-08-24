@@ -2,14 +2,18 @@ package pwm.ar.arpacinema.profile.info
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.databinding.FragmentInfoBinding
 
 class InfoFragment : Fragment() {
@@ -30,7 +34,7 @@ class InfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         viewModel.init()
 
         val back = binding.appbar.navBack
@@ -73,14 +77,22 @@ class InfoFragment : Fragment() {
         }
 
         saveButton.setOnClickListener {
-            viewModel.updateUser {
-                // Nascondi il saveButton e mostra il Toast dopo l'aggiornamento
-                fadeOut(saveButton)
-                Snackbar.make(
-                    requireView(), // La view da cui il Snackbar deve essere ancorato
-                    "Dati aggiornati con successo!",
-                    Snackbar.LENGTH_SHORT
-                ).show()
+
+            lifecycleScope.launch {
+                saveButton.isEnabled = false
+                try {
+                    if(viewModel.updateUser()) {
+                        Snackbar.make(view, "Salvataggio effettuato", Snackbar.LENGTH_SHORT).show()
+                        fadeOut(saveButton)
+                    } else {
+                        Snackbar.make(view, "Errore durante il salvataggio", Snackbar.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+                    Log.e("InfoFragment", "Error updating user", e)
+                    Snackbar.make(view, "Errore durante il salvataggio", Snackbar.LENGTH_SHORT).show()
+                } finally {
+                    saveButton.isEnabled = true
+                }
             }
         }
     }
@@ -104,5 +116,6 @@ class InfoFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+        lifecycleScope.cancel("View was destroyed")
     }
 }

@@ -32,7 +32,7 @@ object Session {
         }
     }
 
-    // get the stored user ID (if there is one kek, also it's a good way to check if the user is logged)
+    // get the stored user ID (if there is one kek, also it's a bad way to check if the user is logged)
     suspend fun getUserId(context: Context): String? {
         val preferences = context.dataStore.data.first()
         return preferences[USER_ID_KEY]

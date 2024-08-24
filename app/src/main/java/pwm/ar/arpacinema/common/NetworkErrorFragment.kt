@@ -41,7 +41,8 @@ class NetworkErrorFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as MainActivity).hideBottomNavigation()
-
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         val retryButton = binding.button2
         val spinner = binding.spinner
         val texty = binding.loading

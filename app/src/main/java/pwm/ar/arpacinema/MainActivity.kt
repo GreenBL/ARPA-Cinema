@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
@@ -77,17 +78,30 @@ class MainActivity : AppCompatActivity() {
 
         // SE NON C'E' CONNESSIONE AL SERVER O A INTERNET
         // todo
+
+        setupBottomBarBehavior(navController)
         runBlocking {
+            if (Session.getUserId(this@MainActivity) == null) {
+                // hide bottom nav
+                Log.i("MainActivity", "User NOT FOUND, SKIPPING autoLOGIN")
+                navigationBar.visibility = View.GONE
+                return@runBlocking
+            }
+
+            //autologin // TODO API REQUEST!!!!
+            Session.storeUser(this@MainActivity, User(1, 1, "Riccardo", "Parisi", "riccardo@mail.it", "3334445566", 2, 3))
+            navigationBar.visibility = View.VISIBLE
             delay(200L) // slight delay
+
             //retrofit.checkConnection()
 
-            if(Session.user != null) {
-                // hide bottom nav
-                Log.i("MainActivity", "User FOUND")
-                navigationBar.visibility = View.VISIBLE
+//            if(Session.user != null) {
+//                // hide bottom nav
+//                Log.i("MainActivity", "User FOUND")
+//                navigationBar.visibility = View.VISIBLE
+//
+//            }
 
-            }
-            setupBottomBarBehavior(navController)
         }
 
 
@@ -130,6 +144,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupBottomBarBehavior(navController: NavController) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
+            Log.d("MainActivity", "Destination changed: ${destination.label}")
             if(Session.user == null) {
                 // cause we dont want the bar appearing again
                 hideBottomNavigation()
@@ -188,9 +203,10 @@ class MainActivity : AppCompatActivity() {
         interloper.globalStatus.observe(owner) { globalStatus ->
             if(!globalStatus) {
                 Log.e("MainActivity", "Connection lost, Status: $globalStatus")
-                interloper.globalStatus.removeObservers(owner)
-                interloper.status.removeObservers(owner)// important if we are restarting
-                navController.navigate(R.id.action_global_networkErrorFragment)
+                //interloper.globalStatus.removeObservers(owner)
+                //interloper.status.removeObservers(owner)// important if we are restarting
+                //navController.navigate(R.id.action_global_networkErrorFragment)
+                Dialog.showNetworkErrorDialog(this)
             }
         }
     }
