@@ -8,8 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.databinding.FragmentWalletBinding
+import pwm.ar.arpacinema.repository.DTO
 
 class WalletFragment : Fragment() {
 
@@ -28,6 +31,8 @@ class WalletFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
 
         val confirmButton = binding.confirmButton
         val increaseLayout = binding.increaseLayout
@@ -52,7 +57,22 @@ class WalletFragment : Fragment() {
 
         confirmButton.setOnClickListener {
             fadeOut(confirmButton)
-            Snackbar.make(requireView(), "Saldo caricato", Snackbar.LENGTH_SHORT).show()
+            lifecycleScope.launch {
+                viewModel.increaseBalance()
+            }
+        }
+
+        viewModel.responseStatus.observe(viewLifecycleOwner) { status ->
+            when (status) {
+                DTO.Stat.DEFAULT -> {
+                    // do nothing because we just opened the view mate
+                }
+                DTO.Stat.SUCCESS -> {
+                    Snackbar.make(requireView(), "Saldo caricato", Snackbar.LENGTH_SHORT).show()
+                } else -> {
+                    Snackbar.make(requireView(), "Errore", Snackbar.LENGTH_SHORT).show()
+                }
+            }
         }
 
     }
