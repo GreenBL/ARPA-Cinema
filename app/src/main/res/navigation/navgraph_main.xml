@@ -109,7 +109,15 @@
     <fragment
         android:id="@+id/searchFragment"
         android:name="pwm.ar.arpacinema.discovery.SearchFragment"
-        android:label="SearchFragment" />
+        android:label="SearchFragment" >
+        <action
+            android:id="@+id/action_searchFragment_to_moviePageFragment"
+            app:destination="@id/moviePageFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
     <fragment
         android:id="@+id/passwordRecoveryFragment"
         android:name="pwm.ar.arpacinema.auth.PasswordRecoveryFragment"
@@ -183,4 +191,8 @@
         android:id="@+id/rewardsFragment"
         android:name="pwm.ar.arpacinema.rewards.RewardsFragment"
         android:label="RewardsFragment" />
+    <fragment
+        android:id="@+id/moviePageFragment"
+        android:name="pwm.ar.arpacinema.discovery.movie.MoviePageFragment"
+        android:label="MoviePageFragment" />
 </navigation>

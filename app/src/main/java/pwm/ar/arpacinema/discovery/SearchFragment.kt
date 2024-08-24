@@ -10,12 +10,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsets
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import pwm.ar.arpacinema.MainActivity
 
@@ -58,11 +60,17 @@ class SearchFragment : Fragment() {
 
         val recyclerView = binding.resultsRV
         recyclerView.adapter = ShowingAdapter(aah) {
-            // nada
+            Toast.makeText(requireContext(), "Clicked something", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_searchFragment_to_moviePageFragment)
+        }
+        // material divider for recycler view
+        val divider = MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL).apply {
+            dividerThickness = 2
         }
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            addItemDecoration(divider)
         }
 
         val searchBarField = binding.searchBarLayout
@@ -80,6 +88,8 @@ class SearchFragment : Fragment() {
             val windowInsetsController = view.windowInsetsController
             windowInsetsController?.show(WindowInsets.Type.ime())
         }, 200)
+
+
 
         binding.root.setOnApplyWindowInsetsListener { v, insets ->
             val imeVisible = insets.isVisible(WindowInsets.Type.ime())
