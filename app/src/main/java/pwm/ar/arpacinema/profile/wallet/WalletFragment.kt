@@ -69,6 +69,7 @@ class WalletFragment : Fragment() {
                 }
                 DTO.Stat.SUCCESS -> {
                     Snackbar.make(requireView(), "Saldo caricato", Snackbar.LENGTH_SHORT).show()
+                    viewModel.inputAmount.postValue(null)
                 } else -> {
                     Snackbar.make(requireView(), "Errore", Snackbar.LENGTH_SHORT).show()
                 }
