@@ -1,25 +1,17 @@
 package pwm.ar.arpacinema.auth
 
-import android.app.DatePickerDialog
 import android.graphics.Color
-import android.icu.util.Calendar
-import android.icu.util.TimeZone
-import androidx.fragment.app.viewModels
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView.Validator
-import android.widget.DatePicker
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.datepicker.CalendarConstraints
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import kotlinx.coroutines.delay
@@ -28,8 +20,6 @@ import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.common.Dialog
 import pwm.ar.arpacinema.databinding.FragmentSignupBinding
 import pwm.ar.arpacinema.util.TextValidator
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 class SignupFragment : Fragment() {
 
@@ -43,16 +33,12 @@ class SignupFragment : Fragment() {
     private lateinit var passwordField: TextInputLayout
     private lateinit var signUpButton: ExtendedFloatingActionButton
 
-    companion object {
-        fun newInstance() = SignupFragment()
-    }
-
     private val viewModel: SignupViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // animation container transform
-        this.sharedElementEnterTransition = MaterialContainerTransform().apply {
+        // Animation container transform
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
             duration = 300L
             isElevationShadowEnabled = false
             scrimColor = Color.TRANSPARENT
@@ -60,23 +46,20 @@ class SignupFragment : Fragment() {
             interpolator = android.view.animation.AccelerateDecelerateInterpolator()
         }
 
-        this.sharedElementReturnTransition = MaterialContainerTransform().apply {
+        sharedElementReturnTransition = MaterialContainerTransform().apply {
             duration = 200L
             isElevationShadowEnabled = false
             scrimColor = Color.TRANSPARENT
             fadeMode = MaterialContainerTransform.FADE_MODE_THROUGH
             interpolator = android.view.animation.AccelerateDecelerateInterpolator()
         }
-
-
-        // TODO: Use the ViewModel
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSignupBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentSignupBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -94,30 +77,56 @@ class SignupFragment : Fragment() {
         passwordField = binding.passwordFieldLayout
         signUpButton = binding.floatingActionButton
 
-        errorHighlight(nameField, surnameField, phoneField, emailField, passwordField)
-        // handle closing of this
-        setupNavBack(closeButton)
-        signUpAction(signUpButton)
-        // temporarily disable the text fields
-
-
+        setupErrorHighlight()
+        setupNavigation(closeButton)
+        setupSignUpAction()
         binding.topBarInclude.label.text = "Inserisci i tuoi dati"
-
-
     }
 
-    private fun signUpAction(signUpButton: ExtendedFloatingActionButton) {
+    private fun setupErrorHighlight() {
+        nameField.editText!!.addTextChangedListener(
+            TextValidator(nameField, TextValidator.Companion::isValidName)
+        )
+        surnameField.editText!!.addTextChangedListener(
+            TextValidator(surnameField, TextValidator.Companion::isValidName)
+        )
+        phoneField.editText!!.addTextChangedListener(
+            TextValidator(phoneField, TextValidator.Companion::isValidPhone)
+        )
+        emailField.editText!!.addTextChangedListener(
+            TextValidator(emailField, TextValidator.Companion::isValidEmail)
+        )
+        passwordField.editText!!.addTextChangedListener(
+            TextValidator(passwordField, TextValidator.Companion::isValidPassword)
+        )
+    }
+
+    private fun setupNavigation(closeButton: MaterialButton) {
+        closeButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
+    }
+
+    private fun setupSignUpAction() {
         signUpButton.setOnClickListener {
             disableFields()
+
             lifecycleScope.launch {
-                delay(1000L)
-                val result = viewModel.signUp()
-                if(result.error == null && result.message == null){
-                    Dialog.showSignupSuccessDialog(requireContext())
-                    findNavController().popBackStack()
+                try {
+                    delay(1000L)
+                    val result = viewModel.signUp()
+
+                    if (result?.error == null && result?.message == "SUCCESS") {
+                        Dialog.showSignupSuccessDialog(requireContext())
+                        findNavController().popBackStack()
+                    } else {
+                        Snackbar.make(requireView(), result?.error ?: "Unknown error", Snackbar.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+                    Snackbar.make(requireView(), "Network error: ${e.localizedMessage}", Snackbar.LENGTH_SHORT).show()
+                } finally {
+                    enableFields()
                 }
-                // on response either way do
-                enableFields()
             }
         }
     }
@@ -140,81 +149,8 @@ class SignupFragment : Fragment() {
         signUpButton.isEnabled = true
     }
 
-    private fun setupNavBack(closeButton: MaterialButton) {
-        closeButton.setOnClickListener {
-            findNavController().popBackStack()
-        }
-    }
-
-    private fun errorHighlight(
-        nameField: TextInputLayout,
-        surnameField: TextInputLayout,
-        phoneField: TextInputLayout,
-        emailField: TextInputLayout,
-        passwordField: TextInputLayout
-    ) {
-
-        nameField.editText!!.addTextChangedListener(
-            TextValidator(nameField, TextValidator.Companion::isValidName)
-        )
-        surnameField.editText!!.addTextChangedListener(
-            TextValidator(surnameField, TextValidator.Companion::isValidName)
-        )
-        phoneField.editText!!.addTextChangedListener(
-            TextValidator(phoneField, TextValidator.Companion::isValidPhone)
-        )
-        emailField.editText!!.addTextChangedListener(
-            TextValidator(emailField, TextValidator.Companion::isValidEmail)
-        )
-        passwordField.editText!!.addTextChangedListener(
-            TextValidator(passwordField, TextValidator.Companion::isValidPassword)
-        )
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
-//
-//    private fun dateSelectionPopup() {
-//
-//        val today = MaterialDatePicker.todayInUtcMilliseconds()
-//        val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
-//
-//        calendar.timeInMillis = today
-//        calendar[Calendar.MONTH] = Calendar.JANUARY
-//        val janThisYear = calendar.timeInMillis
-//
-//        calendar.timeInMillis = today
-//        calendar[Calendar.MONTH] = Calendar.DECEMBER
-//        val decThisYear = calendar.timeInMillis
-//
-//        val constraintsBuilder =
-//            CalendarConstraints.Builder()
-//                .setStart(janThisYear)
-//                .setEnd(decThisYear)
-//
-//        val dateBox = MaterialDatePicker.Builder.datePicker()
-//            .setTitleText("Seleziona la tua data di nascita")
-//            .setSelection(Calendar.getInstance().timeInMillis)
-//            .build()
-//
-//
-//
-//        dateBox.addOnPositiveButtonClickListener { selection ->
-//
-//            val selectionCalendar = Calendar.getInstance().apply {
-//                timeInMillis = selection
-//            }
-//            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-//            val formattedDate = sdf.format(calendar.time)
-//
-//            binding.dateField.setText(formattedDate)
-//        }
-//
-//        dateBox.show(parentFragmentManager, "DATE_PICKER")
-//
-//    }
-
 }
