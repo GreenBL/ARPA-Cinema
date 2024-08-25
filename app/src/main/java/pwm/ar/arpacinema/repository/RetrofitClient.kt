@@ -15,7 +15,7 @@ object RetrofitClient {
         "http://10.0.2.2:9000"  // URL for production
     }
 
-    val interloper = Status() // we need only one instance of this btw
+    val interloper = Sentinel() // we need only one instance of this btw
 
     private val okHttpClient = OkHttpClient.Builder()
         .addInterceptor(interloper)

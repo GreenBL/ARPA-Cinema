@@ -18,7 +18,7 @@ class ShowingAdapter(
         RecyclerView.ViewHolder(binding.root) {
         init {
             // todo
-            binding.textView18.setOnClickListener {
+            binding.root.setOnClickListener {
                 onItemClick(showingItems[adapterPosition])
             }
         }

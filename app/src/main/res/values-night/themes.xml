@@ -82,5 +82,7 @@
         <item name="windowSplashScreenAnimatedIcon">@drawable/avd_splash</item>
         <item name="windowSplashScreenAnimationDuration">1000</item>
         <item name="android:windowSplashScreenBehavior">icon_preferred</item>
+        <item name="android:enforceStatusBarContrast">false</item>
+        <item name="android:enforceNavigationBarContrast">false</item>
     </style>
 </resources>

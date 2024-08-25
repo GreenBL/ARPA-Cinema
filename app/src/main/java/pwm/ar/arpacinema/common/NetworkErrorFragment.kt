@@ -3,12 +3,15 @@ package pwm.ar.arpacinema.common
 import android.content.Intent
 import androidx.fragment.app.viewModels
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -17,6 +20,7 @@ import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.databinding.FragmentNetworkErrorBinding
 import pwm.ar.arpacinema.repository.DTO
 import pwm.ar.arpacinema.repository.RetrofitClient
+import pwm.ar.arpacinema.repository.Sentinel
 import retrofit2.Response
 
 class NetworkErrorFragment : Fragment() {
@@ -54,6 +58,7 @@ class NetworkErrorFragment : Fragment() {
             // show spinny and texty
             spinner.visibility = View.VISIBLE
             texty.visibility = View.VISIBLE
+            retryButton.isEnabled = false
             // TODO
             // TODO
             // TODO
@@ -61,19 +66,19 @@ class NetworkErrorFragment : Fragment() {
             lifecycleScope.launch {
                 weConnected = retrofit.checkConnection()
                 if (weConnected) {
+                    RetrofitClient.interloper.networkStatus.postValue(Sentinel.NetStat.ONLINE)
                     (activity as MainActivity).finish()
                     startActivity(intent)
 
                 } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "Impossibile connettersi al server",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Dialog.showNetworkErrorDialog(requireContext())
                 }
                 spinner.visibility = View.GONE
                 texty.visibility = View.GONE
+                retryButton.isEnabled = true
             }
+
+
 
 
         }

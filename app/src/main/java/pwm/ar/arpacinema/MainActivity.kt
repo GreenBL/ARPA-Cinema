@@ -1,6 +1,5 @@
 package pwm.ar.arpacinema
 
-import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Handler
@@ -11,7 +10,6 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
@@ -29,7 +27,7 @@ import pwm.ar.arpacinema.common.Dialog
 import pwm.ar.arpacinema.databinding.ActivityMainBinding
 import pwm.ar.arpacinema.model.User
 import pwm.ar.arpacinema.repository.RetrofitClient
-import pwm.ar.arpacinema.repository.Status
+import pwm.ar.arpacinema.repository.Sentinel.NetStat.OFFLINE
 
 private const val DEBUG_MODE = false
 
@@ -81,6 +79,7 @@ class MainActivity : AppCompatActivity() {
 
         setupBottomBarBehavior(navController)
         runBlocking {
+            retrofit.checkConnection()
             if (Session.getUserId(this@MainActivity) == null) {
                 // hide bottom nav
                 Log.i("MainActivity", "User NOT FOUND, SKIPPING autoLOGIN")
@@ -93,7 +92,7 @@ class MainActivity : AppCompatActivity() {
             navigationBar.visibility = View.VISIBLE
             delay(200L) // slight delay
 
-            //retrofit.checkConnection()
+
 
 //            if(Session.user != null) {
 //                // hide bottom nav
@@ -176,7 +175,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        RetrofitClient.interloper.status.removeObservers(this)
+        RetrofitClient.interloper.networkStatus.removeObservers(this)
     }
 
     fun hideBottomNavigation() {
@@ -192,21 +191,21 @@ class MainActivity : AppCompatActivity() {
     private fun observeStatus(owner: LifecycleOwner, navController: NavController) {
         val interloper = RetrofitClient.interloper
         // check if there is already an observer
-        interloper.status.observe(owner) { status ->
-            if(status) {
-                Log.i("MainActivity", "Status: $status")
-            } else {
-                Dialog.showNetworkErrorDialog(this)
-                Log.e("MainActivity", "Status: $status")
-            }
-        }
-        interloper.globalStatus.observe(owner) { globalStatus ->
-            if(!globalStatus) {
-                Log.e("MainActivity", "Connection lost, Status: $globalStatus")
+//        interloper.status.observe(owner) { status ->
+//            if(status) {
+//                Log.i("MainActivity", "Status: $status")
+//            } else {
+//                Dialog.showNetworkErrorDialog(this)
+//                Log.e("MainActivity", "Status: $status")
+//            }
+//        }
+        interloper.networkStatus.observe(owner) { netStatus ->
+            if(netStatus == OFFLINE) {
+                Log.e("MainActivity", "Connection lost, Status: $netStatus")
                 //interloper.globalStatus.removeObservers(owner)
-                //interloper.status.removeObservers(owner)// important if we are restarting
-                //navController.navigate(R.id.action_global_networkErrorFragment)
-                Dialog.showNetworkErrorDialog(this)
+                interloper.networkStatus.removeObservers(owner)// important if we are restarting
+                navController.navigate(R.id.action_global_networkErrorFragment)
+                //Dialog.showNetworkErrorDialog(this)
             }
         }
     }

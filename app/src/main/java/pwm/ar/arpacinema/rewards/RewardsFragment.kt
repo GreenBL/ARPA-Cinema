@@ -1,0 +1,99 @@
+package pwm.ar.arpacinema.rewards
+
+import androidx.fragment.app.viewModels
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.divider.MaterialDividerItemDecoration
+import pwm.ar.arpacinema.MenuAdapter
+import pwm.ar.arpacinema.R
+import pwm.ar.arpacinema.common.LargeMenuAdapter
+import pwm.ar.arpacinema.common.MenuItem
+import pwm.ar.arpacinema.databinding.FragmentAccountBinding
+import pwm.ar.arpacinema.databinding.FragmentRewardsBinding
+
+class RewardsFragment : Fragment() {
+
+    private val topItemList = listOf(MenuItem(R.drawable.outline_fastfood_24, "I miei premi"))
+    private val barItemList = listOf(
+        MenuItem(R.drawable.popcorn_but_its_in_neumorphic_style, "Popcorn"),
+        MenuItem(R.drawable.mcdonald_s_beverage_cup_but_its_in_neumorphic_styl, "Bibite"),
+        MenuItem(R.drawable.popcorn_bucket_and_beverage_but_they_are_in_neumor, "Combo"))
+    private val discountsList = listOf(
+        MenuItem(R.drawable.outline_local_play_24, "Sconto biglietto"),
+        MenuItem(R.drawable.outline_local_offer_24, "Ingresso gratuito"))
+
+    private var _binding: FragmentRewardsBinding? = null
+    private val binding get() = _binding!!
+
+    companion object {
+        fun newInstance() = RewardsFragment()
+    }
+
+    private val viewModel: RewardsViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // TODO: Use the ViewModel
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentRewardsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val topMenuRV = binding.singleButtonMenu // i know... i know...
+        val barMenuRV = binding.barrewards
+        val discountsRV = binding.discountMenuHostile
+
+        val topMenuAdapter = MenuAdapter(topItemList) {
+            // onclicklistener
+        }
+        val barMenuAdapter = LargeMenuAdapter(barItemList) {
+            // onclicklistener
+        }
+        val discountsAdapter = MenuAdapter(discountsList) {
+            // onclicklistener
+        }
+
+        val dividerItemDecoration =
+            MaterialDividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+
+        barMenuRV.apply {
+            adapter = barMenuAdapter
+            overScrollMode = View.OVER_SCROLL_NEVER
+            layoutManager = LinearLayoutManager(requireContext())
+            addItemDecoration(dividerItemDecoration)
+        }
+
+        topMenuRV.apply {
+            adapter = topMenuAdapter
+            overScrollMode = View.OVER_SCROLL_NEVER
+            layoutManager = LinearLayoutManager(requireContext())
+        }
+
+        discountsRV.apply {
+            adapter = discountsAdapter
+            overScrollMode = View.OVER_SCROLL_NEVER
+            layoutManager = LinearLayoutManager(requireContext())
+            addItemDecoration(dividerItemDecoration)
+        }
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+}
