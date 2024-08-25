@@ -17,7 +17,7 @@ class DTO {
     data class SignUpRequest(
         @SerializedName("name") val name: String?,
         @SerializedName("surname") val surname: String?,
-        @SerializedName("phone_number") val phoneNumber: String?,
+        @SerializedName("phone") val phone: String?,
         @SerializedName("email") val email: String?,
         @SerializedName("password") val password: String?
     )
