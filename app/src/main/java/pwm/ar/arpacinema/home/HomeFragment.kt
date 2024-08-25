@@ -83,8 +83,15 @@ class HomeFragment : Fragment() {
             val sharedElementView = binding.searchBar
             val nav = findNavController()
 
+//            val args = Bundle().apply {
+//                putBoolean("showIme", true)
+//            }
+
+            val action = HomeFragmentDirections.actionHomeFragmentToSearchFragment(showIme = true)
+
             val extras = FragmentNavigatorExtras(sharedElementView to "shared_search")
-            nav.navigate(R.id.searchFragment, null, null, extras)
+            //nav.navigate(R.id.searchFragment, args, null, extras)
+            nav.navigate(action, extras)
         }
 
         val recyclerView = binding.categoryRV

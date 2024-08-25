@@ -20,6 +20,9 @@
         <action
             android:id="@+id/action_homeFragment_to_ticketsFragment"
             app:destination="@id/ticketsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileMenuFragment"
@@ -117,6 +120,10 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
+        <argument
+            android:name="showIme"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
     <fragment
         android:id="@+id/passwordRecoveryFragment"

@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import androidx.fragment.app.viewModels
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +13,10 @@ import android.view.WindowInsets
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout
@@ -30,6 +34,8 @@ class SearchFragment : Fragment() {
 
     private val aah = listOf(ShowingItem(), ShowingItem(), ShowingItem(), ShowingItem(), ShowingItem(), ShowingItem(), ShowingItem(), ShowingItem())
 
+    private var showIme = true
+
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
@@ -39,9 +45,13 @@ class SearchFragment : Fragment() {
 
     private val viewModel: SearchViewModel by viewModels()
 
+
+    private val args: SearchFragmentArgs by navArgs()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupTransitions()
+
     }
 
 
@@ -58,9 +68,12 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         (activity as MainActivity).hideBottomNavigation()
 
+
+
         val recyclerView = binding.resultsRV
         recyclerView.adapter = ShowingAdapter(aah) {
             Toast.makeText(requireContext(), "Clicked something", Toast.LENGTH_SHORT).show()
+            showIme = false
             findNavController().navigate(R.id.action_searchFragment_to_moviePageFragment)
         }
         // material divider for recycler view
@@ -83,12 +96,15 @@ class SearchFragment : Fragment() {
 
         // TODO: only if u are from home fragment
 
-        searchBarField.postDelayed({
-            searchBarField.requestFocus()
-            val windowInsetsController = view.windowInsetsController
-            windowInsetsController?.show(WindowInsets.Type.ime())
-        }, 200)
+        if (showIme) {
+            searchBarField.postDelayed({
+                searchBarField.requestFocus()
+                val windowInsetsController = view.windowInsetsController
+                windowInsetsController?.show(WindowInsets.Type.ime())
+            }, 200)
+        }
 
+        Log.d("SearchFragment", "onViewCreated: $showIme")
 
 
         binding.root.setOnApplyWindowInsetsListener { v, insets ->
@@ -129,4 +145,5 @@ class SearchFragment : Fragment() {
             fadeMode = MaterialContainerTransform.FADE_MODE_CROSS
         }
     }
+
 }
