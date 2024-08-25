@@ -169,7 +169,9 @@
         android:id="@+id/action_global_networkErrorFragment"
         app:destination="@id/networkErrorFragment"
         app:enterAnim="@anim/zoom_fade_in"
-        app:popExitAnim="@anim/zoom_fade_out" />
+        app:popExitAnim="@anim/zoom_fade_out"
+        app:popUpTo="@id/homeFragment"
+        app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/walletFragment"
         android:name="pwm.ar.arpacinema.profile.wallet.WalletFragment"
