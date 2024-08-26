@@ -7,10 +7,11 @@
 
     <com.google.android.material.chip.Chip
         android:id="@+id/chip6"
-        style="@style/Widget.Material3.Chip.Filter"
+        style="@style/Widget.Material3.Chip.Filter.Elevated"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:checkable="true"
+        app:checkedIconEnabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,6 +21,7 @@
         android:id="@+id/textView25"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:elevation="16dp"
         android:text="Sus"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

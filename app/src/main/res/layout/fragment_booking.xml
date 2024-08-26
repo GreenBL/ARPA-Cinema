@@ -35,22 +35,33 @@
             tools:context=".booking.BookingFragment">
 
 
-            <dev.jahidhasanco.seatbookview.SeatBookView
-                android:id="@+id/layoutSeat"
-                android:layout_width="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                app:available_seat_background="@drawable/baseline_chair_24_white"
-                app:available_seats_text_color="#00000000"
-                app:booked_seat_background="@drawable/baseline_chair_24_taken"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                app:contentPadding="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/movietitle"
-                app:seat_gaping="2dp"
-                app:seat_text_size="14sp"
-                app:selected_seats_background="@drawable/baseline_chair_24_selected" />
+                app:layout_constraintTop_toBottomOf="@+id/timeSelect">
+
+                <dev.jahidhasanco.seatbookview.SeatBookView
+                    android:id="@+id/layoutSeat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|fill_horizontal"
+                    android:gravity="center|fill_horizontal"
+                    android:orientation="vertical"
+                    app:available_seat_background="@drawable/baseline_chair_24_white"
+                    app:available_seats_text_color="#00000000"
+                    app:booked_seat_background="@drawable/baseline_chair_24_taken"
+                    app:seat_gaping="2dp"
+                    app:seat_text_size="14sp"
+                    app:selected_seats_background="@drawable/baseline_chair_24_selected"
+                    tools:layout_height="400dp"
+                    tools:layout_width="0dp" />
+            </com.google.android.material.card.MaterialCardView>
 
             <TextView
                 android:id="@+id/movietitle"
@@ -74,10 +85,12 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/movietitle"
+                app:spanCount="3"
                 tools:itemCount="12"
                 tools:listitem="@layout/date_item" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/timeSelect"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -92,6 +105,16 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="24dp"
+        android:text="Procedi all'ordine"
+        app:layout_anchor="@+id/nestedScrollView5"
+        app:layout_anchorGravity="bottom|center" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

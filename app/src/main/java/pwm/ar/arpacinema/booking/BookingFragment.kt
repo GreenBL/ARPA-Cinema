@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import dev.jahidhasanco.seatbookview.SeatBookView
 import dev.jahidhasanco.seatbookview.SeatClickListener
 import pwm.ar.arpacinema.databinding.FragmentBookingBinding
@@ -19,14 +20,19 @@ class BookingFragment : Fragment() {
 
     private var seats = (
                     "/__A_AAAAA_A__" +
+                            "/_____________" +
                     "/_AA_AAAAA_AA_" +
+                            "/_____________" +
                     "/_AA_AAAAA_AA_" +
+                            "/_____________" +
                     "/AAA_AAAAA_AAA" +
                     "/_____________" +
                     "/AAA_AAAAA_AAA" +
+                            "/_____________" +
                     "/AAA_AAAAA_AAA" +
                     "/_____________" +
                     "/AAA_AAAAA_AAA" +
+                            "/_____________" +
                     "/AAA_AAAAA_AAA"
             )
 
@@ -67,6 +73,47 @@ class BookingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // DATE
+        val dateSelect = binding.dateSelect
+
+        val dateAdapter = MovieDateAdapter(
+            (List(20) {
+                MovieDateAdapter.ScreeningDate("a")
+            }) ){
+
+        }
+
+        dateSelect.apply {
+            adapter = dateAdapter
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        }
+
+
+
+
+
+        // TIMES
+
+        val timeSelect = binding.timeSelect
+
+        val timeAdapter = MovieTimeAdapter(
+            (List(20) {
+                MovieTimeAdapter.ScreeningTime("a")
+            }) ){
+
+        }
+
+        timeSelect.apply {
+            adapter = timeAdapter
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        }
+
+
+
+
+
+        // SEATS
 
         seatBookView = binding.layoutSeat
         seatBookView.setSeatsLayoutString(seats)
