@@ -58,6 +58,11 @@ class MoviePageFragment : Fragment() {
             }
         }
 
+        binding.buyButton.setOnClickListener {
+            findNavController().navigate(R.id.action_moviePageFragment_to_bookingFragment)
+        }
+
+
     }
 
     override fun onDestroy() {

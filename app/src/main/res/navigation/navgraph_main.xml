@@ -203,5 +203,14 @@
     <fragment
         android:id="@+id/moviePageFragment"
         android:name="pwm.ar.arpacinema.discovery.movie.MoviePageFragment"
-        android:label="MoviePageFragment" />
+        android:label="MoviePageFragment" >
+        <action
+            android:id="@+id/action_moviePageFragment_to_bookingFragment"
+            app:destination="@id/bookingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bookingFragment"
+        android:name="pwm.ar.arpacinema.booking.BookingFragment"
+        android:label="fragment_booking"
+        tools:layout="@layout/fragment_booking" />
 </navigation>
