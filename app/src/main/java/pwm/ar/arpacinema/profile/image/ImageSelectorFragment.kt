@@ -8,15 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
-import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.databinding.FragmentImageSelectorBinding
-import pwm.ar.arpacinema.dev.ProfileImage
+import pwm.ar.arpacinema.model.ProfileImage
 
 class ImageSelectorFragment : Fragment() {
 
     // default
-    private val testingData = List(40) {
-        ProfileImage(1, "https://picsum.photos/300/300")
+    private val testingData = List(13) {
+        ProfileImage(1, "https://picsum.photos/5000/5000?random")
     }
 
     private var _binding : FragmentImageSelectorBinding? = null

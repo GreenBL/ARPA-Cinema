@@ -1,4 +1,4 @@
-package pwm.ar.arpacinema.dev
+package pwm.ar.arpacinema.model
 
 import com.google.gson.annotations.SerializedName
 
