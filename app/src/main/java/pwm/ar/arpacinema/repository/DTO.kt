@@ -2,6 +2,7 @@ package pwm.ar.arpacinema.repository
 
 import com.google.gson.annotations.SerializedName
 import org.jetbrains.annotations.ApiStatus.Internal
+import pwm.ar.arpacinema.model.ProfileImage
 import pwm.ar.arpacinema.model.User
 
 /**
@@ -28,7 +29,7 @@ class DTO {
     )
 
     data class LoginResponse(
-        @SerializedName("status") val status: String?,
+        @SerializedName("status") val status: Stat?,
         @SerializedName("user") val user: User?
     )
 
@@ -51,6 +52,11 @@ class DTO {
     data class BalanceUpdateRequest(
         @SerializedName("user_id") val id: String?,
         @SerializedName("amount") val amount: Double?
+    )
+
+    data class ImageResponse(
+        @SerializedName("status") val status: Stat?,
+        @SerializedName("images") val imageList: List<ProfileImage>?
     )
 
 

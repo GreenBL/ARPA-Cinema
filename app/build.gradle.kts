@@ -44,6 +44,7 @@ android {
 }
 
 dependencies {
+    implementation("com.github.JahidHasanCO:SeatBookView:1.0.4")
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation(libs.circleindicator)
     implementation(libs.androidx.datastore)
@@ -65,6 +66,7 @@ dependencies {
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+    implementation(libs.androidx.gridlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

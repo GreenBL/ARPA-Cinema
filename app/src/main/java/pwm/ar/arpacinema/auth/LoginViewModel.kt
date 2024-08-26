@@ -8,7 +8,8 @@ import com.google.gson.Gson
 import kotlinx.coroutines.Deferred
 import pwm.ar.arpacinema.model.User
 
-import pwm.ar.arpacinema.repository.DTO
+import pwm.ar.arpacinema.repository.DTO.*
+import pwm.ar.arpacinema.repository.DTO.Stat.*
 import pwm.ar.arpacinema.repository.RetrofitClient
 
 
@@ -24,19 +25,19 @@ class LoginViewModel : ViewModel() {
 
     private val api = RetrofitClient.service
 
-    private lateinit var loginRequest: DTO.LoginRequest
+    private lateinit var loginRequest: LoginRequest
 
 
-    private val _loginResult = MutableLiveData<String?>()
-    val loginResult: MutableLiveData<String?> = _loginResult
+    private val _loginResult = MutableLiveData<Stat?>()
+    val loginResult: MutableLiveData<Stat?> = _loginResult
 
     // TODO: Approccio un po confusionario si deve decidere come gestire lo status
 
     suspend fun execLogin(): User? {
-        val loginRequest = DTO.LoginRequest(userEmail.value, userPassword.value)
+        val loginRequest = LoginRequest(userEmail.value, userPassword.value)
         val response = api.loginUser(loginRequest)
         if (!response.isSuccessful) {
-            _loginResult.postValue("")
+            _loginResult.postValue(ERROR)
             return null
         }
 
@@ -48,14 +49,14 @@ class LoginViewModel : ViewModel() {
 
         response.body()?.let { loginResponse ->
             when (status) {
-                "SUCCESS" -> {
+                SUCCESS -> {
                     _loginResult.postValue(status)
                     // Return the user from the response
                     return loginResponse.user
                 }
-                "USER_NOT_REGISTERED" -> _loginResult.postValue(status)
-                "PSW_ERROR" -> _loginResult.postValue(status)
-                else -> _loginResult.postValue("UNKNOWN_ERROR")
+                USER_NOT_REGISTERED -> _loginResult.postValue(status)
+                PSW_ERROR -> _loginResult.postValue(status)
+                else -> _loginResult.postValue(UNKNOWN_ERROR)
             }
         }
 

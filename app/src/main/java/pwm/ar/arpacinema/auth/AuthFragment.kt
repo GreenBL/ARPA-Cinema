@@ -4,6 +4,7 @@ package pwm.ar.arpacinema.auth
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import pwm.ar.arpacinema.repository.DTO.Stat.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -127,12 +128,12 @@ class AuthFragment : Fragment() {
 
         viewModel.loginResult.observe(viewLifecycleOwner) { result ->
             when (result) {
-                "SUCCESS" -> {}
-                "USER_NOT_REGISTERED" -> {
+                SUCCESS -> {}
+                USER_NOT_REGISTERED -> {
                     emailFieldLayout.error = "Utente non registrato"
                     emailFieldLayout.isErrorEnabled = true
                 }
-                "PSW_ERROR" -> {
+                PSW_ERROR -> {
                     passwordFieldLayout.error = "Password errata"
                     passwordFieldLayout.isErrorEnabled = true
                 }
