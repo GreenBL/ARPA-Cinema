@@ -7,6 +7,7 @@ import android.widget.TextView
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.runBlocking
 import pwm.ar.arpacinema.R
@@ -40,6 +41,7 @@ class CarouselAdapter(private val heroList: List<CarouselItem>): RecyclerView.Ad
 
         Glide.with(holder.itemView.context)
             .load(currentHero.movieImageUrl)
+            .transition(DrawableTransitionOptions.withCrossFade())
             .into(holder.image)
 
         // get image with glide

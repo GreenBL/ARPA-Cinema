@@ -140,7 +140,11 @@
     <fragment
         android:id="@+id/infoFragment"
         android:name="pwm.ar.arpacinema.profile.info.InfoFragment"
-        android:label="InfoFragment" />
+        android:label="InfoFragment" >
+        <action
+            android:id="@+id/action_infoFragment_to_imageSelectorFragment"
+            app:destination="@id/imageSelectorFragment" />
+    </fragment>
     <fragment
         android:id="@+id/accountFragment"
         android:name="pwm.ar.arpacinema.profile.account.AccountFragment"
@@ -213,4 +217,8 @@
         android:name="pwm.ar.arpacinema.booking.BookingFragment"
         android:label="fragment_booking"
         tools:layout="@layout/fragment_booking" />
+    <fragment
+        android:id="@+id/imageSelectorFragment"
+        android:name="pwm.ar.arpacinema.profile.image.ImageSelectorFragment"
+        android:label="ImageSelectorFragment" />
 </navigation>

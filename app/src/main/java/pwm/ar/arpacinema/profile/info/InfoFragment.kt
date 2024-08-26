@@ -39,6 +39,7 @@ class InfoFragment : Fragment() {
 
         val back = binding.appbar.navBack
         binding.appbar.viewTitle.text = "Profilo"
+        val editImageButton = binding.editProfileImg
         val saveButton = binding.saveButton
         val nameLayout = binding.nameLayout
         val surnameLayout = binding.surnameLayout
@@ -94,6 +95,10 @@ class InfoFragment : Fragment() {
                     saveButton.isEnabled = true
                 }
             }
+        }
+
+        editImageButton.setOnClickListener {
+            findNavController().navigate(InfoFragmentDirections.actionInfoFragmentToImageSelectorFragment())
         }
     }
 
