@@ -10,11 +10,15 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.CarouselSnapHelper
+import com.google.android.material.carousel.HeroCarouselStrategy
+import com.google.android.material.carousel.MultiBrowseCarouselStrategy
 import com.google.android.material.carousel.UncontainedCarouselStrategy
+import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.Session
@@ -111,11 +115,24 @@ class HomeFragment : Fragment() {
             //CarouselItem("Il Signore Degli Anelli: Il Ritorno Del Re", "https://static.posters.cz/image/1300/poster/il-signore-degli-anelli-il-ritorno-del-re-i104633.jpg"),
             //CarouselItem("Il regno del pianeta delle scimmie", "https://www.cinecentrum.it/uploads/images/pianeta%20scimmie%202%202024.jpg"),
             CarouselItem("Interstellar", "https://mir-s3-cdn-cf.behance.net/project_modules/hd/8d8f28105415493.619ded067937d.jpg"),
-            //CarouselItem("Trap", "https://www.trapthefilm.com/assets/images/fullbanner.jpg"),
-            //CarouselItem("Twisters", "https://images.justwatch.com/poster/315736719/s718/twisters.jpg")
+            CarouselItem("Trap", "https://www.trapthefilm.com/assets/images/fullbanner.jpg"),
+            CarouselItem("Twisters", "https://images.justwatch.com/poster/315736719/s718/twisters.jpg")
 
             )
 
+        val dataset2 = listOf(
+            CarouselItem("Il Signore Degli Anelli: Il Ritorno Del Re", "https://static.posters.cz/image/1300/poster/il-signore-degli-anelli-il-ritorno-del-re-i104633.jpg"),
+            CarouselItem("Il regno del pianeta delle scimmie", "https://www.cinecentrum.it/uploads/images/pianeta%20scimmie%202%202024.jpg"),
+            CarouselItem("Trap", "https://www.trapthefilm.com/assets/images/fullbanner.jpg"),
+            CarouselItem("Twisters", "https://images.justwatch.com/poster/315736719/s718/twisters.jpg")
+        )
+
+
+        // add a item decoration
+        val decorator = MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.HORIZONTAL).apply {
+            dividerThickness = 32
+            dividerColor = 0x00FFFFFF
+        }
 
         val carAdapter = CarouselAdapter(dataset)
         val carousel = binding.carouselRV
@@ -124,6 +141,7 @@ class HomeFragment : Fragment() {
         carousel.apply {
             adapter = carAdapter
             layoutManager = carouselLayoutManager
+            //addItemDecoration(decorator)
         }
 
         if(carAdapter.itemCount > 2) {
@@ -132,6 +150,20 @@ class HomeFragment : Fragment() {
 
         val snapHelper = CarouselSnapHelper()
         snapHelper.attachToRecyclerView(carousel)
+
+
+        // popular movies
+        val popAdapter = PopularAdapter(dataset2) {}
+        val popRV = binding.popRV
+        val popLayoutManager = CarouselLayoutManager(UncontainedCarouselStrategy())
+        popLayoutManager.carouselAlignment = CarouselLayoutManager.ALIGNMENT_CENTER
+        popRV.apply {
+            adapter = popAdapter
+            layoutManager = popLayoutManager
+        }
+
+        val popsnapHelper = CarouselSnapHelper()
+        popsnapHelper.attachToRecyclerView(binding.popRV)
 
         // handle badge click
         binding.tophome.badge.setOnClickListener {
