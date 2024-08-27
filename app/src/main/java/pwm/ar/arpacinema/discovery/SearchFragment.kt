@@ -1,6 +1,5 @@
 package pwm.ar.arpacinema.discovery
 
-import android.content.Context
 import android.graphics.Color
 import androidx.fragment.app.viewModels
 import android.os.Bundle
@@ -10,29 +9,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsets
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.setFragmentResultListener
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import pwm.ar.arpacinema.MainActivity
 
 import pwm.ar.arpacinema.R
-import pwm.ar.arpacinema.databinding.FragmentAuthBinding
 import pwm.ar.arpacinema.databinding.FragmentSearchBinding
 import pwm.ar.arpacinema.dev.ShowingItem
 
 class SearchFragment : Fragment() {
 
-    private val aah = listOf(ShowingItem(), ShowingItem(), ShowingItem(), ShowingItem(), ShowingItem(), ShowingItem(), ShowingItem(), ShowingItem())
+    private val mockList = List(5) {
+        ShowingItem()
+    }
 
     private var showIme = true
 
@@ -68,24 +64,38 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         (activity as MainActivity).hideBottomNavigation()
 
+        val filterFAB = binding.filter
 
-
-        val recyclerView = binding.resultsRV
-        recyclerView.adapter = ShowingAdapter(aah) {
+        val mainAdapter = ScreeningAdapter(mockList) {
             Toast.makeText(requireContext(), "Clicked something", Toast.LENGTH_SHORT).show()
             showIme = false
             findNavController().navigate(R.id.action_searchFragment_to_moviePageFragment)
         }
+
+
+
+        val recyclerView = binding.resultsRV
+//        recyclerView.adapter = ScreeningAdapter(aah) {
+//            Toast.makeText(requireContext(), "Clicked something", Toast.LENGTH_SHORT).show()
+//            showIme = false
+//            findNavController().navigate(R.id.action_searchFragment_to_moviePageFragment)
+//        }
+
+        recyclerView.apply {
+
+        }
         // material divider for recycler view
         val divider = MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL).apply {
-            dividerThickness = 2
+            dividerThickness = 8
+            dividerColor = 0x0DFFFFFF
         }
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             addItemDecoration(divider)
+            adapter = LoadingScreenAdapter(mockList)
         }
-
+////////////////////////////////////////////////// TODO ///////////////////////////////// SWAP ADPAPTER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         val searchBarField = binding.searchBarLayout
 
         searchBarField.setStartIconOnClickListener {
@@ -125,6 +135,17 @@ class SearchFragment : Fragment() {
                 binding.searchBarLayout.layoutParams = params
             }
             v.onApplyWindowInsets(insets)
+        }
+
+        filterFAB.setOnClickListener {
+            // swap the two adapters
+            if(recyclerView.adapter is LoadingScreenAdapter) {
+                recyclerView.adapter = mainAdapter
+
+            } else {
+                recyclerView.adapter = LoadingScreenAdapter(mockList)
+
+            }
         }
 
 

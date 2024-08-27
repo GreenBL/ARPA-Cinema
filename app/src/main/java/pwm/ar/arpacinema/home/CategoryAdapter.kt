@@ -14,7 +14,7 @@ class CategoryAdapter(
     inner class CategoryViewHolder(val binding: CategoryItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
             init {
-                binding.cardView.setOnClickListener {
+                binding.root.setOnClickListener {
                     onItemClick(categoryItems[adapterPosition])
                 }
             }
@@ -34,10 +34,12 @@ class CategoryAdapter(
         val categoryItem = categoryItems[position]
 
         // assigns the provided icon
-        holder.binding.catIco.setImageResource(categoryItem.categoryIconResId)
+        //holder.binding.catIco.setImageResource(categoryItem.categoryIconResId)
+        holder.binding.chip8.text = categoryItem.categoryName
+        holder.binding.chip8.setChipIconResource(categoryItem.categoryIconResId)
 
         // assigns the provided cat name (note: longest string I tried is "Avventura" and it fits)
-        holder.binding.catTitle.text = categoryItem.categoryName
+        //holder.binding.catTitle.text = categoryItem.categoryName
     }
 
     override fun getItemCount(): Int = categoryItems.size

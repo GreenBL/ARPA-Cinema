@@ -2,48 +2,30 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="82dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginEnd="16dp"
     android:layout_marginRight="16dp"
     tools:context=".MainActivity"
-    tools:layout_height="110dp"
-    tools:layout_width="82dp">
+    tools:layout_height="48dp"
+    tools:layout_width="wrap_content">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardView"
-        android:layout_width="0dp"
-        android:layout_height="82dp"
-        android:background="@drawable/search_bar_bg"
-        android:clickable="true"
-        android:foreground="?attr/selectableItemBackgroundBorderless"
-        app:cardCornerRadius="64dp"
-        app:cardElevation="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/cat_ico"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-             />
-    </com.google.android.material.card.MaterialCardView>
-
-    <TextView
-        android:id="@+id/cat_title"
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip8"
+        style="@style/Widget.Material3.Chip.Suggestion.Elevated"
         android:layout_width="wrap_content"
-        android:layout_height="19dp"
-        android:layout_marginTop="8dp"
-        android:text="Avventura"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:layout_height="56dp"
+        android:checkable="false"
+        android:fontFamily="@font/noto_sans"
+        android:text="DEFAULT"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:chipIcon="@drawable/anime_icon"
+        app:chipIconSize="24dp"
+        app:chipIconVisible="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Large" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
