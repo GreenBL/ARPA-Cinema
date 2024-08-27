@@ -59,7 +59,7 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -106,14 +106,13 @@ class HomeFragment : Fragment() {
         }
 
         val dataset = listOf(
-            CarouselItem("Spider-Man 2", "https://i.ebayimg.com/images/g/3h0AAOSwwNpkAO7-/s-l1600.jpg"),
             CarouselItem("Avengers: Endgame", "https://pad.mymovies.it/filmclub/2018/12/029/locandina.jpg"),
             CarouselItem("Deadpool & Wolverine", "https://cdn.marvel.com/content/1x/dp3_1sht_digital_srgb_ka_swords_v5_resized.jpg"),
-            CarouselItem("Il Signore Degli Anelli: Il Ritorno Del Re", "https://static.posters.cz/image/1300/poster/il-signore-degli-anelli-il-ritorno-del-re-i104633.jpg"),
-            CarouselItem("Il regno del pianeta delle scimmie", "https://www.cinecentrum.it/uploads/images/pianeta%20scimmie%202%202024.jpg"),
-            CarouselItem("Interstellar", "https://m.media-amazon.com/images/I/71thymE6lwL._AC_UF1000,1000_QL80_.jpg"),
-            CarouselItem("Trap", "https://www.trapthefilm.com/assets/images/fullbanner.jpg"),
-            CarouselItem("Twisters", "https://images.justwatch.com/poster/315736719/s718/twisters.jpg")
+            //CarouselItem("Il Signore Degli Anelli: Il Ritorno Del Re", "https://static.posters.cz/image/1300/poster/il-signore-degli-anelli-il-ritorno-del-re-i104633.jpg"),
+            //CarouselItem("Il regno del pianeta delle scimmie", "https://www.cinecentrum.it/uploads/images/pianeta%20scimmie%202%202024.jpg"),
+            CarouselItem("Interstellar", "https://mir-s3-cdn-cf.behance.net/project_modules/hd/8d8f28105415493.619ded067937d.jpg"),
+            //CarouselItem("Trap", "https://www.trapthefilm.com/assets/images/fullbanner.jpg"),
+            //CarouselItem("Twisters", "https://images.justwatch.com/poster/315736719/s718/twisters.jpg")
 
             )
 
@@ -127,7 +126,9 @@ class HomeFragment : Fragment() {
             layoutManager = carouselLayoutManager
         }
 
-        carousel.scrollToPosition(2)
+        if(carAdapter.itemCount > 2) {
+            carousel.scrollToPosition(1)
+        }
 
         val snapHelper = CarouselSnapHelper()
         snapHelper.attachToRecyclerView(carousel)

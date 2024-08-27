@@ -26,7 +26,9 @@ import pwm.ar.arpacinema.dev.ShowingItem
 
 class SearchFragment : Fragment() {
 
-    private val aah = listOf( ShowingItem(), ShowingItem(), ShowingItem(), ShowingItem(), ShowingItem())
+    private val mockList = List(5) {
+        ShowingItem()
+    }
 
     private var showIme = true
 
@@ -62,23 +64,36 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         (activity as MainActivity).hideBottomNavigation()
 
+        val filterFAB = binding.filter
 
-
-        val recyclerView = binding.resultsRV
-        recyclerView.adapter = ScreeningAdapter(aah, true) {
+        val mainAdapter = ScreeningAdapter(mockList) {
             Toast.makeText(requireContext(), "Clicked something", Toast.LENGTH_SHORT).show()
             showIme = false
             findNavController().navigate(R.id.action_searchFragment_to_moviePageFragment)
         }
+
+
+
+        val recyclerView = binding.resultsRV
+//        recyclerView.adapter = ScreeningAdapter(aah) {
+//            Toast.makeText(requireContext(), "Clicked something", Toast.LENGTH_SHORT).show()
+//            showIme = false
+//            findNavController().navigate(R.id.action_searchFragment_to_moviePageFragment)
+//        }
+
+        recyclerView.apply {
+
+        }
         // material divider for recycler view
         val divider = MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL).apply {
-            dividerThickness = 2
-            dividerColor = 0x1AFFFFFF
+            dividerThickness = 8
+            dividerColor = 0x0DFFFFFF
         }
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             addItemDecoration(divider)
+            adapter = LoadingScreenAdapter(mockList)
         }
 ////////////////////////////////////////////////// TODO ///////////////////////////////// SWAP ADPAPTER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         val searchBarField = binding.searchBarLayout
@@ -120,6 +135,17 @@ class SearchFragment : Fragment() {
                 binding.searchBarLayout.layoutParams = params
             }
             v.onApplyWindowInsets(insets)
+        }
+
+        filterFAB.setOnClickListener {
+            // swap the two adapters
+            if(recyclerView.adapter is LoadingScreenAdapter) {
+                recyclerView.adapter = mainAdapter
+
+            } else {
+                recyclerView.adapter = LoadingScreenAdapter(mockList)
+
+            }
         }
 
 
