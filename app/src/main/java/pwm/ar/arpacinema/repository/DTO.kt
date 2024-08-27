@@ -54,7 +54,7 @@ class DTO {
         @SerializedName("amount") val amount: Double?
     )
 
-    data class ImageResponse(
+    data class ImageListResponse(
         @SerializedName("status") val status: Stat?,
         @SerializedName("images") val imageList: List<ProfileImage>?
     )

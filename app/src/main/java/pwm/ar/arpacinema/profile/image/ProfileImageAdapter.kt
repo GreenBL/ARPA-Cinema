@@ -10,7 +10,7 @@ import pwm.ar.arpacinema.databinding.ProfileImageItemBinding
 import pwm.ar.arpacinema.model.ProfileImage
 
 class ProfileImageAdapter(
-    private val images : List<ProfileImage>,
+    private var images : List<ProfileImage>,
     private val onImageClick : (ProfileImage) -> Unit
 ) : RecyclerView.Adapter<ProfileImageAdapter.ProfileImageViewHolder>() {
 
@@ -29,6 +29,11 @@ class ProfileImageAdapter(
     }
 
     override fun getItemCount(): Int = images.size
+
+    fun setDataList(newImages : List<ProfileImage>) {
+        images = newImages
+        notifyDataSetChanged()
+    }
 
     override fun onBindViewHolder(holder: ProfileImageViewHolder, position: Int) {
         val binding = holder.binding

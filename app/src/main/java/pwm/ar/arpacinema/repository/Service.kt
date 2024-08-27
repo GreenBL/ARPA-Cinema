@@ -1,5 +1,6 @@
 package pwm.ar.arpacinema.repository
 
+import pwm.ar.arpacinema.model.ProfileImage
 import retrofit2.Response
 import retrofit2.http.Body
 import pwm.ar.arpacinema.repository.DTO.*
@@ -31,6 +32,9 @@ interface Service {
 
     @POST("pwm/update_saldo")
     suspend fun updateUserBalance(@Body balanceUpdateRequest: BalanceUpdateRequest): Response<GenericResponse>
+
+    @GET("pwm/load_images")
+    suspend fun loadProfileImages(): Response<ImageListResponse>
 
 
     // ====================================================================================

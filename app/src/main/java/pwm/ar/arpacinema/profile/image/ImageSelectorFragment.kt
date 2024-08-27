@@ -13,7 +13,7 @@ import pwm.ar.arpacinema.model.ProfileImage
 
 class ImageSelectorFragment : Fragment() {
 
-    // default
+    // test
     private val testingData = List(13) {
         ProfileImage(1, "https://picsum.photos/5000/5000?random")
     }
@@ -43,16 +43,29 @@ class ImageSelectorFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+
+        val imageList : List<ProfileImage> = listOf()
+
+
+
+
 
         val imageRecyclerView = binding.profileImageRV
 
-        val adapter = ProfileImageAdapter(testingData) { image ->
+        val adapter = ProfileImageAdapter(imageList) { image ->
             Log.d("ImageSelectorFragment", "Selected image: ${image.imageId}")
         }
 
         imageRecyclerView.apply {
             this.adapter = adapter
             layoutManager = GridLayoutManager(requireContext(), 4)
+        }
+
+        viewModel.imageList.observe(viewLifecycleOwner) {
+            Log.d("ImageSelectorFragment", "Fetched images: ${it?.size}")
+            adapter.setDataList(viewModel.imageList.value!!)
         }
     }
 
