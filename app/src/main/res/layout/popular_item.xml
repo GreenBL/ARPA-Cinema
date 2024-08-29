@@ -13,7 +13,7 @@
     tools:layout_height="300dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="235dp"
+        android:layout_width="260dp"
         android:layout_height="match_parent">
 
         <com.google.android.material.progressindicator.CircularProgressIndicator

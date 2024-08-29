@@ -112,7 +112,7 @@ class HomeFragment : Fragment() {
         recyclerView.apply {
             adapter = catAdapter
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            catSnap.attachToRecyclerView(this)
+//            catSnap.attachToRecyclerView(this)
 
         }
 

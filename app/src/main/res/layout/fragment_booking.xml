@@ -50,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="-16dp"
+                android:layout_marginTop="-4dp"
                 android:layout_marginEnd="16dp"
                 app:available_seat_background="@drawable/seat_available"
                 app:available_seats_text_color="#00000000"
