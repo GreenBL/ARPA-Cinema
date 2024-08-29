@@ -20,9 +20,9 @@ class RewardsFragment : Fragment() {
 
     private val topItemList = listOf(MenuItem(R.drawable.outline_fastfood_24, "I miei premi"))
     private val barItemList = listOf(
-        MenuItem(R.drawable.popcorn_but_its_in_neumorphic_style, "Popcorn"),
-        MenuItem(R.drawable.mcdonald_s_beverage_cup_but_its_in_neumorphic_styl, "Bibite"),
-        MenuItem(R.drawable.popcorn_bucket_and_beverage_but_they_are_in_neumor, "Combo"))
+        MenuItem(R.drawable.popcorn_buckets__dark_background, "Popcorn"),
+        MenuItem(R.drawable.tall_drink_cups__dark_background, "Bibite"),
+        MenuItem(R.drawable.popcorn_buckets_and_then_some_drink_cups_in_front_, "Combo"))
     private val discountsList = listOf(
         MenuItem(R.drawable.outline_local_play_24, "Sconto biglietto"),
         MenuItem(R.drawable.outline_local_offer_24, "Ingresso gratuito"))
@@ -70,11 +70,16 @@ class RewardsFragment : Fragment() {
         val dividerItemDecoration =
             MaterialDividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
 
+        val decorator = MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL).apply {
+            dividerThickness = 32
+            dividerColor = 0x00FFFFFF
+        }
+
         barMenuRV.apply {
             adapter = barMenuAdapter
             overScrollMode = View.OVER_SCROLL_NEVER
             layoutManager = LinearLayoutManager(requireContext())
-            addItemDecoration(dividerItemDecoration)
+            addItemDecoration(decorator)
         }
 
         topMenuRV.apply {

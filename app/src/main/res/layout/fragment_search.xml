@@ -19,8 +19,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
         android:clickable="true"
-        app:layout_anchor="@+id/appbar"
+        app:layout_anchor="@+id/resultsRV"
         app:layout_anchorGravity="end|bottom"
         app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.ExtraLarge"
         app:srcCompat="@drawable/round_filter_alt_24" />
@@ -34,6 +35,7 @@
         android:clipChildren="true"
         android:clipToOutline="true"
         android:clipToPadding="false"
+        android:fadingEdgeLength="32dp"
         android:fitsSystemWindows="false"
         android:overScrollMode="never"
         android:paddingHorizontal="0dp"
@@ -58,10 +60,11 @@
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/gradient_bg_search_"
+        android:background="?android:attr/windowBackground"
+        android:backgroundTint="#32191919"
         android:fitsSystemWindows="false"
         app:elevation="12dp"
-        app:liftOnScrollColor="#00FF0000">
+        app:liftOnScrollColor="#32000000">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/searchBarLayout"
