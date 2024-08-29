@@ -43,6 +43,15 @@ class PopularAdapter(
             .load(popularItem.movieImageUrl)
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(binding.movieImage)
+
+        // to refactor
+
+        val movieLogo = binding.movieLogo
+
+        Glide.with(holder.itemView.context)
+            .load("https://cdn2.steamgriddb.com/logo/bc7ee059ae7fecbf11cc7a8855671b6e.png")
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .into(movieLogo)
     }
 
     override fun getItemCount(): Int = popularItems.size

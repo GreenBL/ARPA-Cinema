@@ -19,21 +19,13 @@ class BookingFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var seats = (
-                    "/__A_AAAAA_A__" +
-                            "/_____________" +
-                    "/_AA_AAAAA_AA_" +
-                            "/_____________" +
-                    "/_AA_AAAAA_AA_" +
-                            "/_____________" +
-                    "/AAA_AAAAA_AAA" +
-                    "/_____________" +
-                    "/AAA_AAAAA_AAA" +
-                            "/_____________" +
-                    "/AAA_AAAAA_AAA" +
-                    "/_____________" +
-                    "/AAA_AAAAA_AAA" +
-                            "/_____________" +
-                    "/AAA_AAAAA_AAA"
+                    "/_AAA_AAA_" +
+                    "/AAAA_AAAA" +
+                    "/AAAA_AAAA" +
+                    "/AAAA_AAAA" +
+                    "/AAAA_AAAA" +
+                    "/AAAA_AAAA" +
+                    "/_AAA_AAA_"
             )
 
     private var title = listOf(
@@ -118,10 +110,7 @@ class BookingFragment : Fragment() {
         seatBookView = binding.layoutSeat
         seatBookView.setSeatsLayoutString(seats)
             .isCustomTitle(false)
-            //.setCustomTitle(title)
-            //.setSeatLayoutPadding(2)
-            //.setSeatSize(164)
-            .setSeatSizeBySeatsColumnAndLayoutWidth(13, -1)
+            .setSeatSize(220)
 
 
         seatBookView.show()

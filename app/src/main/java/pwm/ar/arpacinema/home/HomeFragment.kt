@@ -10,7 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SnapHelper
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.carousel.CarouselLayoutManager
@@ -99,6 +102,8 @@ class HomeFragment : Fragment() {
         }
 
         val recyclerView = binding.categoryRV
+        val catSnap = PagerSnapHelper()
+
 
         val catAdapter = CategoryAdapter(catItems) { catItem ->
             // TODO handle category click, probably a custom view separate from the search one
@@ -107,6 +112,8 @@ class HomeFragment : Fragment() {
         recyclerView.apply {
             adapter = catAdapter
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            catSnap.attachToRecyclerView(this)
+
         }
 
         val dataset = listOf(
