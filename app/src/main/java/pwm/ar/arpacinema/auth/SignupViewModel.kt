@@ -72,6 +72,7 @@ class SignupViewModel: ViewModel() {
         try {
             val response = service.signUp(request)
             val body = response.body()!!
+            _stat.postValue(body.status)
         } catch (e: Exception) {
             _stat.postValue(ERROR)
             return
