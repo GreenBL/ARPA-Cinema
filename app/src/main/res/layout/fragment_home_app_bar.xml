@@ -5,6 +5,9 @@
     android:id="@+id/frameLayout3"
     android:layout_width="match_parent"
     android:layout_height="64dp"
+    android:clipChildren="false"
+    android:clipToOutline="false"
+    android:clipToPadding="false"
     android:fitsSystemWindows="false"
     android:paddingTop="16dp">
 
@@ -13,8 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/abeezee"
+        android:fontFamily="@font/noto_sans"
         android:text="Benvenuto"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -27,6 +29,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Accedi o Registrati per contenuti esclusivi."
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/titleStr"
         app:layout_constraintTop_toBottomOf="@+id/titleStr" />
@@ -54,7 +58,7 @@
 
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:scaleType="centerCrop"
+            android:scaleType="centerInside"
 
             android:src="@drawable/round_login_24" />
     </com.google.android.material.card.MaterialCardView>

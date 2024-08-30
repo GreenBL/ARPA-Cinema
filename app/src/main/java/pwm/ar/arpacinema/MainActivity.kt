@@ -14,6 +14,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.get
 import androidx.core.view.updatePadding
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
@@ -64,6 +65,9 @@ class MainActivity : AppCompatActivity() {
         val retrofit = RetrofitClient
 
         val navigationBar = binding.bottomNavigationView
+        navigationBar.visibility = View.VISIBLE
+
+        makeItemsVisible()
 
         setupWindowDecorations()
 
@@ -83,8 +87,11 @@ class MainActivity : AppCompatActivity() {
             if (Session.getUserId(this@MainActivity) == null) {
                 // hide bottom nav
                 Log.i("MainActivity", "User NOT FOUND, SKIPPING autoLOGIN")
-                navigationBar.visibility = View.GONE
+
+                //navigationBar.visibility = View.GONE
                 return@runBlocking
+            } else {
+                makeItemsVisible()
             }
 
             //autologin // TODO API REQUEST!!!!
@@ -94,21 +101,8 @@ class MainActivity : AppCompatActivity() {
 
 
 
-//            if(Session.user != null) {
-//                // hide bottom nav
-//                Log.i("MainActivity", "User FOUND")
-//                navigationBar.visibility = View.VISIBLE
-//
-//            }
-
         }
 
-
-        // TODO - login stuff
-        //val user = User(1, 1, "Riccardo", "Parisi", "riccardo@mail.it", 2, 452)
-       // lifecycleScope.launch {
-        //    Session.storeUser(this@MainActivity, user)
-       // }
         lifecycleScope.launch {
             delay(1000L)
             Session.printUserId(this@MainActivity)
@@ -117,11 +111,17 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // TODO TEST
+    }
 
+    private fun makeItemsVisible() {
+        binding.bottomNavigationView.menu.getItem(1).isVisible = true
+        binding.bottomNavigationView.menu.getItem(2).isVisible = true
 
+    }
 
-
+    private fun makeItemsInvisible() {
+        binding.bottomNavigationView.menu.getItem(1).isVisible = false
+        binding.bottomNavigationView.menu.getItem(2).isVisible = false
     }
 
     private fun setupWindowDecorations() {
@@ -146,9 +146,13 @@ class MainActivity : AppCompatActivity() {
             Log.d("MainActivity", "Destination changed: ${destination.label}")
             if(Session.user == null) {
                 // cause we dont want the bar appearing again
-                hideBottomNavigation()
-                return@addOnDestinationChangedListener
+                //hideBottomNavigation()
+                makeItemsInvisible()
+                //return@addOnDestinationChangedListener
+            } else {
+                makeItemsVisible()
             }
+
             val handler = Handler(Looper.getMainLooper())
             handler.post{ // avoid calling it before the fragment is created and shown
                 when (destination.id) {

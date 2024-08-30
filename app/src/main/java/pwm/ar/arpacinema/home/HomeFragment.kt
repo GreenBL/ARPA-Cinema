@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
@@ -80,6 +81,7 @@ class HomeFragment : Fragment() {
             binding.tophome.titleStr.text = "Bentornato/a, ${Session.user!!.name}"
             binding.tophome.textView.visibility = View.GONE
             binding.tophome.badge.isEnabled = false
+            binding.tophome.icon.scaleType = ImageView.ScaleType.CENTER_CROP
             Glide.with(requireContext())
                 .load(R.drawable.banner_placeholder)
                 .into(binding.tophome.icon)

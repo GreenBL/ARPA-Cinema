@@ -55,9 +55,9 @@ class AuthFragment : Fragment() {
         }
 
 
-        val navigationBar =
-            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        navigationBar.visibility = View.GONE
+//        val navigationBar =
+//            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+//        navigationBar.visibility = View.GONE
     }
 
     override fun onCreateView(
@@ -106,6 +106,7 @@ class AuthFragment : Fragment() {
         binding.topBarInclude.navBack.setOnClickListener {
             findNavController().popBackStack()
         }
+        binding.topBarInclude.viewTitle.text = "Accedi"
 
 //        view.setOnApplyWindowInsetsListener { v, insets ->
 //            val imeVisible = insets.isVisible(WindowInsets.Type.ime())

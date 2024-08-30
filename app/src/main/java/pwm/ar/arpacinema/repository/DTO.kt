@@ -63,7 +63,7 @@ class DTO {
 
     @Internal
     data class GenericResponse(
-        @SerializedName("message") val message: String? = null,
+        @SerializedName("status") val status: Stat? = null,
         @SerializedName("error") val error: String? = null
     )
 

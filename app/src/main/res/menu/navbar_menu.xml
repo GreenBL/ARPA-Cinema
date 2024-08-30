@@ -11,6 +11,7 @@
         android:title="Biglietti" />
     <item
         android:id="@+id/profileMenuFragment"
+        android:checkable="false"
         android:icon="@drawable/outline_person_24"
         android:title="Profilo" />
 </menu>
