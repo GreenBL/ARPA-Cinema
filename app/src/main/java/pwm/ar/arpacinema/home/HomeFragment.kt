@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
@@ -24,9 +25,11 @@ import com.google.android.material.carousel.MultiBrowseCarouselStrategy
 import com.google.android.material.carousel.UncontainedCarouselStrategy
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.google.android.material.transition.platform.MaterialContainerTransform
+import pwm.ar.arpacinema.model.Categories.*
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.Session
 import pwm.ar.arpacinema.databinding.FragmentHomeBinding
+import pwm.ar.arpacinema.model.Categories
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -39,24 +42,24 @@ class HomeFragment : Fragment() {
 
     // Categorie
     private val catItems = listOf(
-        CategoryItem(R.drawable.guerra_icon, "Azione"),
-        CategoryItem(R.drawable.cartoon_icon, "Animazione"),
-        CategoryItem(R.drawable.anime_icon, "Anime"),
-        CategoryItem(R.drawable.biografico_icon, "Biografico"),
-        CategoryItem(R.drawable.commedia_icon, "Commedia"),
-        CategoryItem(R.drawable.crime_icon, "Crime"),
-        CategoryItem(R.drawable.documentario_icon, "Documentario"),
-        CategoryItem(R.drawable.dramma_icon, "Dramma"),
-        CategoryItem(R.drawable.fantasy_icon, "Fantasy"),
-        CategoryItem(R.drawable.family_icon, "Family"),
-        CategoryItem(R.drawable.shifi, "Sci-Fi"),
-        CategoryItem(R.drawable.war_icon, "Guerra"),
-        CategoryItem(R.drawable.horror_icon, "Horror"),
-        CategoryItem(R.drawable.musical_icon, "Musical"),
-        CategoryItem(R.drawable.romance_icon, "Romantico"),
-        CategoryItem(R.drawable.storico_icon, "Storico"),
-        CategoryItem(R.drawable.thriller_icon, "Thriller"),
-        CategoryItem(R.drawable.western_icon, "Western")
+        CategoryItem(R.drawable.guerra_icon, ACTION),
+        CategoryItem(R.drawable.cartoon_icon, ANIMATION),
+        CategoryItem(R.drawable.anime_icon, ANIME),
+        CategoryItem(R.drawable.biografico_icon, BIOGRAPH),
+        CategoryItem(R.drawable.commedia_icon, COMEDY),
+        //CategoryItem(R.drawable.crime_icon, CRIME),
+        CategoryItem(R.drawable.documentario_icon, DOC),
+        CategoryItem(R.drawable.dramma_icon, DRAMA),
+        //CategoryItem(R.drawable.fantasy_icon, FANTASY),
+        CategoryItem(R.drawable.family_icon, FAMILY),
+        CategoryItem(R.drawable.shifi, SCIFI),
+        CategoryItem(R.drawable.war_icon, WAR),
+        CategoryItem(R.drawable.horror_icon, HORROR),
+        CategoryItem(R.drawable.musical_icon, MUSICAL),
+        CategoryItem(R.drawable.romance_icon, ROMANCE),
+        CategoryItem(R.drawable.storico_icon, STORICAL),
+        CategoryItem(R.drawable.thriller_icon, THRILLER),
+        //CategoryItem(R.drawable.western_icon, WESTERN)
     )
 
 
@@ -108,7 +111,10 @@ class HomeFragment : Fragment() {
 
 
         val catAdapter = CategoryAdapter(catItems) { catItem ->
-            // TODO handle category click, probably a custom view separate from the search one
+            val cat : Categories = catItem.category
+            val action = HomeFragmentDirections.actionHomeFragmentToCategoryFragment(cat)
+            Toast.makeText(requireContext(), catItem.category.toString(), Toast.LENGTH_SHORT).show()
+            findNavController().navigate(action)
         }
 
         recyclerView.apply {
@@ -184,6 +190,7 @@ class HomeFragment : Fragment() {
             cardNavController.navigate(R.id.authFragment, null, null, extras)
             //findNavController().navigate(R.id.authFragment)
         }
+
     }
 
     override fun onDestroyView() {

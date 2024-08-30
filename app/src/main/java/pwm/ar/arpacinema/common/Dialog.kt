@@ -77,4 +77,21 @@ object Dialog {
         dialog.show()
 
     }
+
+    fun showFilterDialog(context: Context, onClickConfirm: (String) -> Unit) {
+        val builder = MaterialAlertDialogBuilder(context, alert)
+        builder.setTitle("Filtri e ordinamento")
+        builder.setIcon(R.drawable.round_filter_alt_24)
+        builder.setView(R.layout.dialog_filter)
+        builder.setPositiveButton("Applica") {
+                dialog, _ ->
+            dialog.dismiss()
+        }
+        builder.setNegativeButton("Annulla") {
+                dialog, _ -> dialog.dismiss()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
+    }
 }

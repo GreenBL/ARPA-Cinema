@@ -23,6 +23,13 @@
         <action
             android:id="@+id/action_homeFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_categoryFragment"
+            app:destination="@id/categoryFragment"
+            app:enterAnim="@anim/zoom_fade_in"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/zoom_fade_out"/>
     </fragment>
     <fragment
         android:id="@+id/profileMenuFragment"
@@ -225,4 +232,12 @@
         android:id="@+id/imageSelectorFragment"
         android:name="pwm.ar.arpacinema.profile.image.ImageSelectorFragment"
         android:label="ImageSelectorFragment" />
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="pwm.ar.arpacinema.discovery.category.CategoryFragment"
+        android:label="CategoryFragment" >
+        <argument
+            android:name="category"
+            app:argType="pwm.ar.arpacinema.model.Categories" />
+    </fragment>
 </navigation>
