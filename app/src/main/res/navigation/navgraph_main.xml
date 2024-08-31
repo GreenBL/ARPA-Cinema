@@ -217,7 +217,11 @@
         android:label="RewardsFragment" >
         <action
             android:id="@+id/action_rewardsFragment_to_optionsFragment"
-            app:destination="@id/optionsFragment" />
+            app:destination="@id/optionsFragment"
+            app:enterAnim="@anim/zoom_fade_in"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/zoom_fade_out"/>
     </fragment>
     <fragment
         android:id="@+id/moviePageFragment"
