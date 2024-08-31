@@ -214,7 +214,11 @@
     <fragment
         android:id="@+id/rewardsFragment"
         android:name="pwm.ar.arpacinema.rewards.RewardsFragment"
-        android:label="RewardsFragment" />
+        android:label="RewardsFragment" >
+        <action
+            android:id="@+id/action_rewardsFragment_to_optionsFragment"
+            app:destination="@id/optionsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/moviePageFragment"
         android:name="pwm.ar.arpacinema.discovery.movie.MoviePageFragment"
@@ -239,5 +243,14 @@
         <argument
             android:name="category"
             app:argType="pwm.ar.arpacinema.model.Categories" />
+    </fragment>
+    <fragment
+        android:id="@+id/optionsFragment"
+        android:name="pwm.ar.arpacinema.rewards.OptionsFragment"
+        android:label="fragment_options"
+        tools:layout="@layout/fragment_options" >
+        <argument
+            android:name="type"
+            app:argType="string" />
     </fragment>
 </navigation>

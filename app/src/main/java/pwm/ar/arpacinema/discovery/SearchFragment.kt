@@ -141,13 +141,13 @@ class SearchFragment : Fragment() {
         filterFAB.setOnClickListener {
             FiltersFragment().show(childFragmentManager, "FiltersFragment")
             // swap the two adapters
-//            if(recyclerView.adapter is LoadingScreenAdapter) {
-//                recyclerView.adapter = mainAdapter
-//
-//            } else {
-//                recyclerView.adapter = LoadingScreenAdapter(mockList)
-//
-//            }
+            if(recyclerView.adapter is LoadingScreenAdapter) {
+                recyclerView.adapter = mainAdapter
+
+            } else {
+                recyclerView.adapter = LoadingScreenAdapter(mockList)
+
+            }
         }
 
 

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.divider.MaterialDividerItemDecoration
@@ -53,6 +54,8 @@ class RewardsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.include.viewTitle.text = "Premi"
+
         val topMenuRV = binding.singleButtonMenu // i know... i know...
         val barMenuRV = binding.barrewards
         val discountsRV = binding.discountMenuHostile
@@ -60,8 +63,26 @@ class RewardsFragment : Fragment() {
         val topMenuAdapter = MenuAdapter(topItemList) {
             // onclicklistener
         }
-        val barMenuAdapter = LargeMenuAdapter(barItemList) {
-            // onclicklistener
+        val barMenuAdapter = LargeMenuAdapter(barItemList) { menuItem ->
+
+            var selection = "Ni1"
+
+            when (menuItem.label) {
+                "Popcorn" -> {
+                    selection = menuItem.label
+                }
+                "Bibite" -> {
+                    selection = menuItem.label
+                    }
+                "Combo" -> {
+                    selection = menuItem.label
+                }
+            }
+
+            val action = RewardsFragmentDirections.actionRewardsFragmentToOptionsFragment(selection)
+
+            findNavController().navigate(action)
+
         }
         val discountsAdapter = MenuAdapter(discountsList) {
             // onclicklistener
