@@ -87,5 +87,45 @@ open class TextValidator(
             return null
         }
 
+        fun B_isValidEmail(email: String): Boolean {
+            return if (email.isNotEmpty()) {
+                if (android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    true
+                } else {
+                    false
+                }
+            } else {
+                false
+            }
+        }
+
+        fun B_isValidPassword(password: String): Boolean {
+            return when {
+                password.isEmpty() -> false
+                !password.matches(".*[A-Z].*".toRegex()) -> false
+                !password.matches(".*[a-z].*".toRegex()) -> false
+                !password.matches(".*[@#!\$%^&+=].*".toRegex()) -> false
+                !password.matches(".*[0-9].*".toRegex()) -> false
+                password.length < 8 -> false
+                else -> true
+            }
+        }
+
+        fun B_isValidPhone(phone: String): Boolean {
+            return when {
+                phone.isEmpty() -> false
+                !phone.matches("^[0-9]{10}\$".toRegex()) -> false
+                else -> true
+            }
+        }
+
+        fun B_isValidName(name: String): Boolean {
+            return when {
+                name.isEmpty() -> false
+                !name.matches("^[a-zA-Z]+(([' ][a-zA-Z ])?[a-zA-Z]*)*\$".toRegex()) -> false
+                else -> true
+            }
+        }
+
     }
 }

@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
 
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             android:fontFamily="@font/abeezee"
             android:text="Accedi al tuo profilo"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="48dp"
+            android:layout_marginBottom="24dp"
             android:foregroundGravity="center"
             android:gravity="center">
 
@@ -70,6 +70,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/emailFieldLayout"
+            style="@style/Widget.Material3.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="E-mail"
@@ -81,11 +82,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text|textWebEmailAddress"
-                android:text="@={viewModel.userEmail}"/>
+                android:text="@={viewModel.userEmail}" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/pwdFieldLayout"
+            style="@style/Widget.Material3.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -99,8 +101,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="text|textWebPassword"
                 android:maxLength="15"
-                android:text="@={viewModel.userPassword}"
-                android:password="true" />
+                android:password="true"
+                android:text="@={viewModel.userPassword}" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button

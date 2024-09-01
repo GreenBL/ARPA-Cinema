@@ -33,7 +33,7 @@ class AccountViewModel : ViewModel() {
     private val _toastMessage = MutableLiveData<String>()
     val toastMessage: LiveData<String> get() = _toastMessage
 
-
+        // TODO
     fun deleteUserAccount(context: Context, navController: NavController) {
         viewModelScope.launch {
             val user = Session.user
@@ -53,8 +53,8 @@ class AccountViewModel : ViewModel() {
                 val response: Response<DTO.GenericResponse> = service.deleteUser(deleteRequest)
 
                 if (response.isSuccessful) {
-                    val message = response.body()?.message ?: "Account eliminato con successo"
-                    _toastMessage.postValue(message)
+                    val message = response.body()?.status ?: "SUCCESS"
+                    _toastMessage.postValue("Account eliminato con successo.")
                     Session.invalidateUser(context)
 
                     // Navigate to HomeFragment

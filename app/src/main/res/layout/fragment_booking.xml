@@ -37,9 +37,10 @@
 
             <ImageView
                 android:id="@+id/imageView11"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:scaleType="fitXY"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/timeSelect"
@@ -53,12 +54,15 @@
                 android:layout_marginTop="-4dp"
                 android:layout_marginEnd="16dp"
                 app:available_seat_background="@drawable/seat_available"
-                app:available_seats_text_color="#00000000"
+                app:available_seats_text_color="@color/md_theme_onSurface"
                 app:booked_seat_background="@drawable/seat_taken"
+                app:booked_seats_text_color="@color/md_theme_onPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView11"
+                app:reserved_seats_text_color="@color/md_theme_onError"
                 app:seat_gaping="12dp"
+                app:seat_text_size="14sp"
                 app:selected_seats_background="@drawable/seat_selected"
                 tools:layout_height="320dp"
                 tools:layout_width="match_parent" />
@@ -106,7 +110,44 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <Button
+                android:id="@+id/button4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:text="Procedi all'ordine"
+                android:visibility="gone"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="112dp"
+                tools:visibility="gone" />
+
+            <Button
+                android:id="@+id/checkoutButton"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="32dp"
+                android:text="Procedi all'ordine"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/seatsSelected"
+                tools:layout_editor_absoluteX="16dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/seatsSelected"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
+                tools:itemCount="10"
+                tools:listitem="@layout/selection_item" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout2"
                 android:layout_width="wrap_content"
                 android:layout_height="38dp"
                 android:layout_marginTop="16dp"
@@ -118,8 +159,7 @@
                     android:id="@+id/imageView12"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="10dp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/seat_available" />
 
@@ -172,22 +212,13 @@
                     app:layout_constraintBottom_toBottomOf="@+id/imageView14"
                     app:layout_constraintStart_toEndOf="@+id/imageView14"
                     app:layout_constraintTop_toTopOf="@+id/imageView14" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="24dp"
-        android:text="Procedi all'ordine"
-        app:layout_anchor="@+id/nestedScrollView5"
-        app:layout_anchorGravity="bottom|center" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

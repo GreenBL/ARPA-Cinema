@@ -27,6 +27,7 @@ import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.common.Dialog
 import pwm.ar.arpacinema.databinding.FragmentSignupBinding
+import pwm.ar.arpacinema.repository.DTO
 import pwm.ar.arpacinema.util.TextValidator
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -86,6 +87,28 @@ class SignupFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
+        // observe
+        viewModel.stat.observe(viewLifecycleOwner) { status ->
+            when (status) {
+                DTO.Stat.DEFAULT -> {
+                    // nothing
+                }
+                DTO.Stat.SUCCESS -> {
+                    Dialog.showSignupSuccessDialog(requireContext())
+                    findNavController().popBackStack()
+                }
+                DTO.Stat.UNFILLED -> {
+                    Dialog.showErrorDialog(requireContext()) // UNFILLED DIALOG TODO
+                }
+                DTO.Stat.ERROR -> {
+                    Dialog.showNetworkErrorDialog(requireContext())
+                }
+                else -> {
+                    Dialog.showErrorDialog(requireContext()) // GENERIC UNKNOWN ERROR TODO
+                }
+            }
+        }
+
         val closeButton = binding.topBarInclude.closeButton
         nameField = binding.nameFieldLayout
         surnameField = binding.surnameFieldLayout
@@ -111,12 +134,7 @@ class SignupFragment : Fragment() {
             disableFields()
             lifecycleScope.launch {
                 delay(1000L)
-                val result = viewModel.signUp()
-                if(result.error == null && result.message == null){
-                    Dialog.showSignupSuccessDialog(requireContext())
-                    findNavController().popBackStack()
-                }
-                // on response either way do
+                viewModel.signUp()
                 enableFields()
             }
         }

@@ -21,6 +21,7 @@ import com.google.android.material.transition.platform.MaterialContainerTransfor
 import pwm.ar.arpacinema.MainActivity
 
 import pwm.ar.arpacinema.R
+import pwm.ar.arpacinema.common.Dialog
 import pwm.ar.arpacinema.databinding.FragmentSearchBinding
 import pwm.ar.arpacinema.dev.ShowingItem
 
@@ -138,6 +139,7 @@ class SearchFragment : Fragment() {
         }
 
         filterFAB.setOnClickListener {
+            FiltersFragment().show(childFragmentManager, "FiltersFragment")
             // swap the two adapters
             if(recyclerView.adapter is LoadingScreenAdapter) {
                 recyclerView.adapter = mainAdapter

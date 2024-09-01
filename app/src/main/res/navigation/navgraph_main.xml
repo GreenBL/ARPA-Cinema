@@ -23,6 +23,13 @@
         <action
             android:id="@+id/action_homeFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_categoryFragment"
+            app:destination="@id/categoryFragment"
+            app:enterAnim="@anim/zoom_fade_in"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/zoom_fade_out"/>
     </fragment>
     <fragment
         android:id="@+id/profileMenuFragment"
@@ -207,7 +214,15 @@
     <fragment
         android:id="@+id/rewardsFragment"
         android:name="pwm.ar.arpacinema.rewards.RewardsFragment"
-        android:label="RewardsFragment" />
+        android:label="RewardsFragment" >
+        <action
+            android:id="@+id/action_rewardsFragment_to_optionsFragment"
+            app:destination="@id/optionsFragment"
+            app:enterAnim="@anim/zoom_fade_in"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/zoom_fade_out"/>
+    </fragment>
     <fragment
         android:id="@+id/moviePageFragment"
         android:name="pwm.ar.arpacinema.discovery.movie.MoviePageFragment"
@@ -220,9 +235,34 @@
         android:id="@+id/bookingFragment"
         android:name="pwm.ar.arpacinema.booking.BookingFragment"
         android:label="fragment_booking"
-        tools:layout="@layout/fragment_booking" />
+        tools:layout="@layout/fragment_booking" >
+        <action
+            android:id="@+id/action_bookingFragment_to_checkoutModal"
+            app:destination="@id/checkoutModal" />
+    </fragment>
     <fragment
         android:id="@+id/imageSelectorFragment"
         android:name="pwm.ar.arpacinema.profile.image.ImageSelectorFragment"
         android:label="ImageSelectorFragment" />
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="pwm.ar.arpacinema.discovery.category.CategoryFragment"
+        android:label="CategoryFragment" >
+        <argument
+            android:name="category"
+            app:argType="pwm.ar.arpacinema.model.Categories" />
+    </fragment>
+    <fragment
+        android:id="@+id/optionsFragment"
+        android:name="pwm.ar.arpacinema.rewards.OptionsFragment"
+        android:label="fragment_options"
+        tools:layout="@layout/fragment_options" >
+        <argument
+            android:name="type"
+            app:argType="string" />
+    </fragment>
+    <dialog
+        android:id="@+id/checkoutModal"
+        android:name="pwm.ar.arpacinema.booking.CheckoutModal"
+        android:label="CheckoutModal" />
 </navigation>
