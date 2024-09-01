@@ -16,6 +16,7 @@ import pwm.ar.arpacinema.common.LargeMenuAdapter
 import pwm.ar.arpacinema.common.MenuItem
 import pwm.ar.arpacinema.databinding.FragmentAccountBinding
 import pwm.ar.arpacinema.databinding.FragmentRewardsBinding
+import pwm.ar.arpacinema.model.Reward
 
 class RewardsFragment : Fragment() {
 
@@ -25,8 +26,8 @@ class RewardsFragment : Fragment() {
         MenuItem(R.drawable.tall_drink_cups__dark_background, "Bibite"),
         MenuItem(R.drawable.popcorn_buckets_and_then_some_drink_cups_in_front_, "Combo"))
     private val discountsList = listOf(
-        MenuItem(R.drawable.outline_local_play_24, "Sconto biglietto"),
-        MenuItem(R.drawable.outline_local_offer_24, "Ingresso gratuito"))
+        Reward("Sconto", "Sconto biglietto (50%)", 500),
+        Reward("Sconto", "Biglietto gratuito (100%)", 1000))
 
     private var _binding: FragmentRewardsBinding? = null
     private val binding get() = _binding!!
@@ -84,7 +85,7 @@ class RewardsFragment : Fragment() {
             findNavController().navigate(action)
 
         }
-        val discountsAdapter = MenuAdapter(discountsList) {
+        val discountsAdapter = OptionsAdapter(discountsList) {
             // onclicklistener
         }
 

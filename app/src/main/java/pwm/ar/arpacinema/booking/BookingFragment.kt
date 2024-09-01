@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dev.jahidhasanco.seatbookview.SeatBookView
 import dev.jahidhasanco.seatbookview.SeatClickListener
@@ -142,6 +143,14 @@ class BookingFragment : Fragment() {
         selectionList.apply {
             adapter = selectionAdapter
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        }
+
+        // checkout
+
+        val checkoutButton = binding.checkoutButton
+        checkoutButton.setOnClickListener {
+            val action = BookingFragmentDirections.actionBookingFragmentToCheckoutModal()
+            findNavController().navigate(action)
         }
 
     }
