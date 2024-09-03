@@ -52,23 +52,29 @@ class WalletFragment : Fragment() {
             initialized = true
         }
 
-        // Mostra il confirmButton quando l'utente inizia a digitare
-        increaseLayout.editText?.addTextChangedListener {
-            if (initialized) {
-                fadeIn(confirmButton)
-                initialized = false // avoid playing the animation again
-            }
+        // on text changed -> check if it's empty -> disable button if it is
+//        increaseLayout.editText?.addTextChangedListener {
+//            if (it.isNullOrBlank()) {
+//                disable(confirmButton)
+//            } else {
+//                enable(confirmButton)
+//            }
+//        }
+
+        viewModel.inputAmount.observe(viewLifecycleOwner) {
             if (it.isNullOrBlank()) {
-                fadeOut(confirmButton)
-                initialized = true
+                disable(confirmButton)
+            } else {
+                enable(confirmButton)
             }
         }
 
         confirmButton.setOnClickListener {
-            fadeOut(confirmButton)
+            disable(confirmButton)
             lifecycleScope.launch {
                 viewModel.increaseBalance()
             }
+            viewModel.inputAmount.postValue("")
         }
 
         viewModel.responseStatus.observe(viewLifecycleOwner) { status ->
@@ -87,20 +93,12 @@ class WalletFragment : Fragment() {
 
     }
 
-    private fun fadeIn(button: Button) {
-        button.visibility = View.VISIBLE
-        button.alpha = 0f
-        button.post {
-            button.animate().alpha(1f).setDuration(350)
-        }
+    private fun enable(button: Button) {
+        button.isEnabled = true
     }
 
-    private fun fadeOut(button: Button) {
-        button.post {
-            button.animate().alpha(0f).setDuration(350).withEndAction {
-                button.visibility = View.GONE
-            }.start()
-        }
+    private fun disable(button: Button) {
+        button.isEnabled = false
     }
 
     override fun onDestroyView() {
