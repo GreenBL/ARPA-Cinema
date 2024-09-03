@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="security_questions">
+        <item>Qual è il nome del tuo primo animale domestico?</item>
+        <item>Qual è il nome della scuola elementare che hai frequentato?</item>
+        <item>In quale città sei nato/a?</item>
+    </string-array>
+</resources>

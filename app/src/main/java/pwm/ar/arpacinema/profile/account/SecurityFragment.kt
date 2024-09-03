@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.databinding.FragmentSecurityBinding
 
@@ -32,6 +33,24 @@ class SecurityFragment : Fragment() {
     ): View {
         _binding = FragmentSecurityBinding.inflate(layoutInflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // setup abar
+        binding.navappbar.viewTitle.text = "Sicurezza"
+
+        val dropdownMenu = binding.securityQuestionSpinner
+
+        val arrayAdp = ArrayAdapter(
+            requireContext(),
+            R.layout.custom_dropdown_item,
+            resources.getStringArray(R.array.security_questions)
+        )
+        dropdownMenu.setAdapter(
+            arrayAdp
+        )
     }
 
     override fun onDestroy() {
