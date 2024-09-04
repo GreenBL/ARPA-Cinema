@@ -191,6 +191,12 @@ class HomeFragment : Fragment() {
             //findNavController().navigate(R.id.authFragment)
         }
 
+        val topDots = binding.topIndi
+        topDots.attachToRecyclerView(binding.popRV, popsnapHelper)
+
+        val bottomDots = binding.bottomGear
+        bottomDots.attachToRecyclerView(binding.carouselRV, snapHelper)
+
     }
 
     override fun onDestroyView() {

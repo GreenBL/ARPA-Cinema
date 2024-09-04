@@ -17,6 +17,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.Session
 import pwm.ar.arpacinema.databinding.FragmentInfoBinding
+import pwm.ar.arpacinema.util.TextValidator
 
 class InfoFragment : Fragment() {
 
@@ -57,35 +58,18 @@ class InfoFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-        // Ascolta i cambiamenti nei campi per mostrare il saveButton
-//        nameLayout.editText?.addTextChangedListener {
-//            if (initialized) {
-//                fadeIn(saveButton)
-//                initialized = false
-//            }
-//        }
-//
-//        surnameLayout.editText?.addTextChangedListener {
-//            if (initialized) {
-//                fadeIn(saveButton)
-//                initialized = false
-//            }
-//        }
-//
-//        phoneLayout.editText?.addTextChangedListener {
-//            if (initialized) {
-//                fadeIn(saveButton)
-//                initialized = false
-//            }
-//        }
-
-        // alternative method based on viewmodel and watches if its different than the current user
+        // setting up text watchers
+        nameLayout.editText?.addTextChangedListener(TextValidator(nameLayout, TextValidator.Companion::isValidName))
+        surnameLayout.editText?.addTextChangedListener(TextValidator(surnameLayout, TextValidator.Companion::isValidName))
+        phoneLayout.editText?.addTextChangedListener(TextValidator(phoneLayout, TextValidator.Companion::isValidPhone))
 
         saveButton.isEnabled = false
         saveButton.visibility = View.VISIBLE
 
+
+
         viewModel.userName.observe(viewLifecycleOwner) {
-            if (it.isNullOrBlank() || it == Session.user?.name) {
+            if (it.isNullOrBlank() || it == Session.user?.name || nameLayout.error != null) {
                 disable(saveButton)
             } else {
                 enable(saveButton)
@@ -93,7 +77,7 @@ class InfoFragment : Fragment() {
         }
 
         viewModel.userSurname.observe(viewLifecycleOwner) {
-            if (it.isNullOrBlank() || it == Session.user?.surname) {
+            if (it.isNullOrBlank() || it == Session.user?.surname || surnameLayout.error != null) {
                 disable(saveButton)
             } else {
                 enable(saveButton)
@@ -101,7 +85,7 @@ class InfoFragment : Fragment() {
         }
 
         viewModel.userPhone.observe(viewLifecycleOwner) {
-            if (it.isNullOrBlank() || it == Session.user?.phone) {
+            if (it.isNullOrBlank() || it == Session.user?.phone || phoneLayout.error != null) {
                 disable(saveButton)
             } else {
                 enable(saveButton)

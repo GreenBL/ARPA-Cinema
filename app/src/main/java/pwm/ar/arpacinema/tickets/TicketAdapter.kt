@@ -1,38 +1,35 @@
 package pwm.ar.arpacinema.tickets
 
-import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.databinding.TicketItemBinding
 import pwm.ar.arpacinema.dev.TicketItem
 
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Color
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.RoundedCorner
-import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomappbar.BottomAppBarTopEdgeTreatment
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.shape.CornerFamily
-import com.google.android.material.shape.CornerTreatment
-import com.google.android.material.shape.CutCornerTreatment
-import com.google.android.material.shape.MarkerEdgeTreatment
-import com.google.android.material.shape.MaterialShapeDrawable
-import com.google.android.material.shape.OffsetEdgeTreatment
-import com.google.android.material.shape.RoundedCornerTreatment
 import com.google.android.material.shape.ShapeAppearanceModel
-import com.google.android.material.shape.TriangleEdgeTreatment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
+import pwm.ar.arpacinema.Session
+import pwm.ar.arpacinema.repository.DTO
+import pwm.ar.arpacinema.repository.RetrofitClient
 import pwm.ar.arpacinema.util.CircleEdgeTreatment
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.io.InputStream
+import java.io.OutputStream
+
+private const val radius = 80f
 
 class TicketAdapter(
     private val menuItems: List<TicketItem>,
@@ -48,6 +45,8 @@ class TicketAdapter(
         }
     }
 
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TicketViewHolder {
         val binding = TicketItemBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
@@ -57,16 +56,18 @@ class TicketAdapter(
         val topCard = binding.topCard
         val poster = binding.moviePoster
 
+
+
         val shapeAppearanceModelTop = ShapeAppearanceModel.builder()
             .setTopLeftCorner(CornerFamily.ROUNDED, 80f)
             .setTopRightCorner(CornerFamily.ROUNDED, 80f)
-            .setBottomLeftCorner(CircleEdgeTreatment(50f))
-            .setBottomRightCorner(CircleEdgeTreatment(50f))
+            .setBottomLeftCorner(CircleEdgeTreatment(radius))
+            .setBottomRightCorner(CircleEdgeTreatment(radius))
             .build()
 
         val shapeAppearanceModelBottom = ShapeAppearanceModel.builder()
-            .setTopLeftCorner(CircleEdgeTreatment(50f))
-            .setTopRightCorner(CircleEdgeTreatment(50f))
+            .setTopLeftCorner(CircleEdgeTreatment(radius))
+            .setTopRightCorner(CircleEdgeTreatment(radius))
             .setBottomLeftCorner(CornerFamily.ROUNDED, 80f)
             .setBottomRightCorner(CornerFamily.ROUNDED, 80f)
             .build()
@@ -78,6 +79,8 @@ class TicketAdapter(
         return TicketViewHolder(binding)
     }
 
+    private val scope = CoroutineScope(Dispatchers.IO)
+
     override fun onBindViewHolder(holder: TicketViewHolder, position: Int) {
         val ticketItem = menuItems[position]
 
@@ -87,55 +90,72 @@ class TicketAdapter(
         holder.binding.moviePoster.transitionName = "shared_poster_${ticketItem.title}"
 
         holder.binding.shareButton.setOnClickListener {
-            captureBitmapAndShareViaIntent(holder.itemView, holder.binding.root.context)
+            scope.launch {
+                val pdfFile = getPDFFile(holder.itemView.context, ticketItem)
+                shareTicket(holder.itemView.context, pdfFile)
+            }
         }
     }
 
-    private fun captureBitmapAndShareViaIntent(view: View, context: Context) {
-        val bitmap = captureScreenshot(view)
-        val imageFile = saveBitmapToFile(context, bitmap)
-        if (imageFile != null) {
-            shareTicket(context, imageFile)
-        }
-    }
+    private var shareStr : String = ""
 
-    private fun shareTicket(context: Context, imageFile: File) {
-        val imageUri: Uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", imageFile)
-        val sharingIntent = Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, "Biglietto cinema")
-            putExtra(Intent.EXTRA_STREAM, imageUri)
-            type = "image/png"
-            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION // Allow recipient to read the file
+    private fun shareTicket(context: Context, pdf: File) {
+        val pdfURI: Uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", pdf)
+        val sharingIntent = Intent(Intent.ACTION_SEND).apply {
+            putExtra(Intent.EXTRA_STREAM, pdfURI)
+            type = "application/pdf"
+            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
         }
-        val shareMenu = Intent.createChooser(sharingIntent, "Condividi biglietto")
-        context.startActivity(shareMenu) // Use context directly
+        val shareMenu = Intent.createChooser(sharingIntent, "Condividi Biglietto")
+        context.startActivity(shareMenu)
     }
 
     override fun getItemCount(): Int = menuItems.size
 
-// DANGER ZONE // DANGER ZONE // DANGER ZONE // DANGER ZONE // DANGER ZONE // DANGER ZONE //
-
-    private fun captureScreenshot(view: View): Bitmap {
-        val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
-        val canvas = android.graphics.Canvas(bitmap)
-        view.draw(canvas)
-        return bitmap
+    private suspend fun getPDFFile(context: Context, ticket : TicketItem): File {
+        val service = RetrofitClient.service
+        lateinit var response: ResponseBody
+            try {
+                response = service.ticketPDF(
+                    DTO.PrintTicketRequest(
+                        Session.getUserId(context),
+                        "TODO",
+                        "1"
+                    )
+                ) // TODO
+            } catch (e: Exception) {
+                Log.e("TicketAdapter", "Error: ${e.message}", e)
+            }
+        return cachePDF(context, response, "${ticket.title}_biglietto_cinema.pdf")
     }
 
-    private fun saveBitmapToFile(context: Context, bitmap: Bitmap): File? {
-        val file = File(context.cacheDir, "share_ticket.png")
-        var outputStream: FileOutputStream? = null
+    private fun cachePDF(context: Context, body: ResponseBody, fileName: String): File {
 
-        return try {
-            outputStream = FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-            file
+        val cacheDirectory = context.cacheDir
+        val pdfFile = File(cacheDirectory, fileName)
+
+
+        // we cant do the finally block otherwise
+        var inputStream: InputStream? = null
+        var outputStream: OutputStream? = null
+
+        try {
+            inputStream = body.byteStream()
+            outputStream = FileOutputStream(pdfFile)
+
+            inputStream.copyTo(outputStream)
+
+            outputStream.flush()
+
         } catch (e: IOException) {
             e.printStackTrace()
-            null
         } finally {
-            outputStream?.close() // Ensure outputStream is closed to avoid memory leaks
+            inputStream?.close()
+            outputStream?.close()
         }
+
+        return pdfFile
+
     }
+
 }

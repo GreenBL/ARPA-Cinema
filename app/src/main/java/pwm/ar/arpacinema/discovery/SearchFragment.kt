@@ -93,7 +93,7 @@ class SearchFragment : Fragment() {
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            addItemDecoration(divider)
+//            addItemDecoration(divider)
             adapter = LoadingScreenAdapter(mockList)
         }
 ////////////////////////////////////////////////// TODO ///////////////////////////////// SWAP ADPAPTER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

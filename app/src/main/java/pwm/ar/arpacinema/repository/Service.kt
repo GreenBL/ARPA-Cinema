@@ -1,5 +1,6 @@
 package pwm.ar.arpacinema.repository
 
+import okhttp3.ResponseBody
 import pwm.ar.arpacinema.model.ProfileImage
 import retrofit2.Response
 import retrofit2.http.Body
@@ -9,6 +10,7 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Url
 
 interface Service {
 
@@ -36,6 +38,8 @@ interface Service {
     @GET("pwm/load_images")
     suspend fun loadProfileImages(): Response<ImageListResponse>
 
+    @POST("pwm/download_pdf")
+    suspend fun ticketPDF(@Body printTicketRequest: PrintTicketRequest): ResponseBody
 
     // ====================================================================================
     //                                     DEBUG

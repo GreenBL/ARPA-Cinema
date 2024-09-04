@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:layout_marginEnd="8dp"
     android:layout_marginStart="8dp"
-    tools:context=".MainActivity"
     tools:layout_height="48dp"
     tools:layout_width="wrap_content">
 
@@ -14,11 +13,13 @@
         android:id="@+id/chip8"
         style="@style/Widget.Material3.Chip.Suggestion.Elevated"
         android:layout_width="wrap_content"
-        android:layout_height="56dp"
+        android:layout_height="wrap_content"
         android:checkable="false"
         android:fontFamily="@font/noto_sans"
         android:text="DEFAULT"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textSize="16sp"
+        app:chipCornerRadius="64dp"
         app:chipIcon="@drawable/anime_icon"
         app:chipIconSize="24dp"
         app:chipIconVisible="true"

@@ -141,8 +141,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="32dp"
             android:clickable="true"
-            app:layout_anchor="@+id/appbarLayout"
-            app:layout_anchorGravity="end|bottom"
+            app:layout_anchor="@+id/nestedScrollView2"
+            app:layout_anchorGravity="end|top"
             app:srcCompat="@drawable/round_save_24" />
 
 
