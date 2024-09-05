@@ -30,6 +30,13 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/zoom_fade_out"/>
+        <action
+            android:id="@+id/action_homeFragment_to_promoFragment"
+            app:destination="@id/promoFragment"
+            app:enterAnim="@anim/zoom_fade_in"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/zoom_fade_out"/>
     </fragment>
     <fragment
         android:id="@+id/profileMenuFragment"
@@ -265,4 +272,13 @@
         android:id="@+id/checkoutModal"
         android:name="pwm.ar.arpacinema.booking.CheckoutModal"
         android:label="CheckoutModal" />
+    <fragment
+        android:id="@+id/promoFragment"
+        android:name="pwm.ar.arpacinema.home.PromoFragment"
+        android:label="fragment_promo"
+        tools:layout="@layout/fragment_promo" >
+        <argument
+            android:name="promo"
+            app:argType="pwm.ar.arpacinema.model.Promotion" />
+    </fragment>
 </navigation>
