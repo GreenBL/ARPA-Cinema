@@ -12,4 +12,11 @@ data class Ticket(
     @SerializedName("show_date") val showDate: String,
     @SerializedName("show_time") val showTime: String,
     @SerializedName("seat_row_col") val seatNumber: String,
-) : Parcelable
+) : Parcelable {
+    val seatRow: String
+        get() = seatNumber[0].toString()
+
+    val seatCol: String
+        get() = seatNumber[1].toString()
+
+}

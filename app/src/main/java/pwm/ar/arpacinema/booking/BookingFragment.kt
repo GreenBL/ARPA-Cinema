@@ -10,17 +10,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dev.jahidhasanco.seatbookview.SeatBookView
 import dev.jahidhasanco.seatbookview.SeatClickListener
+import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.databinding.FragmentBookingBinding
 import pwm.ar.arpacinema.model.ScreeningDate
+import pwm.ar.arpacinema.util.CustomSeatView
 import pwm.ar.arpacinema.util.SeatInterpreter
 import java.time.LocalDate
 import java.time.LocalTime
 
+
+
 class BookingFragment : Fragment() {
+
+    private lateinit var seatBookView : CustomSeatView
 
     private var _binding : FragmentBookingBinding? = null
     private val binding get() = _binding!!
@@ -28,8 +35,8 @@ class BookingFragment : Fragment() {
     private var seats = (
                     "/_AAA_AAA_" +
                     "/AAAA_AAAA" +
-                    "/AAAA_AUAA" +
-                    "/AUUA_AAAA" +
+                    "/AAAA_AAAA" +
+                    "/AAAA_AAAA" +
                     "/AAAA_AAAA" +
                     "/AAAA_AAAA" +
                     "/_AAA_AAA_"
@@ -45,13 +52,12 @@ class BookingFragment : Fragment() {
         "/", "", "G1", "G2", "G3", "", "G4", "G5", "G6", "",
     )
 
-    private lateinit var seatBookView: SeatBookView
 
     companion object {
         fun newInstance() = BookingFragment()
     }
 
-    private val viewModel: BookingViewModel by viewModels()
+    private val viewModel: BookingViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,49 +73,13 @@ class BookingFragment : Fragment() {
         return binding.root
     }
 
+    private lateinit var dateAdapter : MovieDateAdapter
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupNavigation()
-
-        // DATE
-        val dateSelect = binding.dateSelect
-
-        val dateAdapter = MovieDateAdapter(
-            (List(20) {
-                ScreeningDate(LocalDate.now(), LocalTime.now())
-            }) ){
-            Toast.makeText(requireContext(), it.date.toString(), Toast.LENGTH_SHORT).show()
-        }
-
-        dateSelect.apply {
-            adapter = dateAdapter
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        }
-
-
-
-
-
-        // TIMES
-
-        val timeSelect = binding.timeSelect
-
-        val timeAdapter = MovieTimeAdapter(
-            (List(20) {
-                MovieTimeAdapter.ScreeningTime("a")
-            }) ){
-
-        }
-
-        timeSelect.apply {
-            adapter = timeAdapter
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        }
-
-
-
-
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
 
         // SEATS
 
@@ -121,20 +91,84 @@ class BookingFragment : Fragment() {
             .setSeatSize(if (screenOrientation == Configuration.ORIENTATION_LANDSCAPE) 600 else 220)
             .setCustomTitle(titleArray)
 
+        setupNavigation()
+
+        // DATE
+        val dateSelect = binding.dateSelect
+
+
+
+
+        dateAdapter = MovieDateAdapter(
+            (List(20) {
+                ScreeningDate(LocalDate.now(), LocalTime.now())
+            }) ){
+
+
+            // get the selections and reserve
+            seatBookView.clearSelection()
+            Log.d("TAG", "onViewCreated: ${viewModel.selectedSeats.value} and ${seatBookView.getSelectedIdList()}")
+            viewModel.clearEverything()
+            viewModel.datePosition = dateAdapter.selectedPosition
+            Toast.makeText(requireContext(), it.date.toString(), Toast.LENGTH_SHORT).show()
+            Log.d("TAG", "onViewCreated: ${viewModel.datePosition}")
+            viewModel.selectedDate.postValue(it.date)
+        }
+
+        dateSelect.apply {
+            adapter = dateAdapter
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        }
+
+        dateAdapter.setSelectionPosition(viewModel.datePosition)
+        dateAdapter.notifyDataSetChanged()
+        Log.d("TAG", "onViewCreated: ${viewModel.datePosition}")
+
+
+
+
+
+        // TIMES
+
+        val timeSelect = binding.timeSelect
+
+        val timeAdapter = MovieTimeAdapter(
+            (List(20) {
+                ScreeningDate(LocalDate.now(), LocalTime.now())
+            }) ){
+            viewModel.selectedDate.postValue(it.date)
+            Toast.makeText(requireContext(), it.date.toString(), Toast.LENGTH_SHORT).show()
+        }
+
+        timeSelect.apply {
+            adapter = timeAdapter
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        }
+
+
+
+
+
 
 
 
         seatBookView.show()
 
-        val testseats = SeatInterpreter.convertListToInteger(listOf("A1", "A2", "A3", "A4", "A5", "E1"))
 
-        seatBookView.setBookedIdList(testseats)
+
+        //val testseats = SeatInterpreter.convertListToInteger(listOf("A1", "A2", "A3", "A4", "A5", "E1"))
+
+        //seatBookView.setBookedIdList(testseats)
 
         seatBookView.setSeatClickListener(object : SeatClickListener {
             override fun onAvailableSeatClick(selectedIdList: List<Int>, view: View) {
-                if (selectedIdList.isNotEmpty()) {
-                    Log.d("TAG", "onAvailableSeatClick: $selectedIdList")
-                }
+
+
+
+
+                viewModel.updateList(selectedIdList)
+                Log.d("SEATS", "onAvailableSeatClick: $selectedIdList and ${viewModel.selectedSeats.value}")
+
             }
             override fun onBookedSeatClick(view: View) {
             }
@@ -142,9 +176,17 @@ class BookingFragment : Fragment() {
             }
         })
 
-        // checkout
+        // chips
+        val chips = binding.chipGroup
 
+
+
+        // CHECKOUT
         val checkoutButton = binding.checkoutButton
+        viewModel.selectionObjects.observe(viewLifecycleOwner) {
+            Log.d("TAG", "onViewCreated: $it OBSERVED")
+            checkoutButton.isEnabled = !it.isNullOrEmpty()
+        }
         checkoutButton.setOnClickListener {
             val action = BookingFragmentDirections.actionBookingFragmentToCheckoutModal()
             findNavController().navigate(action)
@@ -161,17 +203,20 @@ class BookingFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+        //requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
     }
 
     override fun onPause() {
         super.onPause()
-        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        //requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
+
+
+
 
 }
