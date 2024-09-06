@@ -9,12 +9,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dev.jahidhasanco.seatbookview.SeatBookView
 import dev.jahidhasanco.seatbookview.SeatClickListener
 import pwm.ar.arpacinema.databinding.FragmentBookingBinding
+import pwm.ar.arpacinema.model.ScreeningDate
 import pwm.ar.arpacinema.util.SeatInterpreter
+import java.time.LocalDate
+import java.time.LocalTime
 
 class BookingFragment : Fragment() {
 
@@ -66,14 +70,16 @@ class BookingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupNavigation()
+
         // DATE
         val dateSelect = binding.dateSelect
 
         val dateAdapter = MovieDateAdapter(
             (List(20) {
-                MovieDateAdapter.ScreeningDate("a")
+                ScreeningDate(LocalDate.now(), LocalTime.now())
             }) ){
-
+            Toast.makeText(requireContext(), it.date.toString(), Toast.LENGTH_SHORT).show()
         }
 
         dateSelect.apply {
@@ -136,15 +142,6 @@ class BookingFragment : Fragment() {
             }
         })
 
-        // selection recap
-
-        val selectionList = binding.seatsSelected
-        val selectionAdapter = SelectionAdapter(listOf("A1", "A2", "A3", "A4", "A5", "E1")) // test data
-        selectionList.apply {
-            adapter = selectionAdapter
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        }
-
         // checkout
 
         val checkoutButton = binding.checkoutButton
@@ -153,6 +150,13 @@ class BookingFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+    }
+
+    private fun setupNavigation() {
+        binding.inclusion.viewTitle.text = "Acquista Biglietto"
+        binding.inclusion.navBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
     override fun onResume() {
