@@ -11,10 +11,13 @@ import android.widget.Button
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import pwm.ar.arpacinema.Session
 import pwm.ar.arpacinema.databinding.FragmentInfoBinding
+import pwm.ar.arpacinema.util.TextValidator
 
 class InfoFragment : Fragment() {
 
@@ -55,25 +58,37 @@ class InfoFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-        // Ascolta i cambiamenti nei campi per mostrare il saveButton
-        nameLayout.editText?.addTextChangedListener {
-            if (initialized) {
-                fadeIn(saveButton)
-                initialized = false
+        // setting up text watchers
+        nameLayout.editText?.addTextChangedListener(TextValidator(nameLayout, TextValidator.Companion::isValidName))
+        surnameLayout.editText?.addTextChangedListener(TextValidator(surnameLayout, TextValidator.Companion::isValidName))
+        phoneLayout.editText?.addTextChangedListener(TextValidator(phoneLayout, TextValidator.Companion::isValidPhone))
+
+        saveButton.isEnabled = false
+        saveButton.visibility = View.VISIBLE
+
+
+
+        viewModel.userName.observe(viewLifecycleOwner) {
+            if (it.isNullOrBlank() || it == Session.user?.name || nameLayout.error != null) {
+                disable(saveButton)
+            } else {
+                enable(saveButton)
             }
         }
 
-        surnameLayout.editText?.addTextChangedListener {
-            if (initialized) {
-                fadeIn(saveButton)
-                initialized = false
+        viewModel.userSurname.observe(viewLifecycleOwner) {
+            if (it.isNullOrBlank() || it == Session.user?.surname || surnameLayout.error != null) {
+                disable(saveButton)
+            } else {
+                enable(saveButton)
             }
         }
 
-        phoneLayout.editText?.addTextChangedListener {
-            if (initialized) {
-                fadeIn(saveButton)
-                initialized = false
+        viewModel.userPhone.observe(viewLifecycleOwner) {
+            if (it.isNullOrBlank() || it == Session.user?.phone || phoneLayout.error != null) {
+                disable(saveButton)
+            } else {
+                enable(saveButton)
             }
         }
 
@@ -84,7 +99,7 @@ class InfoFragment : Fragment() {
                 try {
                     if(viewModel.updateUser()) {
                         Snackbar.make(view, "Salvataggio effettuato", Snackbar.LENGTH_SHORT).show()
-                        fadeOut(saveButton)
+                        disable(saveButton)
                     } else {
                         Snackbar.make(view, "Errore durante il salvataggio", Snackbar.LENGTH_SHORT).show()
                     }
@@ -102,20 +117,12 @@ class InfoFragment : Fragment() {
         }
     }
 
-    private fun fadeIn(saveButton: Button) {
-        saveButton.post {
-            saveButton.visibility = View.VISIBLE
-            saveButton.alpha = 0f
-            saveButton.animate().alpha(1f).setDuration(350).start()
-        }
+    private fun enable(saveButton: FloatingActionButton) {
+        saveButton.isEnabled = true
     }
 
-    private fun fadeOut(saveButton: Button) {
-        saveButton.post {
-            saveButton.animate().alpha(0f).setDuration(350).withEndAction {
-                saveButton.visibility = View.GONE
-            }.start()
-        }
+    private fun disable(saveButton: FloatingActionButton) {
+        saveButton.isEnabled = false
     }
 
     override fun onDestroy() {

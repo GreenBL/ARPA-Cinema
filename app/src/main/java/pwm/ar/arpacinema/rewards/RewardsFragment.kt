@@ -90,7 +90,9 @@ class RewardsFragment : Fragment() {
         }
 
         val dividerItemDecoration =
-            MaterialDividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+            MaterialDividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL).apply {
+                isLastItemDecorated = false
+            }
 
         val decorator = MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL).apply {
             dividerThickness = 32

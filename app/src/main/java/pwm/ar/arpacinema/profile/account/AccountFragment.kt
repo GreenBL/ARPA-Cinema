@@ -118,7 +118,9 @@ class AccountFragment : Fragment() {
         }
 
         val dividerItemDecoration =
-            MaterialDividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+            MaterialDividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL).apply {
+                isLastItemDecorated = false
+            }
 
         menu.apply {
             adapter = menuAdapter

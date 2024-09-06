@@ -9,25 +9,46 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import pwm.ar.arpacinema.databinding.DateItemBinding
 import pwm.ar.arpacinema.databinding.ProfileImageItemBinding
 import pwm.ar.arpacinema.model.ProfileImage
+import pwm.ar.arpacinema.model.ScreeningDate
 import pwm.ar.arpacinema.profile.image.ProfileImageAdapter
 
 class MovieDateAdapter(
-    private val dates : List<ScreeningDate>,
-    private val onImageClick : (ScreeningDate) -> Unit
+    private val dates: List<ScreeningDate>,
+    private val onDayClick: (ScreeningDate) -> Unit
 ) : RecyclerView.Adapter<MovieDateAdapter.MovieDateViewHolder>() {
 
-    inner class MovieDateViewHolder(val binding : DateItemBinding) :
+
+    var selectedPosition : Int = RecyclerView.NO_POSITION
+
+    inner class MovieDateViewHolder(val binding: DateItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         init {
+
             binding.root.setOnClickListener {
-                onImageClick(dates[adapterPosition])
+                val clickedPosition = adapterPosition
+
+                if (selectedPosition == clickedPosition) return@setOnClickListener
+
+
+                val previousSelectedPosition = selectedPosition
+                selectedPosition = clickedPosition
+                notifyItemChanged(previousSelectedPosition)
+                notifyItemChanged(selectedPosition)
+                onDayClick(dates[clickedPosition])
+
             }
         }
-    }
 
-    data class ScreeningDate(
-        val date: String = "Marzo", // TODO // TODO
-    )
+
+        fun bind(date: ScreeningDate, isSelected: Boolean) {
+
+            binding.dayName.text = date.dayOfWeek
+            binding.dayNum.text = date.dayOfMonth
+            binding.root.isChecked = isSelected
+
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieDateViewHolder {
         val binding = DateItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -37,10 +58,14 @@ class MovieDateAdapter(
     override fun getItemCount(): Int = dates.size
 
     override fun onBindViewHolder(holder: MovieDateViewHolder, position: Int) {
-        val binding = holder.binding
-        ////////////////////////////
 
+        val isSelected = position == selectedPosition
+        holder.bind(dates[position], isSelected)
 
+    }
 
+    fun setSelectionPosition(position: Int) {
+        selectedPosition = position
+        notifyDataSetChanged()
     }
 }

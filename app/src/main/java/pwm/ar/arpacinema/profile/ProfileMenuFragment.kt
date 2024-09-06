@@ -136,6 +136,7 @@ class ProfileMenuFragment : Fragment() {
 
         val dividerItemDecoration =
             MaterialDividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+                .apply { isLastItemDecorated = false }
 
         centerMenu.apply {
             adapter = centerMenuAdapter

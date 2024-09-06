@@ -68,6 +68,7 @@
                 android:fontFamily="@font/noto_sans"
                 android:text="Opzioni"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView35" />
 
@@ -90,6 +91,7 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardViewOptions"
+                style="@style/Widget.Material3.CardView.Elevated"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"

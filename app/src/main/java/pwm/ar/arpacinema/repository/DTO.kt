@@ -59,6 +59,11 @@ class DTO {
         @SerializedName("images") val imageList: List<ProfileImage>?
     )
 
+    data class PrintTicketRequest(
+        @SerializedName("user_id") val id: String?,
+        @SerializedName("seat_code") val seatCode: String?,
+        @SerializedName("purchase_id") val purchaseID: String?,
+    )
 
 
     @Internal

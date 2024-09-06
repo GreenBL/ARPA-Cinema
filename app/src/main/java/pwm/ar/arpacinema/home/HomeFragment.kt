@@ -1,7 +1,6 @@
 package pwm.ar.arpacinema.home
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,24 +11,18 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SnapHelper
 import com.bumptech.glide.Glide
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.CarouselSnapHelper
-import com.google.android.material.carousel.HeroCarouselStrategy
-import com.google.android.material.carousel.MultiBrowseCarouselStrategy
 import com.google.android.material.carousel.UncontainedCarouselStrategy
 import com.google.android.material.divider.MaterialDividerItemDecoration
-import com.google.android.material.transition.platform.MaterialContainerTransform
 import pwm.ar.arpacinema.model.Categories.*
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.Session
 import pwm.ar.arpacinema.databinding.FragmentHomeBinding
 import pwm.ar.arpacinema.model.Categories
+import pwm.ar.arpacinema.model.Promotion
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -79,10 +72,10 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility = View.VISIBLE
         if(Session.user != null) {
-            binding.tophome.titleStr.text = "Bentornato/a, ${Session.user!!.name}"
-            binding.tophome.textView.visibility = View.GONE
+            binding.tophome.titleStr.text = "Ciao ${Session.user!!.name}!"
+            binding.tophome.textView.text = ""
+
             binding.tophome.badge.isEnabled = false
             binding.tophome.icon.scaleType = ImageView.ScaleType.CENTER_CROP
             Glide.with(requireContext())
@@ -94,10 +87,6 @@ class HomeFragment : Fragment() {
         binding.searchBar.setOnClickListener {
             val sharedElementView = binding.searchBar
             val nav = findNavController()
-
-//            val args = Bundle().apply {
-//                putBoolean("showIme", true)
-//            }
 
             val action = HomeFragmentDirections.actionHomeFragmentToSearchFragment(showIme = true)
 
@@ -136,10 +125,7 @@ class HomeFragment : Fragment() {
             )
 
         val dataset2 = listOf(
-            CarouselItem("Il Signore Degli Anelli: Il Ritorno Del Re", "https://static.posters.cz/image/1300/poster/il-signore-degli-anelli-il-ritorno-del-re-i104633.jpg"),
-            CarouselItem("Il regno del pianeta delle scimmie", "https://www.cinecentrum.it/uploads/images/pianeta%20scimmie%202%202024.jpg"),
-            CarouselItem("Trap", "https://www.trapthefilm.com/assets/images/fullbanner.jpg"),
-            CarouselItem("Twisters", "https://images.justwatch.com/poster/315736719/s718/twisters.jpg")
+            Promotion("Poster di Ciccio", "Acquista ora e ricevi un poster omaggio!", "Si lunghissima", "https://picsum.photos/2100/900")
         )
 
 
@@ -149,7 +135,7 @@ class HomeFragment : Fragment() {
             dividerColor = 0x00FFFFFF
         }
 
-        val carAdapter = CarouselAdapter(dataset)
+        val carAdapter = CarouselAdapter(dataset) {}
         val carousel = binding.carouselRV
         val carouselLayoutManager = CarouselLayoutManager(UncontainedCarouselStrategy())
         carouselLayoutManager.carouselAlignment = CarouselLayoutManager.ALIGNMENT_CENTER
@@ -167,8 +153,11 @@ class HomeFragment : Fragment() {
         snapHelper.attachToRecyclerView(carousel)
 
 
-        // popular movies
-        val popAdapter = PopularAdapter(dataset2) {}
+        // popromotions
+        val popAdapter = PromoAdapter(dataset2) {
+            val action = HomeFragmentDirections.actionHomeFragmentToPromoFragment(it)
+            findNavController().navigate(action)
+        }
         val popRV = binding.popRV
         val popLayoutManager = CarouselLayoutManager(UncontainedCarouselStrategy())
         popLayoutManager.carouselAlignment = CarouselLayoutManager.ALIGNMENT_CENTER
@@ -190,6 +179,12 @@ class HomeFragment : Fragment() {
             cardNavController.navigate(R.id.authFragment, null, null, extras)
             //findNavController().navigate(R.id.authFragment)
         }
+
+        val topDots = binding.topIndi
+        topDots.attachToRecyclerView(binding.popRV, popsnapHelper)
+
+        val bottomDots = binding.bottomGear
+        bottomDots.attachToRecyclerView(binding.carouselRV, snapHelper)
 
     }
 

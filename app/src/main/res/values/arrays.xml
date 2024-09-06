@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="security_questions">
+        <item>Nome di un genitore</item>
+        <item>Nome dell\'animale domestico</item>
+        <item>Nome di un eroe dell\'infanzia</item>
+        <item>Film preferito</item>
+        <item>Nome della scuola elementare</item>
+        <item>Nome del tuo cibo preferito</item>
+    </string-array>
+</resources>

@@ -68,6 +68,7 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.androidx.gridlayout)
     implementation(libs.shimmer)
+    implementation(libs.cardview.v7)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

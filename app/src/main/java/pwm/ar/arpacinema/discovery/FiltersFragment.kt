@@ -32,7 +32,7 @@ class FiltersFragment : DialogFragment() {
 
         return MaterialAlertDialogBuilder(requireContext(), style)
             .setView(binding.root)
-            .setTitle("Filtri e ordinamento")
+            .setTitle("Filtri")
             .create()
 
 
