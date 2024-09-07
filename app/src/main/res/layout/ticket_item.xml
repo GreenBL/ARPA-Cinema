@@ -79,7 +79,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:shapeAppearance="?attr/shapeAppearanceCornerExtraSmall"
-                    app:srcCompat="@drawable/banner_placeholder_colored"
+                    app:srcCompat="@drawable/locandina"
                     tools:layout_conversion_absoluteHeight="200dp"
                     tools:layout_conversion_absoluteWidth="200dp" />
 
@@ -310,13 +310,12 @@
             android:id="@+id/bottomCard"
             android:layout_width="0dp"
             android:layout_height="140dp"
-            android:clipChildren="true"
-            android:clipToOutline="true"
-            android:clipToPadding="true"
+            android:clickable="true"
+            android:foregroundGravity="clip_horizontal|clip_vertical"
             android:paddingTop="2dp"
-            app:cardBackgroundColor="#FFFFFF"
-            app:cardElevation="12dp"
-            app:cardMaxElevation="12dp"
+            app:cardBackgroundColor="@color/md_theme_surfaceContainer"
+            app:cardElevation="0dp"
+            app:cardMaxElevation="0dp"
             app:cardPreventCornerOverlap="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -326,12 +325,42 @@
             tools:layout_conversion_absoluteHeight="200dp"
             tools:layout_conversion_absoluteWidth="200dp">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipChildren="true"
+                android:clipToOutline="true"
+                android:clipToPadding="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView25"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginTop="16dp"
+                    android:alpha="0.5"
+                    android:fontFamily="@font/noto_sans"
+                    android:text="Tocca qui per mostrare il biglietto"
+                    android:textAlignment="center"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/imageView18"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:tint="@color/md_theme_onSurface"
+                    app:srcCompat="@drawable/round_receipt_24" />
+            </LinearLayout>
+
             <ImageView
                 android:id="@+id/imageView7"
                 android:layout_width="wrap_content"
                 android:layout_height="76dp"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="32dp"
+                android:visibility="gone"
                 app:srcCompat="@drawable/barcode" />
 
         </com.google.android.material.card.MaterialCardView>

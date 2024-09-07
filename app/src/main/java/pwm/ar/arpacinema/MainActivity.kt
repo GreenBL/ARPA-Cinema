@@ -167,6 +167,9 @@ class MainActivity : AppCompatActivity() {
                     R.id.ticketsFragment -> {
                         showBottomNavigation()
                     }
+                    R.id.viewTicketFragment -> {
+                        showBottomNavigation()
+                    }
 
                     else -> {
                         hideBottomNavigation()

@@ -113,25 +113,7 @@
         <action
             android:id="@+id/action_ticketsFragment_to_profileMenuFragment"
             app:destination="@id/profileMenuFragment" />
-        <action
-            android:id="@+id/action_ticketsFragment_to_viewTicketFragment"
-            app:destination="@id/viewTicketFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/viewTicketFragment"
-        android:name="pwm.ar.arpacinema.tickets.ViewTicketFragment"
-        android:label="fragment_view_ticket"
-        tools:layout="@layout/fragment_view_ticket" >
-        <argument
-            android:name="transition"
-            app:argType="string"
-            android:defaultValue="replace_or_exception!" />
-    </fragment>
-    <action
-        android:id="@+id/action_global_viewTicketFragment"
-        app:destination="@id/viewTicketFragment"
-        app:popExitAnim="@animator/nav_default_pop_exit_anim"
-        app:popUpTo="@id/ticketsFragment" />
     <fragment
         android:id="@+id/searchFragment"
         android:name="pwm.ar.arpacinema.discovery.SearchFragment"
@@ -315,4 +297,14 @@
         android:name="pwm.ar.arpacinema.rewards.inventory.CodeFragment"
         android:label="fragment_code"
         tools:layout="@layout/fragment_code" /><action android:id="@+id/action_global_codeFragment" app:destination="@id/codeFragment"/>
+    <dialog
+        android:id="@+id/viewTicketFragment"
+        android:name="pwm.ar.arpacinema.tickets.ViewTicketFragment"
+        android:label="fragment_view_ticket"
+        tools:layout="@layout/fragment_view_ticket" >
+        <argument
+            android:name="ticketDetails"
+            app:argType="pwm.ar.arpacinema.parcels.TicketDetailsParcel" />
+    </dialog>
+    <action android:id="@+id/action_global_viewTicketFragment" app:destination="@id/viewTicketFragment" />
 </navigation>

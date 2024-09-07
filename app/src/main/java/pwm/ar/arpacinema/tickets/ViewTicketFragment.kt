@@ -1,5 +1,6 @@
 package pwm.ar.arpacinema.tickets
 
+import android.app.Dialog
 import android.graphics.Color
 import androidx.fragment.app.viewModels
 import android.os.Bundle
@@ -9,65 +10,86 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
+import com.bumptech.glide.TransitionOptions
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.platform.MaterialContainerTransform
+import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.R
+import pwm.ar.arpacinema.databinding.FragmentCodeBinding
 import pwm.ar.arpacinema.databinding.FragmentViewTicketBinding
+import pwm.ar.arpacinema.discovery.FiltersFragment
+import pwm.ar.arpacinema.rewards.inventory.CodeViewModel
 
-class ViewTicketFragment : Fragment() {
+private val style = com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
 
-    private var _binding: FragmentViewTicketBinding? = null
-    private val binding get() = _binding!!
+class ViewTicketFragment : DialogFragment() {
+
+    private val binding: FragmentViewTicketBinding by lazy {
+        FragmentViewTicketBinding.inflate(layoutInflater) // by lazy because we dont need to attach
+    }
+
+    private val args : ViewTicketFragmentArgs by navArgs()
 
     companion object {
-        fun newInstance() = ViewTicketFragment()
+        fun newInstance() = FiltersFragment()
     }
 
-    private val viewModel: ViewTicketViewModel by viewModels()
+    private val viewModel: ViewTicketViewModel by activityViewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private val scope = lifecycleScope
 
-        this.sharedElementEnterTransition = MaterialContainerTransform().apply {
-            duration = 400L
-            isElevationShadowEnabled = true
-            fadeMode = MaterialContainerTransform.FADE_MODE_THROUGH
-            scrimColor = Color.BLACK
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+
+        val ticket = args.ticketDetails
+
+        binding.movieTitled.text = ticket.movieTitle
+        binding.datemovie.text = ticket.movieTitle
+        binding.timemovie.text = ticket.movieTime
+        binding.theatermovie.text = ticket.movieTheater
+        binding.row.transitionName = ticket.seatString
+
+        val shimmer = binding.shimmer
+
+        shimmer.startShimmer()
+
+        scope.launch {
+            val imageUri = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=LOCUSTE"
+
+
+            Glide.with(this@ViewTicketFragment)
+                .load(imageUri)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(binding.iView)
+
+            binding.iView.post{
+                shimmer.stopShimmer()
+                shimmer.hideShimmer()
+            }
+
+
         }
 
-        // TODO: Use the ViewModel
-    }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentViewTicketBinding.inflate(inflater, container, false)
-        return binding.root
+        return MaterialAlertDialogBuilder(requireContext(), style)
+            .setView(binding.root)
+            .setTitle("Il tuo biglietto")
+            .setBackgroundInsetTop(0)
+            .setIcon(R.drawable.round_receipt_24)
+            .setPositiveButton("Chiudi") { _, _ ->
+                dismiss()
+            }
+            .create()
+
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val transitionName = arguments?.getString("transition")
-        Log.d("Transizione passata?", "Ricevuata: $transitionName")
-
-        val whole = binding.root
-        ViewCompat.setTransitionName(whole, transitionName)
-
-        // hide the bottom navigation bar
-        val navBar = requireActivity().findViewById<View>(R.id.bottomNavigationView)
-        navBar.visibility = View.GONE
-
-
-
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-        // show the nav bar again
-        val navBar = requireActivity().findViewById<View>(R.id.bottomNavigationView)
-        navBar.visibility = View.VISIBLE
-
     }
 }

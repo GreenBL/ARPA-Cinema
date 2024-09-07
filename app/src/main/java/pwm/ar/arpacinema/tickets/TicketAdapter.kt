@@ -39,7 +39,7 @@ class TicketAdapter(
     inner class TicketViewHolder(val binding: TicketItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
-            binding.root.setOnClickListener {
+            binding.bottomCard.setOnClickListener {
                 onItemClick(menuItems[adapterPosition], binding.moviePoster)
             }
         }
