@@ -296,7 +296,11 @@
         android:id="@+id/codeFragment"
         android:name="pwm.ar.arpacinema.rewards.inventory.CodeFragment"
         android:label="fragment_code"
-        tools:layout="@layout/fragment_code" /><action android:id="@+id/action_global_codeFragment" app:destination="@id/codeFragment"/>
+        tools:layout="@layout/fragment_code" >
+        <argument
+            android:name="rewardDetails"
+            app:argType="pwm.ar.arpacinema.parcels.RewardDetailsParcel" />
+    </dialog><action android:id="@+id/action_global_codeFragment" app:destination="@id/codeFragment"/>
     <dialog
         android:id="@+id/viewTicketFragment"
         android:name="pwm.ar.arpacinema.tickets.ViewTicketFragment"

@@ -49,7 +49,7 @@ class ViewTicketFragment : DialogFragment() {
         val ticket = args.ticketDetails
 
         binding.movieTitled.text = ticket.movieTitle
-        binding.datemovie.text = ticket.movieTitle
+        binding.datemovie.text = ticket.movieDate
         binding.timemovie.text = ticket.movieTime
         binding.theatermovie.text = ticket.movieTheater
         binding.row.transitionName = ticket.seatString

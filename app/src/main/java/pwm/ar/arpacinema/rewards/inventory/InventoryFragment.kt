@@ -12,6 +12,7 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.databinding.FragmentInventoryBinding
 import pwm.ar.arpacinema.model.Reward
+import pwm.ar.arpacinema.parcels.RewardDetailsParcel
 import pwm.ar.arpacinema.rewards.OptionsAdapter
 
 class InventoryFragment : Fragment() {
@@ -70,7 +71,14 @@ class InventoryFragment : Fragment() {
                 Reward("Sconto", "Biglietto gratuito (100%)", 1000),
             )
         , showPoints = false) {
-            val action = CodeFragmentDirections.actionGlobalCodeFragment()
+
+            // build the parcel
+            val parcel = RewardDetailsParcel(
+                rewardId = "temp",
+                rewardCategory = it.category,
+                rewardOption = it.description
+            )
+            val action = CodeFragmentDirections.actionGlobalCodeFragment(parcel)
             findNavController().navigate(action)
         }
 
