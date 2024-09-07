@@ -94,4 +94,16 @@ object Dialog {
         val dialog = builder.create()
         dialog.show()
     }
+
+    fun showHelpDialog(context: Context) {
+        val builder = MaterialAlertDialogBuilder(context, centered)
+        builder.setTitle("Supporto")
+        builder.setMessage("Per maggiori informazioni contatta il supporto tecnico all'indirizzo supporto@arpacinema.it")
+        builder.setIcon(R.drawable.outline_help_outline_24)
+        builder.setPositiveButton("Ok") {
+                dialog, _ -> dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
 }

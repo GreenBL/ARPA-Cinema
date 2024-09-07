@@ -14,7 +14,8 @@ import pwm.ar.arpacinema.model.Reward
 
 class OptionsAdapter(
     private val menuItems: List<Reward>,
-    private val onItemClick: (Reward) -> Unit
+    private val showPoints: Boolean = true,
+    private val onItemClick: (Reward) -> Unit = {}
 ) : RecyclerView.Adapter<OptionsAdapter.RewardViewHolder>() {
 
     inner class RewardViewHolder(val binding: OptionBinding) :
@@ -35,6 +36,12 @@ class OptionsAdapter(
 
     override fun onBindViewHolder(holder: RewardViewHolder, position: Int) {
         val menuItem = menuItems[position]
+
+        if (showPoints) {
+            holder.binding.cost.visibility = View.VISIBLE
+        } else {
+            holder.binding.cost.visibility = View.GONE
+        }
 
         holder.binding.optionTitle.text = menuItem.description
         holder.binding.cost.text = menuItem.points.toString()

@@ -19,6 +19,7 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.MenuAdapter
 import pwm.ar.arpacinema.R
+import pwm.ar.arpacinema.common.Dialog
 import pwm.ar.arpacinema.common.MenuItem
 import pwm.ar.arpacinema.databinding.FragmentAccountBinding
 
@@ -108,11 +109,7 @@ class AccountFragment : Fragment() {
 
                 else -> {
                     // help thing
-                    Toast.makeText(
-                        requireContext(),
-                        "Clicked: ${menuItem.label}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Dialog.showHelpDialog(requireContext())
                 }
             }
         }

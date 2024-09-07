@@ -90,7 +90,7 @@ class ProfileMenuFragment : Fragment() {
                    findNavController().navigate(R.id.action_profileMenuFragment_to_rewardsFragment)
                }
                "Cronologia" -> {
-             //      findNavController().navigate(R.id.action_profileMenuFragment_to_historyFragment) todo
+                   findNavController().navigate(R.id.action_profileMenuFragment_to_historyFragment)
                }
             }
 
