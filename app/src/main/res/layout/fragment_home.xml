@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -9,9 +11,7 @@
             type="pwm.ar.arpacinema.home.HomeViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -138,9 +138,7 @@
             android:clipChildren="false"
             android:clipToOutline="false"
             android:clipToPadding="false"
-            android:fadingEdgeLength="16dp"
             android:overScrollMode="ifContentScrolls"
-            android:requiresFadingEdge="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

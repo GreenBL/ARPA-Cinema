@@ -181,13 +181,15 @@ class AuthFragment : Fragment() {
                 }
                 if(result != null) {
                     Session.storeUser(requireContext(), result)
-                    findNavController().popBackStack()
+
                 }
                 loadingBar.visibility = View.GONE
                 loginButton.apply {
                     text = "Accedi"
                     isClickable = true
                 }
+
+                findNavController().popBackStack()
             }
         }
     }

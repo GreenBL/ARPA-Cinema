@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName
 import org.jetbrains.annotations.ApiStatus.Internal
 import pwm.ar.arpacinema.model.Movie
 import pwm.ar.arpacinema.model.ProfileImage
+import pwm.ar.arpacinema.model.Promotion
 import pwm.ar.arpacinema.model.User
 
 /**
@@ -16,8 +17,17 @@ import pwm.ar.arpacinema.model.User
 
 class DTO {
 
+    data class PromotionResponse(
+        @SerializedName("status") val status: Stat?,
+        @SerializedName("films") val promotions: List<Promotion>?
+    )
+
     data class UserIdPost(
         @SerializedName("user_id") val id: String?,
+    )
+
+    data class IdPost(
+        @SerializedName("id") val id: String?,
     )
 
     data class NewMoviesResponse(

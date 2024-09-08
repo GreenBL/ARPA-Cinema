@@ -17,6 +17,10 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import com.bumptech.glide.Glide
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.CarouselSnapHelper
+import com.google.android.material.carousel.CarouselStrategy
+import com.google.android.material.carousel.FullScreenCarouselStrategy
+import com.google.android.material.carousel.HeroCarouselStrategy
+import com.google.android.material.carousel.MultiBrowseCarouselStrategy
 import com.google.android.material.carousel.UncontainedCarouselStrategy
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import kotlinx.coroutines.launch
@@ -123,9 +127,7 @@ class HomeFragment : Fragment() {
         }
 
 
-        val dataset2 = listOf(
-            Promotion("Poster di Ciccio", "Acquista ora e ricevi un poster omaggio!", "Si lunghissima", "https://picsum.photos/2100/900")
-        )
+        val promotionData = viewModel.promos.value
 
 
         // add a item decoration
@@ -182,20 +184,36 @@ class HomeFragment : Fragment() {
 
 
         // popromotions
-        val popAdapter = PromoAdapter(dataset2) {
+        val popAdapter = PromoAdapter(mutableListOf()) {
             val action = HomeFragmentDirections.actionHomeFragmentToPromoFragment(it)
             findNavController().navigate(action)
         }
         val popRV = binding.popRV
-        val popLayoutManager = CarouselLayoutManager(UncontainedCarouselStrategy())
+        val popLayoutManager = CarouselLayoutManager(FullScreenCarouselStrategy())
         popLayoutManager.carouselAlignment = CarouselLayoutManager.ALIGNMENT_CENTER
         popRV.apply {
             adapter = popAdapter
             layoutManager = popLayoutManager
         }
 
+        val topDots = binding.topIndi
+
+
         val popsnapHelper = CarouselSnapHelper()
         popsnapHelper.attachToRecyclerView(binding.popRV)
+
+        viewModel.promos.observe(viewLifecycleOwner){ promos ->
+            if(promos.isNullOrEmpty()){
+                return@observe
+            }
+
+            promos.let {
+                popAdapter.updateData(promos)
+            }
+            popAdapter.registerAdapterDataObserver(topDots.adapterDataObserver)
+            topDots.attachToRecyclerView(binding.popRV, popsnapHelper)
+
+        }
 
         // handle badge click
         binding.tophome.badge.setOnClickListener {
@@ -208,8 +226,7 @@ class HomeFragment : Fragment() {
             //findNavController().navigate(R.id.authFragment)
         }
 
-        val topDots = binding.topIndi
-        topDots.attachToRecyclerView(binding.popRV, popsnapHelper)
+
 
 
 

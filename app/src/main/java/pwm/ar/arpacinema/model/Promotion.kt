@@ -10,4 +10,5 @@ data class Promotion(
     @SerializedName("short_description") val descriptionShort: String,
     @SerializedName("long_description") val descriptionLong: String,
     @SerializedName("url") val imageUri: String,
+    @SerializedName("promo_url") val link: String
 ) : Parcelable

@@ -27,6 +27,7 @@ import kotlinx.coroutines.runBlocking
 import pwm.ar.arpacinema.common.Dialog
 import pwm.ar.arpacinema.databinding.ActivityMainBinding
 import pwm.ar.arpacinema.model.User
+import pwm.ar.arpacinema.repository.DTO
 import pwm.ar.arpacinema.repository.RetrofitClient
 import pwm.ar.arpacinema.repository.Sentinel.NetStat.OFFLINE
 
@@ -82,25 +83,58 @@ class MainActivity : AppCompatActivity() {
         // todo
 
         setupBottomBarBehavior(navController)
+
         runBlocking {
             retrofit.checkConnection()
             if (Session.getUserId(this@MainActivity) == null) {
                 // hide bottom nav
                 Log.i("MainActivity", "User NOT FOUND, SKIPPING autoLOGIN")
 
-                //navigationBar.visibility = View.GONE
                 return@runBlocking
-            } else {
-                makeItemsVisible()
             }
 
+            Log.i("MainActivity", "User FOUND, autoLOGIN in progress with ID: ${Session.getUserId(this@MainActivity)}")
+
+            makeItemsVisible()
+            //navigationBar.visibility = View.VISIBLE
             //autologin // TODO API REQUEST!!!!
-            Session.storeUser(this@MainActivity, User(2, 1, "Riccardo", "Parisi", "riccardo@mail.it", "3334445566", 2, 3))
-            navigationBar.visibility = View.VISIBLE
+            //Session.storeUser(this@MainActivity, User(2, 1, "Riccardo", "Parisi", "riccardo@mail.it", "3334445566", 2, 3))
+
+            try {
+                val userId = Session.getUserId(this@MainActivity)!!
+                val response = retrofit.service.autoLogin(DTO.IdPost(userId))
+
+                if (response.isSuccessful) {
+
+                    if (response.body()?.status != DTO.Stat.SUCCESS) {
+                        throw Exception("Autologin failed, status: ${response.body()?.status}")
+                    }
+                    val user = response.body()?.user
+                    if (user != null) {
+                        // dato che il server non invia la risposta che volevo...
+                        val autoUser = User(
+                            userId.toInt(),
+                            0, // MANCA IMMAGINE
+                            user.name,
+                            user.surname,
+                            user.email,
+                            user.phone,
+                            0, // MANCA LIVELLO
+                            0 // MANCANO I PUNTI
+                        )
+                        Session.storeUser(this@MainActivity, user)
+                        // print details
+
+                    }
+                }
+
+            } catch (e: Exception) {
+                Log.e("MainActivity", "Error: ${e.message}", e)
+                Session.invalidateUser(this@MainActivity)
+                makeItemsInvisible()
+            }
+
             delay(200L) // slight delay
-
-
-
         }
 
         lifecycleScope.launch {
@@ -190,7 +224,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun hideBottomNavigation() {
-        // hide bottom nav
+        // hide bottom nav with animation
             binding.loggedoutnavigation.visibility = View.GONE
             binding.bottomNavigationView.visibility = View.GONE
     }
