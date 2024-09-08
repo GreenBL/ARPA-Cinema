@@ -190,7 +190,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun hideBottomNavigation() {
-        // hide bottom nav
+        // hide bottom nav with animation
             binding.loggedoutnavigation.visibility = View.GONE
             binding.bottomNavigationView.visibility = View.GONE
     }

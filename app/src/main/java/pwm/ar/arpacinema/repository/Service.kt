@@ -17,6 +17,9 @@ interface Service {
    // @GET("pwm/users/{userId}")
    // suspend fun getUser(@Path("userId") id: Int): Deferred<User>
 
+    @GET("pwm/load_promo_movie")
+    suspend fun getPromotions(): Response<PromotionResponse>
+
     @GET("pwm/movie_of_the_week")
     suspend fun getMoviesOfTheWeek(): Response<NewMoviesResponse>
 
