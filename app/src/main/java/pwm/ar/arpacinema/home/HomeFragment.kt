@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,21 +19,25 @@ import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.CarouselSnapHelper
 import com.google.android.material.carousel.UncontainedCarouselStrategy
 import com.google.android.material.divider.MaterialDividerItemDecoration
+import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.model.Categories.*
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.Session
 import pwm.ar.arpacinema.databinding.FragmentHomeBinding
+import pwm.ar.arpacinema.discovery.movie.MoviePageFragmentDirections
 import pwm.ar.arpacinema.model.Categories
+import pwm.ar.arpacinema.model.Movie
 import pwm.ar.arpacinema.model.Promotion
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class HomeFragment : Fragment() {
 
     // Binding
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+
+    // ViewModel
+    private val viewModel : HomeViewModel by viewModels()
 
     // Categorie
     private val catItems = listOf(
@@ -71,6 +77,9 @@ class HomeFragment : Fragment() {
     @SuppressLint("RestrictedApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
 
         if(Session.user != null) {
             binding.tophome.titleStr.text = "Ciao ${Session.user!!.name}!"
@@ -113,16 +122,6 @@ class HomeFragment : Fragment() {
 
         }
 
-        val dataset = listOf(
-            CarouselItem("Avengers: Endgame", "https://pad.mymovies.it/filmclub/2018/12/029/locandina.jpg"),
-            CarouselItem("Deadpool & Wolverine", "https://cdn.marvel.com/content/1x/dp3_1sht_digital_srgb_ka_swords_v5_resized.jpg"),
-            //CarouselItem("Il Signore Degli Anelli: Il Ritorno Del Re", "https://static.posters.cz/image/1300/poster/il-signore-degli-anelli-il-ritorno-del-re-i104633.jpg"),
-            //CarouselItem("Il regno del pianeta delle scimmie", "https://www.cinecentrum.it/uploads/images/pianeta%20scimmie%202%202024.jpg"),
-            CarouselItem("Interstellar", "https://mir-s3-cdn-cf.behance.net/project_modules/hd/8d8f28105415493.619ded067937d.jpg"),
-            CarouselItem("Trap", "https://www.trapthefilm.com/assets/images/fullbanner.jpg"),
-            CarouselItem("Twisters", "https://images.justwatch.com/poster/315736719/s718/twisters.jpg")
-
-            )
 
         val dataset2 = listOf(
             Promotion("Poster di Ciccio", "Acquista ora e ricevi un poster omaggio!", "Si lunghissima", "https://picsum.photos/2100/900")
@@ -135,22 +134,51 @@ class HomeFragment : Fragment() {
             dividerColor = 0x00FFFFFF
         }
 
-        val carAdapter = CarouselAdapter(dataset) {}
+        // bottom carousel
+        val snapHelper = CarouselSnapHelper()
+        val bottomDots = binding.bottomGear
+
+
+        val carAdapter = CarouselAdapter(emptyList()) { movie ->
+
+            val action = HomeFragmentDirections.actionGlobalMoviePageFragment(movie)
+            findNavController().navigate(action)
+
+        }
         val carousel = binding.carouselRV
-        val carouselLayoutManager = CarouselLayoutManager(UncontainedCarouselStrategy())
-        carouselLayoutManager.carouselAlignment = CarouselLayoutManager.ALIGNMENT_CENTER
+        val carouselLayoutManager = CarouselLayoutManager(UncontainedCarouselStrategy()).apply {
+            carouselAlignment = CarouselLayoutManager.ALIGNMENT_CENTER
+        }
+
+
         carousel.apply {
             adapter = carAdapter
             layoutManager = carouselLayoutManager
-            //addItemDecoration(decorator)
         }
 
-        if(carAdapter.itemCount > 2) {
-            carousel.scrollToPosition(1)
-        }
 
-        val snapHelper = CarouselSnapHelper()
         snapHelper.attachToRecyclerView(carousel)
+
+
+        viewModel.movies.observe(viewLifecycleOwner) { movies ->
+            if (movies == null || movies.isEmpty()) {
+                return@observe
+            }
+            movies.let {
+                carAdapter.updateData(it)
+
+                if (it.size > 2) {
+                    carousel.scrollToPosition(1)
+                }
+                bottomDots.attachToRecyclerView(binding.carouselRV, snapHelper)
+                carAdapter.registerAdapterDataObserver(bottomDots.adapterDataObserver)
+
+            }
+        }
+
+
+
+
 
 
         // popromotions
@@ -183,8 +211,7 @@ class HomeFragment : Fragment() {
         val topDots = binding.topIndi
         topDots.attachToRecyclerView(binding.popRV, popsnapHelper)
 
-        val bottomDots = binding.bottomGear
-        bottomDots.attachToRecyclerView(binding.carouselRV, snapHelper)
+
 
     }
 
@@ -193,14 +220,6 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
+
+
 }

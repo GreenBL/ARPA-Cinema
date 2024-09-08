@@ -1,141 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/gradient_background"
-    android:clipChildren="false"
-    android:clipToOutline="false"
-    android:clipToPadding="false"
-    android:fitsSystemWindows="false"
-    tools:context=".home.HomeFragment">
 
-    <include
-        android:id="@+id/tophome"
-        layout="@layout/fragment_home_app_bar"
-        android:layout_width="0dp"
-        android:layout_height="64dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.search.SearchBar
-        android:id="@+id/search_bar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:drawableEnd="@drawable/round_search_24"
-        android:drawableTint="@color/md_theme_onSurface"
-        android:ems="10"
-        android:hint="Cerca film..."
-        android:inputType="text|textFilter"
-        android:paddingHorizontal="16dp"
-        android:transitionGroup="true"
-        android:transitionName="shared_search"
-        app:backgroundTint="@color/md_theme_surfaceContainer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tophome" />
+<layout>
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/noto_sans"
-        android:text="Promo"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/categoryRV" />
+    <data>
+        <variable
+            name="viewModel"
+            type="pwm.ar.arpacinema.home.HomeViewModel" />
+    </data>
 
-    <me.relex.circleindicator.CircleIndicator2
-        android:id="@+id/topIndi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/popRV"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/categoryRV"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:clipChildren="true"
-        android:clipToOutline="true"
-        android:clipToPadding="false"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_bar"
-        tools:itemCount="1"
-        tools:listitem="@layout/category_item" />
-
-    <me.relex.circleindicator.CircleIndicator2
-        android:id="@+id/bottomGear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/carouselRV"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/popRV"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/frameLayout"
         android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/gradient_background"
         android:clipChildren="false"
         android:clipToOutline="false"
         android:clipToPadding="false"
-        android:fadingEdgeLength="16dp"
-        android:overScrollMode="ifContentScrolls"
-        android:requiresFadingEdge="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5"
-        tools:itemCount="3"
-        tools:listitem="@layout/carousel_item" />
+        android:fitsSystemWindows="false"
+        tools:context=".home.HomeFragment">
 
-    <TextView
-        android:id="@+id/textView215"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/noto_sans"
-        android:text="Novità"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/popRV" />
+        <include
+            android:id="@+id/tophome"
+            layout="@layout/fragment_home_app_bar"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/carouselRV"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:clipChildren="false"
-        android:clipToOutline="false"
-        android:clipToPadding="false"
-        android:fadingEdgeLength="16dp"
-        android:overScrollMode="ifContentScrolls"
-        android:requiresFadingEdge="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView215"
-        tools:itemCount="3"
-        tools:listitem="@layout/carousel_item" />
+        <com.google.android.material.search.SearchBar
+            android:id="@+id/search_bar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:drawableEnd="@drawable/round_search_24"
+            android:drawableTint="@color/md_theme_onSurface"
+            android:ems="10"
+            android:hint="Cerca film..."
+            android:inputType="text|textFilter"
+            android:paddingHorizontal="16dp"
+            android:transitionGroup="true"
+            android:transitionName="shared_search"
+            app:backgroundTint="@color/md_theme_surfaceContainer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tophome" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/noto_sans"
+            android:text="Promo"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/categoryRV" />
+
+        <me.relex.circleindicator.CircleIndicator2
+            android:id="@+id/topIndi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/popRV"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/categoryRV"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:clipChildren="true"
+            android:clipToOutline="true"
+            android:clipToPadding="false"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/search_bar"
+            tools:itemCount="1"
+            tools:listitem="@layout/category_item" />
+
+        <me.relex.circleindicator.CircleIndicator2
+            android:id="@+id/bottomGear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/carouselRV"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/popRV"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_marginTop="16dp"
+            android:clipChildren="false"
+            android:clipToOutline="false"
+            android:clipToPadding="false"
+            android:fadingEdgeLength="16dp"
+            android:overScrollMode="ifContentScrolls"
+            android:requiresFadingEdge="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView5"
+            tools:itemCount="3"
+            tools:listitem="@layout/carousel_item" />
+
+        <TextView
+            android:id="@+id/textView215"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/noto_sans"
+            android:text="Novità"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/popRV" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/carouselRV"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:clipChildren="false"
+            android:clipToOutline="false"
+            android:clipToPadding="false"
+            android:fadingEdgeLength="16dp"
+            android:overScrollMode="ifContentScrolls"
+            android:requiresFadingEdge="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView215"
+            tools:itemCount="3"
+            tools:listitem="@layout/carousel_item" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

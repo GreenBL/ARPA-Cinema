@@ -24,6 +24,8 @@ class MenuAdapter(
         }
     }
 
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
         val binding = MenuItemBinding.inflate(
             LayoutInflater.from(parent.context), parent, false

@@ -12,19 +12,23 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.runBlocking
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.databinding.CarouselItemBinding
+import pwm.ar.arpacinema.databinding.MenuItemBinding
+import pwm.ar.arpacinema.model.Movie
 import pwm.ar.arpacinema.util.PlaceholderDrawable
 
 // TODO: THIS IS AN OLD IMPLEMENTATION OF MINE FROM ANOTHER PROJECT, FIX AND REFACTOR BEFORE APP DELIVERY // done but im too lazy to delete the comment
 
 class CarouselAdapter(
-    private val heroList: List<CarouselItem>,
-    private val onItemClick: (CarouselItem) -> Unit): RecyclerView.Adapter<CarouselAdapter.CarouselViewHolder>() {
+    private var heroList: List<Movie>,
+    private val onItemClick: (Movie) -> Unit): RecyclerView.Adapter<CarouselAdapter.CarouselViewHolder>() {
 
     // ViewHolder holds the view refs
 
     inner class CarouselViewHolder(val binding: CarouselItemBinding): RecyclerView.ViewHolder(binding.root) {
         init {
-            // stuff
+            binding.root.setOnClickListener {
+                onItemClick(heroList[adapterPosition])
+            }
         }
     }
 
@@ -51,12 +55,17 @@ class CarouselAdapter(
         val placeholder = PlaceholderDrawable.getPlaceholderDrawable()
 
         Glide.with(holder.itemView.context)
-            .load(currentHero.movieImageUrl)
+            .load(currentHero.posterUrl)
             .placeholder(placeholder)
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(imageViuh)
     }
 
     override fun getItemCount(): Int = heroList.size
+
+    fun updateData(movieList: List<Movie>) {
+        heroList = movieList
+        notifyDataSetChanged() // Notify the adapter that the data has changed
+    }
 
 }

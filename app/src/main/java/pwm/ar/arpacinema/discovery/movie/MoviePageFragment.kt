@@ -10,13 +10,19 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.databinding.FragmentMoviePageBinding
+import pwm.ar.arpacinema.util.PlaceholderDrawable
 
 class MoviePageFragment : Fragment() {
 
     private var _binding: FragmentMoviePageBinding? = null
     private val binding get() = _binding!!
+
+    private val args : MoviePageFragmentArgs by navArgs()
 
     companion object {
         fun newInstance() = MoviePageFragment()
@@ -46,6 +52,8 @@ class MoviePageFragment : Fragment() {
             setFragmentResult("requestKey", bundleOf("showIme" to false))
             findNavController().popBackStack()
         }
+        val movie = args.movie
+        binding.movie = movie
         textTitle.text = "Scheda Film"
         textTitle.visibility = View.GONE
         appbar.addLiftOnScrollListener{
@@ -57,6 +65,16 @@ class MoviePageFragment : Fragment() {
                 textTitle.visibility = View.GONE
             }
         }
+
+        val imageview = binding.imageView
+
+        val placeholder = PlaceholderDrawable.getPlaceholderDrawable()
+
+        Glide.with(this)
+            .load(movie.posterUrl)
+            .placeholder(placeholder)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .into(imageview)
 
         binding.buyButton.setOnClickListener {
             findNavController().navigate(R.id.action_moviePageFragment_to_bookingFragment)

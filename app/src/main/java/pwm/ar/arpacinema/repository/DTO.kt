@@ -2,6 +2,7 @@ package pwm.ar.arpacinema.repository
 
 import com.google.gson.annotations.SerializedName
 import org.jetbrains.annotations.ApiStatus.Internal
+import pwm.ar.arpacinema.model.Movie
 import pwm.ar.arpacinema.model.ProfileImage
 import pwm.ar.arpacinema.model.User
 
@@ -14,6 +15,20 @@ import pwm.ar.arpacinema.model.User
  */
 
 class DTO {
+
+    data class UserIdPost(
+        @SerializedName("user_id") val id: String?,
+    )
+
+    data class NewMoviesResponse(
+        @SerializedName("status") val status: Stat?,
+        @SerializedName("films") val movies: List<Movie>?
+    )
+
+    data class ImageURLResponse(
+        @SerializedName("status") val status: Stat?,
+        @SerializedName("image_url") val image: String?
+    )
 
     data class SignUpRequest(
         @SerializedName("name") val name: String?,
