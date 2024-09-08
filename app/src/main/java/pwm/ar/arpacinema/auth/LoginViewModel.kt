@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import kotlinx.coroutines.Deferred
+import pwm.ar.arpacinema.Session
 import pwm.ar.arpacinema.model.User
 
 import pwm.ar.arpacinema.repository.DTO.*

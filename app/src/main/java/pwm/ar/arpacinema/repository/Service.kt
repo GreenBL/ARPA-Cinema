@@ -17,6 +17,10 @@ interface Service {
    // @GET("pwm/users/{userId}")
    // suspend fun getUser(@Path("userId") id: Int): Deferred<User>
 
+    // AUTO LOGIN
+    @POST("pwm/get_user_info")
+    suspend fun autoLogin(@Body idPost: IdPost): Response<LoginResponse>
+
     @GET("pwm/load_promo_movie")
     suspend fun getPromotions(): Response<PromotionResponse>
 

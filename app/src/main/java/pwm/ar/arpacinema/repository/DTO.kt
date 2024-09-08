@@ -26,6 +26,10 @@ class DTO {
         @SerializedName("user_id") val id: String?,
     )
 
+    data class IdPost(
+        @SerializedName("id") val id: String?,
+    )
+
     data class NewMoviesResponse(
         @SerializedName("status") val status: Stat?,
         @SerializedName("films") val movies: List<Movie>?
