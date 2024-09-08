@@ -47,10 +47,10 @@ class HistoryFragment : Fragment() {
             dividerThickness = 64
         }
         val adapter = HistoryAdapter(
-            listOf(Selection("Endgame", "20/30/40", "16:30", "A1"),
-                Selection("Endgame2", "20/30/40", "16:30", "A1"),
-                Selection("Endgame3", "20/30/40", "16:30", "A1"),
-                Selection("Endgame4", "20/30/40", "16:30", "A1"),)
+            listOf(Selection("Endgame", "20/30/40", "16:30", "Sala 1", "A1"),
+                Selection("Endgame2", "20/30/40", "16:30", "Sala 2", "A2"),
+                Selection("Endgame3", "20/30/40", "16:30", "Sala 3", "A3"),
+                Selection("Endgame4", "20/30/40", "16:30", "Sala 4", "A4"))
         )
 
         adapter.apply {

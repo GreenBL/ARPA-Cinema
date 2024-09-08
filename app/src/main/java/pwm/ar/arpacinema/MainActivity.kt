@@ -114,14 +114,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun makeItemsVisible() {
-        binding.bottomNavigationView.menu.getItem(1).isVisible = true
-        binding.bottomNavigationView.menu.getItem(2).isVisible = true
+        binding.loggedoutnavigation.visibility = View.GONE
+//        binding.bottomNavigationView.menu.getItem(1).isVisible = true
+//        binding.bottomNavigationView.menu.getItem(2).isVisible = true
 
     }
 
     private fun makeItemsInvisible() {
-        binding.bottomNavigationView.menu.getItem(1).isVisible = false
-        binding.bottomNavigationView.menu.getItem(2).isVisible = false
+        binding.loggedoutnavigation.visibility = View.VISIBLE
+//        binding.bottomNavigationView.menu.getItem(1).isVisible = false
+//        binding.bottomNavigationView.menu.getItem(2).isVisible = false
     }
 
     private fun setupWindowDecorations() {
@@ -144,17 +146,19 @@ class MainActivity : AppCompatActivity() {
     private fun setupBottomBarBehavior(navController: NavController) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             Log.d("MainActivity", "Destination changed: ${destination.label}")
-            if(Session.user == null) {
-                // cause we dont want the bar appearing again
-                //hideBottomNavigation()
-                makeItemsInvisible()
-                //return@addOnDestinationChangedListener
-            } else {
-                makeItemsVisible()
-            }
+
 
             val handler = Handler(Looper.getMainLooper())
             handler.post{ // avoid calling it before the fragment is created and shown
+                if(Session.user == null) {
+                    // cause we dont want the bar appearing again
+                    hideBottomNavigation()
+
+                    //return@addOnDestinationChangedListener
+                } else {
+                    showBottomNavigation()
+                }
+
                 when (destination.id) {
                     R.id.homeFragment -> {
                         showBottomNavigation()
@@ -187,12 +191,18 @@ class MainActivity : AppCompatActivity() {
 
     fun hideBottomNavigation() {
         // hide bottom nav
-        binding.bottomNavigationView.visibility = View.GONE
+            binding.loggedoutnavigation.visibility = View.GONE
+            binding.bottomNavigationView.visibility = View.GONE
     }
 
     fun showBottomNavigation() {
         // show bottom nav
-        binding.bottomNavigationView.visibility = View.VISIBLE
+        if (Session.user == null) {
+            binding.bottomNavigationView.visibility = View.INVISIBLE
+            binding.loggedoutnavigation.visibility = View.VISIBLE
+        } else {
+            binding.bottomNavigationView.visibility = View.VISIBLE
+        }
     }
 
     private fun observeStatus(owner: LifecycleOwner, navController: NavController) {

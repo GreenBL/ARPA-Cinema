@@ -46,16 +46,32 @@
         android:id="@+id/bottomNavigationView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/md_theme_surfaceDim_highContrast"
+        android:background="@color/md_theme_surfaceContainer"
         android:fitsSystemWindows="false"
         android:visibility="gone"
-        app:backgroundTint="#00000000"
+        app:labelVisibilityMode="selected"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/navbar_menu"
+        app:shapeAppearance="@style/BottomNav"
         tools:visibility="visible">
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/loggedoutnavigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/md_theme_surfaceContainer"
+        android:fitsSystemWindows="false"
+        android:visibility="visible"
+        app:labelVisibilityMode="selected"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/loggedout_menu"
+        app:shapeAppearance="@style/BottomNav"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

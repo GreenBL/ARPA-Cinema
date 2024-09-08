@@ -12,6 +12,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.runBlocking
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.databinding.CarouselItemBinding
+import pwm.ar.arpacinema.util.PlaceholderDrawable
 
 // TODO: THIS IS AN OLD IMPLEMENTATION OF MINE FROM ANOTHER PROJECT, FIX AND REFACTOR BEFORE APP DELIVERY // done but im too lazy to delete the comment
 
@@ -47,8 +48,11 @@ class CarouselAdapter(
         val binding = holder.binding
         val imageViuh = binding.movieImage
 
+        val placeholder = PlaceholderDrawable.getPlaceholderDrawable()
+
         Glide.with(holder.itemView.context)
             .load(currentHero.movieImageUrl)
+            .placeholder(placeholder)
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(imageViuh)
     }

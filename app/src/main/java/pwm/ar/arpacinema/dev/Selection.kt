@@ -4,6 +4,7 @@ data class Selection(
     val movieTitle : String,
     val showDate : String,
     val showTime : String,
+    val showScreen : String,
     val seatString: String,
     val price : String = ""
 ){

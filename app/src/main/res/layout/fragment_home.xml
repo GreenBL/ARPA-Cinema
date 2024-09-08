@@ -37,6 +37,7 @@
         android:paddingHorizontal="16dp"
         android:transitionGroup="true"
         android:transitionName="shared_search"
+        app:backgroundTint="@color/md_theme_surfaceContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tophome" />
@@ -123,7 +124,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="16dp"
         android:clipChildren="false"
         android:clipToOutline="false"
         android:clipToPadding="false"
