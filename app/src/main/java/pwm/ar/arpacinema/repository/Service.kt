@@ -17,6 +17,11 @@ interface Service {
    // @GET("pwm/users/{userId}")
    // suspend fun getUser(@Path("userId") id: Int): Deferred<User>
 
+    @GET("pwm/movie_of_the_week")
+    suspend fun getMoviesOfTheWeek(): Response<NewMoviesResponse>
+
+    @POST("pwm/get_user_image")
+    suspend fun getUserImage(@Body userIdPost: UserIdPost): Response<ImageURLResponse>
 
     @POST("pwm/signup")
     suspend fun signUp(@Body signUpRequest: SignUpRequest): Response<GenericResponse>

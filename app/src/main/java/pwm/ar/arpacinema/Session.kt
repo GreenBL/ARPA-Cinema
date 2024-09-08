@@ -24,7 +24,7 @@ object Session {
     private var _user: User? = null
     val user: User? get() = _user
 
-
+    val loggedIn : Boolean get() = _user != null
 
     // store the user ID [important: store it after logging in else it will be lost]
     suspend fun storeUser(context: Context, user: User) {

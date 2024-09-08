@@ -28,14 +28,14 @@
             app:destination="@id/categoryFragment"
             app:enterAnim="@anim/zoom_fade_in"
             app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/zoom_fade_out"/>
         <action
             android:id="@+id/action_homeFragment_to_promoFragment"
             app:destination="@id/promoFragment"
             app:enterAnim="@anim/zoom_fade_in"
             app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/zoom_fade_out"/>
     </fragment>
     <fragment
@@ -60,35 +60,35 @@
             app:destination="@id/infoFragment"
             app:enterAnim="@anim/zoom_fade_in"
             app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/zoom_fade_out" />
         <action
             android:id="@+id/action_profileMenuFragment_to_accountFragment"
             app:destination="@id/accountFragment"
             app:enterAnim="@anim/zoom_fade_in"
             app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/zoom_fade_out"/>
         <action
             android:id="@+id/action_profileMenuFragment_to_walletFragment"
             app:destination="@id/walletFragment"
             app:enterAnim="@anim/zoom_fade_in"
             app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/zoom_fade_out" />
         <action
             android:id="@+id/action_profileMenuFragment_to_rewardsFragment"
             app:destination="@id/rewardsFragment"
             app:enterAnim="@anim/zoom_fade_in"
             app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/zoom_fade_out"/>
         <action
             android:id="@+id/action_profileMenuFragment_to_historyFragment"
             app:destination="@id/historyFragment"
             app:enterAnim="@anim/zoom_fade_in"
             app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/zoom_fade_out"/>
 
     </fragment>
@@ -218,7 +218,7 @@
             app:destination="@id/optionsFragment"
             app:enterAnim="@anim/zoom_fade_in"
             app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/zoom_fade_out"/>
         <action
             android:id="@+id/action_rewardsFragment_to_inventoryFragment"
@@ -239,6 +239,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
+        <argument
+            android:name="movie"
+            app:argType="pwm.ar.arpacinema.model.Movie" />
     </fragment>
     <fragment
         android:id="@+id/bookingFragment"
@@ -311,4 +314,11 @@
             app:argType="pwm.ar.arpacinema.parcels.TicketDetailsParcel" />
     </dialog>
     <action android:id="@+id/action_global_viewTicketFragment" app:destination="@id/viewTicketFragment" />
+    <action
+        android:id="@+id/action_global_moviePageFragment"
+        app:destination="@id/moviePageFragment"
+        app:enterAnim="@anim/zoom_fade_in"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/zoom_fade_out" />
 </navigation>
