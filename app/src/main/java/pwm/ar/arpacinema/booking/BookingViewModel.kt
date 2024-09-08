@@ -72,7 +72,7 @@ class BookingViewModel : ViewModel() {
 
             // add the temp selection object
             _selectionObjects.value = _selectionObjects.value?.plus(
-                Selection("temp", selectedDate.value.toString(), "temp", seatStr, price.toString())
+                Selection("temp", selectedDate.value.toString(), "temp", "Sala 3", seatStr, price.toString())
             )
 
             sum += price

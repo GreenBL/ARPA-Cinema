@@ -6,23 +6,31 @@ import pwm.ar.arpacinema.dev.TicketItem
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.MultiTransformation
+import com.bumptech.glide.load.Transformation
+import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.ShapeAppearanceModel
+import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
+import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.Session
 import pwm.ar.arpacinema.repository.DTO
 import pwm.ar.arpacinema.repository.RetrofitClient
 import pwm.ar.arpacinema.util.CircleEdgeTreatment
+import pwm.ar.arpacinema.util.PlaceholderDrawable
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -39,7 +47,7 @@ class TicketAdapter(
     inner class TicketViewHolder(val binding: TicketItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
-            binding.root.setOnClickListener {
+            binding.bottomCard.setOnClickListener {
                 onItemClick(menuItems[adapterPosition], binding.moviePoster)
             }
         }
@@ -89,6 +97,16 @@ class TicketAdapter(
         holder.binding.movieTitle.text = ticketItem.title
         holder.binding.moviePoster.transitionName = "shared_poster_${ticketItem.title}"
 
+        val shapeableImage = holder.binding.moviePoster
+
+        val shimmer = PlaceholderDrawable.getPlaceholderDrawable()
+
+        Glide.with(holder.itemView.context)
+            .load("http://10.0.2.2:9000/pwm/testimage")
+            .apply(bitmapTransform(BlurTransformation(15, 3)))
+            .placeholder(shimmer)
+            .into(shapeableImage)
+
         holder.binding.shareButton.setOnClickListener {
             scope.launch {
                 val pdfFile = getPDFFile(holder.itemView.context, ticketItem)
@@ -115,17 +133,17 @@ class TicketAdapter(
     private suspend fun getPDFFile(context: Context, ticket : TicketItem): File {
         val service = RetrofitClient.service
         lateinit var response: ResponseBody
-            try {
-                response = service.ticketPDF(
-                    DTO.PrintTicketRequest(
-                        Session.getUserId(context),
-                        "TODO",
-                        "1"
-                    )
-                ) // TODO
-            } catch (e: Exception) {
-                Log.e("TicketAdapter", "Error: ${e.message}", e)
-            }
+        try {
+            response = service.ticketPDF(
+                DTO.PrintTicketRequest(
+                    Session.getUserId(context),
+                    "TODO",
+                    "1"
+                )
+            ) // TODO
+        } catch (e: Exception) {
+            Log.e("TicketAdapter", "Error: ${e.message}", e)
+        }
         return cachePDF(context, response, "${ticket.title}_biglietto_cinema.pdf")
     }
 

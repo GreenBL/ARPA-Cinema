@@ -24,6 +24,7 @@ import kotlinx.coroutines.Dispatchers
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.databinding.FragmentTicketsBinding
 import pwm.ar.arpacinema.dev.TicketItem
+import pwm.ar.arpacinema.parcels.TicketDetailsParcel
 
 class TicketsFragment : Fragment() {
 
@@ -79,13 +80,17 @@ class TicketsFragment : Fragment() {
 
             // HANDLE THE ITEM BEING CLICKED
             ViewCompat.setTransitionName(image, "shared_poster_${ticket.title}")
-            val action = TicketsFragmentDirections.actionGlobalViewTicketFragment("shared_poster_${ticket.title}")
-            //val destiny = R.id.viewTicketFragment
-            val extras = FragmentNavigatorExtras(
-                image to "shared_poster_${ticket.title}"
+            // setup the parcel
+            val ticketParcel = TicketDetailsParcel(
+                "1",
+                ticket.title,
+                ticket.date,
+                "TODO",
+                "TODO",
+                "TODO",
             )
-            navController.navigate(action, extras)
-            Toast.makeText(requireContext(), "Clicked: ${image.transitionName}", Toast.LENGTH_SHORT).show()
+            val action = TicketsFragmentDirections.actionGlobalViewTicketFragment(ticketParcel)
+            navController.navigate(action)
         }
 
         //val dividerItemDecoration = MaterialDividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)

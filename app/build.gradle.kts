@@ -44,6 +44,8 @@ android {
 }
 
 dependencies {
+    implementation("jp.wasabeef:glide-transformations:4.3.0")
+    implementation("jp.co.cyberagent.android:gpuimage:2.1.0")
     implementation(libs.seatbookview)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.circleindicator)
@@ -68,7 +70,6 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.androidx.gridlayout)
     implementation(libs.shimmer)
-    implementation(libs.cardview.v7)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

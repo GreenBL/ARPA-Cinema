@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.first
 import pwm.ar.arpacinema.model.User
@@ -22,6 +23,8 @@ object Session {
     private val USER_ID_KEY = stringPreferencesKey("user_id")
     private var _user: User? = null
     val user: User? get() = _user
+
+
 
     // store the user ID [important: store it after logging in else it will be lost]
     suspend fun storeUser(context: Context, user: User) {

@@ -18,6 +18,7 @@ class CheckoutAdapter (
                 binding.elTitoloDelFilm.text = selection.movieTitle
                 binding.seatString.text = selection.seatCustomString
                 val fromattedString = String.format(Locale.ITALY,"%.2f", selection.price.toDouble())
+                binding.sala.text = selection.showScreen
                 binding.elCosto.text = fromattedString
                 binding.date.text = selection.showDate
                 binding.timeScreen.text = selection.showTime

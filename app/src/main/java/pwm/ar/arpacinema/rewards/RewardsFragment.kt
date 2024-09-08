@@ -62,7 +62,8 @@ class RewardsFragment : Fragment() {
         val discountsRV = binding.discountMenuHostile
 
         val topMenuAdapter = MenuAdapter(topItemList) {
-            // onclicklistener
+            //  only one so...
+            findNavController().navigate(R.id.action_rewardsFragment_to_inventoryFragment)
         }
         val barMenuAdapter = LargeMenuAdapter(barItemList) { menuItem ->
 
@@ -86,7 +87,7 @@ class RewardsFragment : Fragment() {
 
         }
         val discountsAdapter = OptionsAdapter(discountsList) {
-            // onclicklistener
+
         }
 
         val dividerItemDecoration =

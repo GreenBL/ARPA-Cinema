@@ -73,10 +73,19 @@
             android:id="@+id/action_profileMenuFragment_to_walletFragment"
             app:destination="@id/walletFragment"
             app:enterAnim="@anim/zoom_fade_in"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/zoom_fade_out" />
         <action
             android:id="@+id/action_profileMenuFragment_to_rewardsFragment"
             app:destination="@id/rewardsFragment"
+            app:enterAnim="@anim/zoom_fade_in"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/zoom_fade_out"/>
+        <action
+            android:id="@+id/action_profileMenuFragment_to_historyFragment"
+            app:destination="@id/historyFragment"
             app:enterAnim="@anim/zoom_fade_in"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
@@ -104,25 +113,7 @@
         <action
             android:id="@+id/action_ticketsFragment_to_profileMenuFragment"
             app:destination="@id/profileMenuFragment" />
-        <action
-            android:id="@+id/action_ticketsFragment_to_viewTicketFragment"
-            app:destination="@id/viewTicketFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/viewTicketFragment"
-        android:name="pwm.ar.arpacinema.tickets.ViewTicketFragment"
-        android:label="fragment_view_ticket"
-        tools:layout="@layout/fragment_view_ticket" >
-        <argument
-            android:name="transition"
-            app:argType="string"
-            android:defaultValue="replace_or_exception!" />
-    </fragment>
-    <action
-        android:id="@+id/action_global_viewTicketFragment"
-        app:destination="@id/viewTicketFragment"
-        app:popExitAnim="@animator/nav_default_pop_exit_anim"
-        app:popUpTo="@id/ticketsFragment" />
     <fragment
         android:id="@+id/searchFragment"
         android:name="pwm.ar.arpacinema.discovery.SearchFragment"
@@ -229,6 +220,13 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/zoom_fade_out"/>
+        <action
+            android:id="@+id/action_rewardsFragment_to_inventoryFragment"
+            app:destination="@id/inventoryFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/moviePageFragment"
@@ -236,7 +234,11 @@
         android:label="MoviePageFragment" >
         <action
             android:id="@+id/action_moviePageFragment_to_bookingFragment"
-            app:destination="@id/bookingFragment" />
+            app:destination="@id/bookingFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/bookingFragment"
@@ -281,4 +283,32 @@
             android:name="promo"
             app:argType="pwm.ar.arpacinema.model.Promotion" />
     </fragment>
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="pwm.ar.arpacinema.profile.history.HistoryFragment"
+        android:label="fragment_history"
+        tools:layout="@layout/fragment_history" />
+    <fragment
+        android:id="@+id/inventoryFragment"
+        android:name="pwm.ar.arpacinema.rewards.inventory.InventoryFragment"
+        android:label="InventoryFragment" />
+    <dialog
+        android:id="@+id/codeFragment"
+        android:name="pwm.ar.arpacinema.rewards.inventory.CodeFragment"
+        android:label="fragment_code"
+        tools:layout="@layout/fragment_code" >
+        <argument
+            android:name="rewardDetails"
+            app:argType="pwm.ar.arpacinema.parcels.RewardDetailsParcel" />
+    </dialog><action android:id="@+id/action_global_codeFragment" app:destination="@id/codeFragment"/>
+    <dialog
+        android:id="@+id/viewTicketFragment"
+        android:name="pwm.ar.arpacinema.tickets.ViewTicketFragment"
+        android:label="fragment_view_ticket"
+        tools:layout="@layout/fragment_view_ticket" >
+        <argument
+            android:name="ticketDetails"
+            app:argType="pwm.ar.arpacinema.parcels.TicketDetailsParcel" />
+    </dialog>
+    <action android:id="@+id/action_global_viewTicketFragment" app:destination="@id/viewTicketFragment" />
 </navigation>
