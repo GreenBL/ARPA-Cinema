@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.view.WindowInsets
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -67,7 +68,7 @@ class SearchFragment : Fragment() {
 
         val filterFAB = binding.filter
 
-        val mainAdapter = ScreeningAdapter(mockList) {
+        val mainAdapter = ScreeningAdapter(emptyList()) {
             Toast.makeText(requireContext(), "Clicked something", Toast.LENGTH_SHORT).show()
             showIme = false
             findNavController().navigate(R.id.action_searchFragment_to_moviePageFragment)
@@ -138,15 +139,26 @@ class SearchFragment : Fragment() {
             v.onApplyWindowInsets(insets)
         }
 
-        filterFAB.setOnClickListener {
-            FiltersFragment().show(childFragmentManager, "FiltersFragment")
-            // swap the two adapters
-            if(recyclerView.adapter is LoadingScreenAdapter) {
-                recyclerView.adapter = mainAdapter
+        viewModel.movies.observe(viewLifecycleOwner) { movies ->
+            if (movies != null) {
+                recyclerView.adapter = ScreeningAdapter(movies) { movie ->
+                    val action = SearchFragmentDirections.actionSearchFragmentToMoviePageFragment(movie)
+                    showIme = false
+                    findNavController().navigate(action)
+                }
+            }
+        }
 
-            } else {
-                recyclerView.adapter = LoadingScreenAdapter(mockList)
+        // search bar input
+        searchBarField.editText?.addTextChangedListener { text ->
+            viewModel.searchMovies(text.toString())
+        }
 
+        // search results
+        viewModel.searchResults.observe(viewLifecycleOwner) { searchResults ->
+            if (searchResults != null) {
+                val adapter = recyclerView.adapter as? ScreeningAdapter
+                adapter?.updateData(searchResults)
             }
         }
 

@@ -17,12 +17,15 @@ import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.databinding.LoadScreeningBinding
 import pwm.ar.arpacinema.databinding.ProjectionItemBinding
 import pwm.ar.arpacinema.dev.ShowingItem
+import pwm.ar.arpacinema.model.Movie
+import pwm.ar.arpacinema.util.PlaceholderDrawable
 
 class ScreeningAdapter(
-    private val showingItems: List<ShowingItem>,
-    private val onItemClick: (ShowingItem) -> Unit
+    private var showingItems: List<Movie>,
+    private val onItemClick: (Movie) -> Unit
 ) : RecyclerView.Adapter<ScreeningAdapter.ScreeningViewHolder>() {
 
+    private var shouldAnimate = true
 
     inner class ScreeningViewHolder(val binding: ProjectionItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -52,20 +55,45 @@ class ScreeningAdapter(
 
         val root = binding.root
 
-        root.alpha = 0f
-        root.animate().alpha(1f).setDuration(250).start()
 
 
-        val image = binding.shapeableImageView2
+        val name = binding.movietitle
+        val rating = binding.ratingBar
+        val category = binding.categoryQualifier
+        val producer = binding.producer
+
+        name.text = showingItem.title
+        rating.rating = showingItem.rating.toFloat()
+        category.text = showingItem._categories
+        producer.text = showingItem.producer
+
+        val image = binding.poster
 
 
         Glide.with(image.context)
-            .load("https://picsum.photos/150/150")
+            .load(showingItem.posterUrl)
+            .placeholder(PlaceholderDrawable.getPlaceholderDrawable())
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(image)
 
+        if (shouldAnimate) {
+            // Trigger your fade-in animation here
+            holder.itemView.alpha = 0f
+            holder.itemView.animate().alpha(1f).setDuration(300).start()
+        }
+
+        // Reset the animation flag after the first binding
+        if (position == showingItems.size - 1) {
+            shouldAnimate = false
+        }
     }
 
     override fun getItemCount(): Int = showingItems.size
+
+    fun updateData(newData: List<Movie>) {
+        showingItems = newData
+        notifyDataSetChanged()
+
+    }
 
 }
