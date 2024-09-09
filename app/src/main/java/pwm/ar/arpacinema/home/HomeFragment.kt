@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.CarouselSnapHelper
 import com.google.android.material.carousel.CarouselStrategy
@@ -32,6 +33,7 @@ import pwm.ar.arpacinema.discovery.movie.MoviePageFragmentDirections
 import pwm.ar.arpacinema.model.Categories
 import pwm.ar.arpacinema.model.Movie
 import pwm.ar.arpacinema.model.Promotion
+import pwm.ar.arpacinema.util.PlaceholderDrawable
 
 
 class HomeFragment : Fragment() {
@@ -86,14 +88,29 @@ class HomeFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         if(Session.user != null) {
+            binding.tophome.profileicon.visibility = View.VISIBLE
+            binding.tophome.profileicon.scaleType = ImageView.ScaleType.CENTER_CROP
+
+
             binding.tophome.titleStr.text = "Ciao ${Session.user!!.name}!"
             binding.tophome.textView.text = ""
 
             binding.tophome.badge.isEnabled = false
+            binding.tophome.icon.visibility = View.INVISIBLE
             binding.tophome.icon.scaleType = ImageView.ScaleType.CENTER_CROP
-            Glide.with(requireContext())
-                .load(R.drawable.banner_placeholder)
-                .into(binding.tophome.icon)
+
+            viewModel.userImageURL.observe(viewLifecycleOwner) {
+                if (it == null) {
+                    return@observe
+                }
+                Glide.with(requireContext())
+                    .load(it)
+                    .placeholder(PlaceholderDrawable.getPlaceholderDrawable())
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .into(binding.tophome.profileicon)
+
+            }
+
         }
 
 
