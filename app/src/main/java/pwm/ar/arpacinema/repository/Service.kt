@@ -17,6 +17,9 @@ interface Service {
    // @GET("pwm/users/{userId}")
    // suspend fun getUser(@Path("userId") id: Int): Deferred<User>
 
+    @POST("/pwm/films_by_category")
+    suspend fun getMoviesByCategory(@Body categoryPost: CategoryPost): Response<MoviesResponse>
+
     // AUTO LOGIN
     @POST("pwm/get_user_info")
     suspend fun autoLogin(@Body idPost: IdPost): Response<LoginResponse>
@@ -32,7 +35,6 @@ interface Service {
 
     @POST("pwm/signup")
     suspend fun signUp(@Body signUpRequest: SignUpRequest): Response<GenericResponse>
-0
 
     @POST("pwm/login")
     suspend fun loginUser(@Body loginRequest: LoginRequest): Response<LoginResponse>

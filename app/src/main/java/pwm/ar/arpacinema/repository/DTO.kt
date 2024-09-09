@@ -17,6 +17,10 @@ import pwm.ar.arpacinema.model.User
 
 class DTO {
 
+    data class CategoryPost(
+        @SerializedName("category") val category: String?,
+    )
+
     data class PromotionResponse(
         @SerializedName("status") val status: Stat?,
         @SerializedName("films") val promotions: List<Promotion>?
@@ -31,6 +35,11 @@ class DTO {
     )
 
     data class NewMoviesResponse(
+        @SerializedName("status") val status: Stat?,
+        @SerializedName("films") val movies: List<Movie>?
+    )
+
+    data class MoviesResponse(
         @SerializedName("status") val status: Stat?,
         @SerializedName("films") val movies: List<Movie>?
     )

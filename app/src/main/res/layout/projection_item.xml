@@ -28,7 +28,7 @@
         app:strokeWidth="2dp">
 
         <ImageView
-            android:id="@+id/shapeableImageView2"
+            android:id="@+id/poster"
             android:layout_width="103dp"
             android:layout_height="163dp"
             android:clipToOutline="true"
@@ -45,7 +45,7 @@
 
 
     <TextView
-        android:id="@+id/textView18"
+        android:id="@+id/movietitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -72,7 +72,7 @@
         android:rating="3"
         android:stepSize="1"
         app:layout_constraintStart_toEndOf="@+id/materialCardView5"
-        app:layout_constraintTop_toBottomOf="@+id/categoryQualifier" />
+        app:layout_constraintTop_toBottomOf="@+id/producer" />
 
     <TextView
         android:id="@+id/categoryQualifier"
@@ -80,27 +80,21 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/noto_sans"
         android:text="Azione"
+        android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@+id/materialCardView5"
-        app:layout_constraintTop_toBottomOf="@+id/textView18" />
-
-    <TextView
-        android:id="@+id/uselessdot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:text="•"
-        app:layout_constraintBaseline_toBaselineOf="@+id/categoryQualifier"
-        app:layout_constraintStart_toEndOf="@+id/categoryQualifier" />
+        app:layout_constraintTop_toBottomOf="@+id/movietitle" />
 
     <TextView
         android:id="@+id/producer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
         android:text="Marvel Studios"
-        app:layout_constraintBaseline_toBaselineOf="@+id/categoryQualifier"
-        app:layout_constraintStart_toEndOf="@+id/uselessdot" />
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/categoryQualifier"
+        app:layout_constraintTop_toBottomOf="@+id/categoryQualifier" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

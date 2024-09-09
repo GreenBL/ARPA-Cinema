@@ -2,16 +2,20 @@ package pwm.ar.arpacinema.discovery.category
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.databinding.FragmentCategoryBinding
 import pwm.ar.arpacinema.dev.ShowingItem
 import pwm.ar.arpacinema.discovery.LoadingScreenAdapter
+import pwm.ar.arpacinema.discovery.ScreeningAdapter
 
 class CategoryFragment : Fragment() {
 
@@ -41,8 +45,13 @@ class CategoryFragment : Fragment() {
         return binding.root
     }
 
+    val scope = lifecycleScope
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
 
         val recycler = binding.catMovieList
 
@@ -53,6 +62,7 @@ class CategoryFragment : Fragment() {
 
         // get the safe arg category enum thing
         val category = args.category
+        Log.d("CategoryFragment", "onViewCreated: ${category.category}")
 
         // set the title
         binding.topBarInclude.viewTitle.text = category.category
@@ -60,6 +70,32 @@ class CategoryFragment : Fragment() {
         // set up the placeholder adapter for the recycler view
         val placeholderAdapter = LoadingScreenAdapter(placeholders)
         recycler.adapter = placeholderAdapter // once stuff loads swap it with the good one
+
+        scope.launch {
+            viewModel.getMoviesByCategory(category.category)
+//            Log.d("CategoryFragment", "onViewCreated: ${viewModel.movies.value}")
+//            if (viewModel.movies.value != null) {
+//                val adapter = ScreeningAdapter(viewModel.movies.value!!) {}
+//                recycler.adapter = adapter
+//            }
+
+        }
+
+        viewModel.movies.observe(viewLifecycleOwner) {
+            if (it != null) {
+                val adapter = ScreeningAdapter(it) {}
+                recycler.adapter = adapter
+                binding.notfoundframe.visibility = View.GONE
+            }
+
+            if (it != null) {
+                if (it.isEmpty()) {
+                    binding.notfoundframe.visibility = View.VISIBLE
+                }
+            }
+        }
+
+
 
 
     }

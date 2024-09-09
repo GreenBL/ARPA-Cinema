@@ -17,10 +17,12 @@ import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.databinding.LoadScreeningBinding
 import pwm.ar.arpacinema.databinding.ProjectionItemBinding
 import pwm.ar.arpacinema.dev.ShowingItem
+import pwm.ar.arpacinema.model.Movie
+import pwm.ar.arpacinema.util.PlaceholderDrawable
 
 class ScreeningAdapter(
-    private val showingItems: List<ShowingItem>,
-    private val onItemClick: (ShowingItem) -> Unit
+    private val showingItems: List<Movie>,
+    private val onItemClick: (Movie) -> Unit
 ) : RecyclerView.Adapter<ScreeningAdapter.ScreeningViewHolder>() {
 
 
@@ -53,17 +55,27 @@ class ScreeningAdapter(
         val root = binding.root
 
         root.alpha = 0f
-        root.animate().alpha(1f).setDuration(250).start()
 
+        val name = binding.movietitle
+        val rating = binding.ratingBar
+        val category = binding.categoryQualifier
+        val producer = binding.producer
 
-        val image = binding.shapeableImageView2
+        name.text = showingItem.title
+        rating.rating = showingItem.rating.toFloat()
+        category.text = showingItem._categories
+        producer.text = showingItem.producer
+
+        val image = binding.poster
 
 
         Glide.with(image.context)
-            .load("https://picsum.photos/150/150")
+            .load(showingItem.posterUrl)
+            .placeholder(PlaceholderDrawable.getPlaceholderDrawable())
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(image)
 
+        root.animate().alpha(1f).setDuration(250).start()
     }
 
     override fun getItemCount(): Int = showingItems.size

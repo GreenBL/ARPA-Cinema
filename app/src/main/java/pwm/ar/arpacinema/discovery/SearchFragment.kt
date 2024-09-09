@@ -67,7 +67,7 @@ class SearchFragment : Fragment() {
 
         val filterFAB = binding.filter
 
-        val mainAdapter = ScreeningAdapter(mockList) {
+        val mainAdapter = ScreeningAdapter(emptyList()) {
             Toast.makeText(requireContext(), "Clicked something", Toast.LENGTH_SHORT).show()
             showIme = false
             findNavController().navigate(R.id.action_searchFragment_to_moviePageFragment)
