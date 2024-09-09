@@ -16,9 +16,10 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:clipChildren="false"
-        android:clipToOutline="false"
+        android:clipToOutline="true"
         android:clipToPadding="false"
         app:cardMaxElevation="0dp"
+        app:cardPreventCornerOverlap="false"
         app:cardUseCompatPadding="false"
         app:contentPadding="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -27,7 +28,7 @@
         app:strokeColor="#86020202"
         app:strokeWidth="2dp">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/poster"
             android:layout_width="103dp"
             android:layout_height="163dp"
@@ -39,7 +40,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
-            app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
+            app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium"
             tools:srcCompat="@drawable/banner_placeholder_colored" />
     </com.google.android.material.card.MaterialCardView>
 
@@ -69,8 +70,8 @@
         android:indeterminate="false"
         android:numStars="5"
         android:progressTint="#FFD740"
-        android:rating="3"
-        android:stepSize="1"
+        android:rating="0.5"
+        android:stepSize="0.5"
         app:layout_constraintStart_toEndOf="@+id/materialCardView5"
         app:layout_constraintTop_toBottomOf="@+id/producer" />
 

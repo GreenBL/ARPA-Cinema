@@ -29,7 +29,7 @@
             android:id="@+id/movie_image"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:clipToOutline="true"
+            android:clipToOutline="false"
             android:focusable="false"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
