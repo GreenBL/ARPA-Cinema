@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import pwm.ar.arpacinema.Session
 import pwm.ar.arpacinema.model.Movie
 import pwm.ar.arpacinema.model.Promotion
 import pwm.ar.arpacinema.repository.DTO
@@ -22,6 +23,9 @@ class HomeViewModel : ViewModel() {
     private val _promos = MutableLiveData<List<Promotion>?>(null)
     val promos: LiveData<List<Promotion>?> = _promos
 
+    private val _userImageURL = MutableLiveData<String?>(null)
+    val userImageURL: LiveData<String?> = _userImageURL
+
     // retro
     private val service = RetrofitClient.service
 
@@ -29,6 +33,31 @@ class HomeViewModel : ViewModel() {
     init {
         getMovies()
         getPromos()
+        getUserImageURL()
+    }
+
+    // get user image url
+    private fun getUserImageURL() {
+        scope.launch {
+            try {
+                val request = DTO.UserIdPost(Session.user?.id.toString())
+                val response = service.getUserImage(request)
+
+                if (!response.isSuccessful) {
+                    throw Exception("Network error")
+                }
+
+                if (response.body()?.status != DTO.Stat.SUCCESS) {
+                    throw Exception("Server error")
+                }
+
+                val imageURL = response.body()?.image
+                _userImageURL.postValue(imageURL)
+                Log.d("HomeViewModel", "Image URL: $imageURL")
+            } catch (e: Exception) {
+
+            }
+        }
     }
 
     // get promo list

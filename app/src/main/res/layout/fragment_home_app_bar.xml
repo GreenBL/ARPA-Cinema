@@ -63,6 +63,13 @@
             android:scaleType="centerInside"
 
             android:src="@drawable/round_login_24" />
+
+        <ImageView
+            android:id="@+id/profileicon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:visibility="gone"
+            tools:srcCompat="@tools:sample/avatars" />
     </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

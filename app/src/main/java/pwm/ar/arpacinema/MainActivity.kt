@@ -122,7 +122,7 @@ class MainActivity : AppCompatActivity() {
                             0, // MANCA LIVELLO
                             0 // MANCANO I PUNTI
                         )
-                        Session.storeUser(this@MainActivity, user)
+                        Session.storeUser(this@MainActivity, autoUser)
                         // print details
 
                     }
