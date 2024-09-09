@@ -21,10 +21,11 @@ import pwm.ar.arpacinema.model.Movie
 import pwm.ar.arpacinema.util.PlaceholderDrawable
 
 class ScreeningAdapter(
-    private val showingItems: List<Movie>,
+    private var showingItems: List<Movie>,
     private val onItemClick: (Movie) -> Unit
 ) : RecyclerView.Adapter<ScreeningAdapter.ScreeningViewHolder>() {
 
+    private var shouldAnimate = true
 
     inner class ScreeningViewHolder(val binding: ProjectionItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -54,7 +55,7 @@ class ScreeningAdapter(
 
         val root = binding.root
 
-        root.alpha = 0f
+
 
         val name = binding.movietitle
         val rating = binding.ratingBar
@@ -75,9 +76,24 @@ class ScreeningAdapter(
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(image)
 
-        root.animate().alpha(1f).setDuration(250).start()
+        if (shouldAnimate) {
+            // Trigger your fade-in animation here
+            holder.itemView.alpha = 0f
+            holder.itemView.animate().alpha(1f).setDuration(300).start()
+        }
+
+        // Reset the animation flag after the first binding
+        if (position == showingItems.size - 1) {
+            shouldAnimate = false
+        }
     }
 
     override fun getItemCount(): Int = showingItems.size
+
+    fun updateData(newData: List<Movie>) {
+        showingItems = newData
+        notifyDataSetChanged()
+
+    }
 
 }

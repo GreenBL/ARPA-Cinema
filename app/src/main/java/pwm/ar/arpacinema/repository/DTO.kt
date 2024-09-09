@@ -17,6 +17,8 @@ import pwm.ar.arpacinema.model.User
 
 class DTO {
 
+
+
     data class CategoryPost(
         @SerializedName("category") val category: String?,
     )

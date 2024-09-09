@@ -14,8 +14,9 @@ import retrofit2.http.Url
 
 interface Service {
 
-   // @GET("pwm/users/{userId}")
-   // suspend fun getUser(@Path("userId") id: Int): Deferred<User>
+
+    @GET("pwm/load_films")
+    suspend fun getMovies(): Response<MoviesResponse>
 
     @POST("/pwm/films_by_category")
     suspend fun getMoviesByCategory(@Body categoryPost: CategoryPost): Response<MoviesResponse>
