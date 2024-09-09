@@ -3,6 +3,8 @@ agp = "8.5.0"
 circleindicator = "2.1.6"
 coreSplashscreen = "1.0.1"
 datastore = "1.1.1"
+glideTransformations = "4.3.0"
+gpuimage = "2.1.0"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -37,6 +39,8 @@ androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "d
 androidx-datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "datastore" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 circleindicator = { module = "me.relex:circleindicator", version.ref = "circleindicator" }
+glide-transformations = { module = "jp.wasabeef:glide-transformations", version.ref = "glideTransformations" }
+gpuimage = { module = "jp.co.cyberagent.android:gpuimage", version.ref = "gpuimage" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
