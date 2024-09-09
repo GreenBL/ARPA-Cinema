@@ -32,7 +32,7 @@ interface Service {
 
     @POST("pwm/signup")
     suspend fun signUp(@Body signUpRequest: SignUpRequest): Response<GenericResponse>
-
+0
 
     @POST("pwm/login")
     suspend fun loginUser(@Body loginRequest: LoginRequest): Response<LoginResponse>
