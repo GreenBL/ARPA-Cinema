@@ -24,6 +24,10 @@ object Session {
     private var _user: User? = null
     val user: User? get() = _user
 
+    private var _userImageURL: String? = null
+    val userImageURL: String? get() = _userImageURL
+
+
     val loggedIn : Boolean get() = _user != null
 
     // store the user ID [important: store it after logging in else it will be lost]
@@ -58,5 +62,9 @@ object Session {
         } else {
             Log.e("Session", "No user ID found")
         }
+    }
+
+    suspend fun saveUserImageURL(url: String) {
+        _userImageURL = url
     }
 }

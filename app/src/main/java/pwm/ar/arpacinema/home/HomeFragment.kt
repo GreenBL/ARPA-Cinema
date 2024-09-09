@@ -88,6 +88,7 @@ class HomeFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         if(Session.user != null) {
+            viewModel.getUserImageURL()
             binding.tophome.profileicon.visibility = View.VISIBLE
             binding.tophome.profileicon.scaleType = ImageView.ScaleType.CENTER_CROP
 
@@ -107,6 +108,7 @@ class HomeFragment : Fragment() {
                     .load(it)
                     .placeholder(PlaceholderDrawable.getPlaceholderDrawable())
                     .transition(DrawableTransitionOptions.withCrossFade())
+                    .error(R.drawable.outline_cloud_off_24)
                     .into(binding.tophome.profileicon)
 
             }

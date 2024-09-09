@@ -33,11 +33,10 @@ class HomeViewModel : ViewModel() {
     init {
         getMovies()
         getPromos()
-        getUserImageURL()
     }
 
     // get user image url
-    private fun getUserImageURL() {
+    fun getUserImageURL() {
         scope.launch {
             try {
                 val request = DTO.UserIdPost(Session.user?.id.toString())
@@ -53,9 +52,12 @@ class HomeViewModel : ViewModel() {
 
                 val imageURL = response.body()?.image
                 _userImageURL.postValue(imageURL)
+                if (imageURL != null) {
+                    Session.saveUserImageURL(imageURL)
+                }
                 Log.d("HomeViewModel", "Image URL: $imageURL")
             } catch (e: Exception) {
-
+                Log.e("HomeViewModel", "Error getting user image URL", e)
             }
         }
     }
