@@ -6,11 +6,12 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Ticket(
-    @SerializedName("screening_date") val ticketId: String,
-    @SerializedName("screening_time") val movieId: String,
-    @SerializedName("theater") val movieTitle: String,
-    @SerializedName("film_title") val showDate: String,
-    @SerializedName("film_url") val showTime: String,
+    @SerializedName("purchase_id") val ticketId: String,
+    @SerializedName("screening_date") val screeningDate: String,
+    @SerializedName("screening_time") val screeningTime: String,
+    @SerializedName("theater") val screeningTheater: String,
+    @SerializedName("film_title") val filmTitle: String,
+    @SerializedName("film_url") val posterUrl: String,
     @SerializedName("seat") val seatNumber: String,
 ) : Parcelable {
     val seatRow: String

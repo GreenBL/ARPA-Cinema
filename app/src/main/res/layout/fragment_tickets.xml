@@ -1,42 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/gradient_background"
-    android:clipChildren="false"
-    android:clipToOutline="false"
-    android:clipToPadding="false"
-    android:fitsSystemWindows="false"
-    tools:context=".tickets.TicketsFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/ticketsRV"
+<layout>
+    <data>
+        <variable
+            name="viewModel"
+            type="pwm.ar.arpacinema.tickets.TicketsViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/gradient_background"
+        android:clipChildren="false"
+        android:clipToOutline="false"
         android:clipToPadding="false"
-        android:fadingEdgeLength="16dp"
-        android:paddingTop="16dp"
-        android:requiresFadingEdge="horizontal"
-        android:scrollbarAlwaysDrawVerticalTrack="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dotsy"
-        tools:itemCount="7"
-        tools:listitem="@layout/ticket_item" />
+        android:fitsSystemWindows="false"
+        tools:context=".tickets.TicketsFragment">
 
-    <me.relex.circleindicator.CircleIndicator2
-        android:id="@+id/dotsy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:layout_marginTop="56dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:itemCount="7" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ticketsRV"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:clipToPadding="false"
+            android:fadingEdgeLength="16dp"
+            android:paddingTop="16dp"
+            android:requiresFadingEdge="horizontal"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dotsy"
+            tools:itemCount="7"
+            tools:listitem="@layout/ticket_item" />
+
+        <me.relex.circleindicator.CircleIndicator2
+            android:id="@+id/dotsy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_marginTop="56dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:itemCount="7" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+</layout>

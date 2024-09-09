@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.Transformation
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.shape.CornerFamily
@@ -27,6 +28,7 @@ import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.Session
+import pwm.ar.arpacinema.model.Ticket
 import pwm.ar.arpacinema.repository.DTO
 import pwm.ar.arpacinema.repository.RetrofitClient
 import pwm.ar.arpacinema.util.CircleEdgeTreatment
@@ -40,15 +42,15 @@ import java.io.OutputStream
 private const val radius = 80f
 
 class TicketAdapter(
-    private val menuItems: List<TicketItem>,
-    private val onItemClick: (TicketItem, ShapeableImageView) -> Unit
+    private val tickets: MutableList<Ticket>,
+    private val onItemClick: (Ticket) -> Unit
 ) : RecyclerView.Adapter<TicketAdapter.TicketViewHolder>() {
 
     inner class TicketViewHolder(val binding: TicketItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.bottomCard.setOnClickListener {
-                onItemClick(menuItems[adapterPosition], binding.moviePoster)
+                onItemClick(tickets[adapterPosition])
             }
         }
     }
@@ -90,20 +92,21 @@ class TicketAdapter(
     private val scope = CoroutineScope(Dispatchers.IO)
 
     override fun onBindViewHolder(holder: TicketViewHolder, position: Int) {
-        val ticketItem = menuItems[position]
+        val ticketItem = tickets[position]
 
-        holder.binding.filmDate.text = ticketItem.date
-        holder.binding.movieTime.text = ticketItem.time
-        holder.binding.movieTitle.text = ticketItem.title
-        holder.binding.moviePoster.transitionName = "shared_poster_${ticketItem.title}"
+        holder.binding.filmDate.text = ticketItem.screeningDate
+        holder.binding.movieTime.text = ticketItem.screeningTime
+        holder.binding.movieTitle.text = ticketItem.filmTitle
+//        holder.binding.moviePoster.transitionName = "shared_poster_${ticketItem.title}"
 
         val shapeableImage = holder.binding.moviePoster
 
         val shimmer = PlaceholderDrawable.getPlaceholderDrawable()
 
         Glide.with(holder.itemView.context)
-            .load("http://10.0.2.2:9000/pwm/testimage")
+            .load(ticketItem.posterUrl)
             .apply(bitmapTransform(BlurTransformation(15, 3)))
+            .transition(DrawableTransitionOptions.withCrossFade())
             .placeholder(shimmer)
             .into(shapeableImage)
 
@@ -113,6 +116,16 @@ class TicketAdapter(
                 shareTicket(holder.itemView.context, pdfFile)
             }
         }
+    }
+
+    fun updateTickets(newTickets: List<Ticket>) {
+        // use the mutable list interface
+        Log.d("TicketAdapter", "updateTickets: $newTickets")
+        tickets.apply {
+            clear()
+            addAll(newTickets)
+        }
+        notifyDataSetChanged()
     }
 
     private var shareStr : String = ""
@@ -128,9 +141,9 @@ class TicketAdapter(
         context.startActivity(shareMenu)
     }
 
-    override fun getItemCount(): Int = menuItems.size
+    override fun getItemCount(): Int = tickets.size
 
-    private suspend fun getPDFFile(context: Context, ticket : TicketItem): File {
+    private suspend fun getPDFFile(context: Context, ticket : Ticket): File {
         val service = RetrofitClient.service
         lateinit var response: ResponseBody
         try {
@@ -144,7 +157,7 @@ class TicketAdapter(
         } catch (e: Exception) {
             Log.e("TicketAdapter", "Error: ${e.message}", e)
         }
-        return cachePDF(context, response, "${ticket.title}_biglietto_cinema.pdf")
+        return cachePDF(context, response, "${ticket.filmTitle.hashCode()}_biglietto_cinema.pdf")
     }
 
     private fun cachePDF(context: Context, body: ResponseBody, fileName: String): File {
