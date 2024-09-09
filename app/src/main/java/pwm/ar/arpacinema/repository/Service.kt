@@ -14,6 +14,8 @@ import retrofit2.http.Url
 
 interface Service {
 
+    @POST("pwm/get_amount")
+    suspend fun getAmount(@Body userIdPost: DTO.UserIdPost): Response<BalanceResponse>
 
     @GET("pwm/load_films")
     suspend fun getMovies(): Response<MoviesResponse>

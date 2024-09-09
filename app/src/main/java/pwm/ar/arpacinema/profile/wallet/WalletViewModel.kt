@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import pwm.ar.arpacinema.Session
+import pwm.ar.arpacinema.repository.DTO
 import pwm.ar.arpacinema.repository.RetrofitClient
 import pwm.ar.arpacinema.repository.DTO.*
 
@@ -25,9 +26,31 @@ class WalletViewModel : ViewModel() {
     val api = RetrofitClient.service
 
     init {
-        _balance.postValue(69.420) // todo: fetch from server
+
         _fullName.postValue(Session.user?.name + " " + Session.user?.surname)
 
+    }
+    suspend fun fetchBalance() {
+        try {
+            // Assuming you have the user ID stored in your session
+            val userId = Session.user?.id.toString()
+            val response = api.getAmount(DTO.UserIdPost(userId))  // Define the DTO for this request
+
+            if (!response.isSuccessful) {
+                _responseStatus.postValue(Stat.SERVER_ERROR)
+                return
+            }
+
+            val balance = response.body()?.amount
+            if (balance != null) {
+                _balance.postValue(balance)
+                _responseStatus.postValue(Stat.SUCCESS)
+            } else {
+                _responseStatus.postValue(Stat.SERVER_ERROR)
+            }
+        } catch (e: Exception) {
+            _responseStatus.postValue(Stat.NETWORK_ERROR)
+        }
     }
 
     suspend fun increaseBalance() {

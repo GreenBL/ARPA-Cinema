@@ -99,6 +99,9 @@ class DTO {
         @SerializedName("user_id") val id: String?,
         @SerializedName("amount") val amount: Double?
     )
+    data class BalanceResponse(
+        @SerializedName("amount") val amount: Double?
+    )
 
     data class ImageListResponse(
         @SerializedName("status") val status: Stat?,
