@@ -6,10 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import pwm.ar.arpacinema.databinding.DateItemBinding
 import pwm.ar.arpacinema.databinding.TimeItemBinding
 import pwm.ar.arpacinema.model.ScreeningDate
+import pwm.ar.arpacinema.model.ScreeningTime
 
 class MovieTimeAdapter(
-    private val times: List<ScreeningDate>,
-    private val onTimeClick: (ScreeningDate) -> Unit
+    private val times: MutableList<ScreeningTime>,
+    private val onTimeClick: (ScreeningTime) -> Unit
 ) : RecyclerView.Adapter<MovieTimeAdapter.MovieTimeViewHolder>() {
 
 
@@ -35,9 +36,10 @@ class MovieTimeAdapter(
         }
 
 
-        fun bind(date: ScreeningDate, isSelected: Boolean) {
+        fun bind(time: ScreeningTime, isSelected: Boolean) {
 
-            binding.time.text = date.formattedTime
+            binding.time.text = time.formattedTime
+            binding.sala.text = time.auditorium
             binding.root.isChecked = isSelected
 
         }
@@ -60,5 +62,21 @@ class MovieTimeAdapter(
     fun setSelectionPosition(position: Int) {
         selectedPosition = position
         notifyDataSetChanged()
+    }
+
+    fun updateData(newDates: List<ScreeningTime>) {
+        times.clear()
+        times.addAll(newDates)
+        notifyDataSetChanged()
+    }
+
+    fun selectFirstItem() {
+        if (times.isNotEmpty() && selectedPosition != 0) {
+            val previousSelectedPosition = selectedPosition
+            selectedPosition = 0 // Select the first item
+            notifyItemChanged(previousSelectedPosition) // Deselect previous item
+            notifyItemChanged(selectedPosition) // Select the first item
+            onTimeClick(times[0])
+        }
     }
 }

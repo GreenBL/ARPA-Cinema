@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 import pwm.ar.arpacinema.home.CarouselItem
 import java.time.LocalDate
+import java.time.format.TextStyle
+import java.util.Locale
 
 @Parcelize
 data class Movie(
@@ -30,5 +32,11 @@ data class Movie(
         get() {
             val date = LocalDate.parse(releaseDate)
             return date.year.toString()
+        }
+
+    val formattedDate: String
+        get() {
+            val date = LocalDate.parse(releaseDate)
+            return "${date.dayOfMonth} ${date.month.getDisplayName(TextStyle.FULL, Locale.ITALIAN)} ${date.year}"
         }
 }

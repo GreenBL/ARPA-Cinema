@@ -2,6 +2,7 @@ package pwm.ar.arpacinema.repository
 
 import okhttp3.ResponseBody
 import pwm.ar.arpacinema.model.ProfileImage
+import pwm.ar.arpacinema.model.ScreeningDate
 import retrofit2.Response
 import retrofit2.http.Body
 import pwm.ar.arpacinema.repository.DTO.*
@@ -14,6 +15,10 @@ import retrofit2.http.Url
 
 interface Service {
 
+
+    // LOAD MOVIE DATES -- RIGA 956 SERVER
+    @POST("pwm/get_screening_dates")
+    suspend fun getMovieDates(@Body movieId: MovieIdPost): Response<MovieDatesResponse>
 
     // GET USER TICKETS
     @POST("pwm/chronology")

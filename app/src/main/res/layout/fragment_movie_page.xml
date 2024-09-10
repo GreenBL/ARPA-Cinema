@@ -142,7 +142,7 @@
                     android:numStars="5"
                     android:progressTint="#FFD740"
                     android:rating="@{(float) movie.rating}"
-                    android:stepSize="1"
+                    android:stepSize="0.5"
                     app:layout_constraintStart_toStartOf="@+id/movieTitle"
                     app:layout_constraintTop_toBottomOf="@+id/date" />
 
@@ -166,7 +166,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/abeezee"
-                    android:text="@{movie.year}"
+                    android:text="@{movie.formattedDate}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"

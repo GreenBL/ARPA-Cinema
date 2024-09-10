@@ -12,12 +12,16 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import dev.jahidhasanco.seatbookview.SeatBookView
 import dev.jahidhasanco.seatbookview.SeatClickListener
 import pwm.ar.arpacinema.R
+import pwm.ar.arpacinema.common.Dialog
 import pwm.ar.arpacinema.databinding.FragmentBookingBinding
 import pwm.ar.arpacinema.model.ScreeningDate
+import pwm.ar.arpacinema.model.ScreeningTime
+import pwm.ar.arpacinema.repository.DTO
 import pwm.ar.arpacinema.util.CustomSeatView
 import pwm.ar.arpacinema.util.SeatInterpreter
 import java.time.LocalDate
@@ -58,11 +62,12 @@ class BookingFragment : Fragment() {
     }
 
     private val viewModel: BookingViewModel by activityViewModels()
+    private val args: BookingFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // TODO: Use the ViewModel
+        val movie = args.movie
+        viewModel.fetchDates(movie.id)
     }
 
     override fun onCreateView(
@@ -99,12 +104,8 @@ class BookingFragment : Fragment() {
 
 
 
-        dateAdapter = MovieDateAdapter(
-            (List(20) {
-                ScreeningDate(LocalDate.now(), LocalTime.now())
-            }) ){
-
-
+        dateAdapter = MovieDateAdapter(mutableListOf())
+        {
             // get the selections and reserve
             seatBookView.clearSelection()
             Log.d("TAG", "onViewCreated: ${viewModel.selectedSeats.value} and ${seatBookView.getSelectedIdList()}")
@@ -114,6 +115,16 @@ class BookingFragment : Fragment() {
             Log.d("TAG", "onViewCreated: ${viewModel.datePosition}")
             viewModel.selectedDate.postValue(it.date)
         }
+
+        viewModel.dates.observe(viewLifecycleOwner) {
+            if (it.isNullOrEmpty()) return@observe
+            Log.d("DATE LIST", "DATE LIST: $it OBSERVED")
+            dateAdapter.updateData(it)
+            dateAdapter.selectFirstItem()
+            dateAdapter.notifyDataSetChanged()
+        }
+
+        observeStatus()
 
         dateSelect.apply {
             adapter = dateAdapter
@@ -132,12 +143,10 @@ class BookingFragment : Fragment() {
 
         val timeSelect = binding.timeSelect
 
-        val timeAdapter = MovieTimeAdapter(
-            (List(20) {
-                ScreeningDate(LocalDate.now(), LocalTime.now())
-            }) ){
-            viewModel.selectedDate.postValue(it.date)
-            Toast.makeText(requireContext(), it.date.toString(), Toast.LENGTH_SHORT).show()
+        val timeAdapter = MovieTimeAdapter(mutableListOf(ScreeningTime(LocalTime.now(), "1")))
+        {
+//            viewModel.selectedDate.postValue(it.time)
+//            Toast.makeText(requireContext(), it.date.toString(), Toast.LENGTH_SHORT).show()
         }
 
         timeSelect.apply {
@@ -194,11 +203,26 @@ class BookingFragment : Fragment() {
 
     }
 
+    private fun observeStatus() {
+        viewModel.status.observe(viewLifecycleOwner) {
+            when (it) {
+                DTO.Stat.ERROR -> {
+                    Dialog.showErrorDialog(requireContext())
+                }
+
+                else -> {}
+            }
+        }
+    }
+
     private fun setupNavigation() {
         binding.inclusion.viewTitle.text = "Acquista Biglietto"
         binding.inclusion.navBack.setOnClickListener {
-            findNavController().navigateUp()
+            // reset status
+            viewModel.status.postValue(DTO.Stat.DEFAULT)
+            findNavController().popBackStack()
         }
+
     }
 
     override fun onResume() {

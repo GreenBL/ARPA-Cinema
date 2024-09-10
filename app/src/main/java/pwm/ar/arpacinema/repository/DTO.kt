@@ -6,6 +6,7 @@ import pwm.ar.arpacinema.model.Movie
 import pwm.ar.arpacinema.model.ProfileImage
 import pwm.ar.arpacinema.model.Promotion
 import pwm.ar.arpacinema.model.Purchase
+import pwm.ar.arpacinema.model.ScreeningDate
 import pwm.ar.arpacinema.model.Ticket
 import pwm.ar.arpacinema.model.User
 
@@ -18,6 +19,15 @@ import pwm.ar.arpacinema.model.User
  */
 
 class DTO {
+
+    data class MovieIdPost(
+        @SerializedName("film_id") val movieId: String?,
+    )
+
+    data class MovieDatesResponse(
+        @SerializedName("status") val status: Stat?,
+        @SerializedName("screening_dates") val dates: List<ScreeningDate>?
+    )
 
     data class PurchasesResponse(
         @SerializedName("status") val status: Stat?,

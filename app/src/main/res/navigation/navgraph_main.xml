@@ -251,6 +251,9 @@
         <action
             android:id="@+id/action_bookingFragment_to_checkoutModal"
             app:destination="@id/checkoutModal" />
+        <argument
+            android:name="movie"
+            app:argType="pwm.ar.arpacinema.model.Movie" />
     </fragment>
     <fragment
         android:id="@+id/imageSelectorFragment"

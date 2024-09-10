@@ -58,6 +58,7 @@ open class TextValidator(
         fun isValidPassword(password: String): String? {
             return when {
                 password.isEmpty() -> null
+                password.contains(" ") -> "La password non può contenere spazi"
                 !password.matches(".*[A-Z].*".toRegex()) -> "La password deve contenere almeno una lettera maiuscola"
                 !password.matches(".*[a-z].*".toRegex()) -> "La password deve contenere almeno una lettera minuscola"
                 !password.matches(".*[@#!\$%^&+=].*".toRegex()) -> "La password deve contenere almeno un carattere speciale"
@@ -70,7 +71,7 @@ open class TextValidator(
         fun isValidName(name: String): String? {
             return when {
                 name.isEmpty() -> null
-                !name.matches("^[a-zA-Z]+(([' ][a-zA-Z ])?[a-zA-Z]*)*\$".toRegex()) -> "Sei figlio di Elon Musk?"
+                !name.matches("^[a-zA-Z]+(([' ][a-zA-Z ])?[a-zA-Z]*)*\$".toRegex()) -> "Nome non valido"
                 else -> null
             }
         }
@@ -78,6 +79,7 @@ open class TextValidator(
         fun isValidPhone(phone: String): String? {
             return when {
                 phone.isEmpty() -> null
+                phone.contains(" ") -> "Il numero di telefono non può contenere spazi"
                 !phone.matches("^[0-9]{10}\$".toRegex()) -> "Il numero di telefono deve essere di 10 cifre"
                 else -> null
             }
@@ -102,6 +104,7 @@ open class TextValidator(
         fun B_isValidPassword(password: String): Boolean {
             return when {
                 password.isEmpty() -> false
+                password.contains(" ") -> false
                 !password.matches(".*[A-Z].*".toRegex()) -> false
                 !password.matches(".*[a-z].*".toRegex()) -> false
                 !password.matches(".*[@#!\$%^&+=].*".toRegex()) -> false
@@ -114,6 +117,7 @@ open class TextValidator(
         fun B_isValidPhone(phone: String): Boolean {
             return when {
                 phone.isEmpty() -> false
+                phone.contains(" ") -> false
                 !phone.matches("^[0-9]{10}\$".toRegex()) -> false
                 else -> true
             }

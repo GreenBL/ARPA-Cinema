@@ -13,6 +13,9 @@ import java.util.Collections
 
 class SearchViewModel : ViewModel() {
 
+    private val _searchString = MutableLiveData("")
+    val searchString: MutableLiveData<String> = _searchString
+
 
     private val _movies = MutableLiveData<List<Movie>?>(null)
     val movies: LiveData<List<Movie>?> = _movies

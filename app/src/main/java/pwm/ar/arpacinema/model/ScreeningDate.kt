@@ -1,5 +1,6 @@
 package pwm.ar.arpacinema.model
 
+import com.google.gson.annotations.SerializedName
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -10,8 +11,8 @@ import java.util.Locale
 // le getter personalzzate convertono dal formato tipo 2007-09-04 al formato stringale "Lun 4"
 
 data class ScreeningDate(
-    val date: LocalDate,
-    val time: LocalTime
+    @SerializedName("date") val date: LocalDate,
+    val time: LocalTime = LocalTime.MIDNIGHT
 ) {
     val dayOfWeek: String
         get() = date.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.ITALY) // lun, mar, mer...
@@ -19,6 +20,6 @@ data class ScreeningDate(
     val dayOfMonth: String
         get() = date.dayOfMonth.toString()
 
-    val formattedTime: String
-        get() = time.format(DateTimeFormatter.ofPattern("HH:mm"))
+//    val formattedTime: String
+//        get() = time.format(DateTimeFormatter.ofPattern("HH:mm"))
 }
