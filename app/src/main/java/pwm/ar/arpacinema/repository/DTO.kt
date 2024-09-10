@@ -26,7 +26,7 @@ class DTO {
 
     data class TicketResponse(
         @SerializedName("status") val status: Stat?,
-        @SerializedName("ticket") val ticket: Ticket?
+        @SerializedName("tickets") val ticket: List<Ticket>?
     )
 
     data class CategoryPost(

@@ -49,10 +49,10 @@ class ViewTicketFragment : DialogFragment() {
         val ticket = args.ticketDetails
 
         binding.movieTitled.text = ticket.movieTitle
-        binding.datemovie.text = ticket.movieDate
-        binding.timemovie.text = ticket.movieTime
-        binding.theatermovie.text = ticket.movieTheater
-        binding.row.transitionName = ticket.seatString
+        binding.datemovie.text = ticket.formattedDate
+        binding.timemovie.text = ticket.formattedTime
+        binding.theatermovie.text = ticket.auditoriumComposition
+        binding.row.text = ticket.seatComposition
 
         val shimmer = binding.shimmer
 
@@ -63,7 +63,7 @@ class ViewTicketFragment : DialogFragment() {
 
 
             Glide.with(this@ViewTicketFragment)
-                .load(imageUri)
+                .load("http://10.0.2.2:9000/pwm/qrcodegen?ticket_id=${ticket.ticketID}")
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(binding.iView)
 

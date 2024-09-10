@@ -2,6 +2,7 @@ package pwm.ar.arpacinema.tickets
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -33,13 +34,13 @@ class TicketsFragment : Fragment() {
     }
 
     // TEMP DATA SET
-    private val tickets = listOf(TicketItem("Ciao", "06/04/2000", "16:30", "nan"),
-        TicketItem("Deadpool & Wolverine", "06/04/2000", "16:30", "nan"),
-        TicketItem("Il Signore Degli Anelli: Il Ritorno Del Re", "06/04/2000", "16:30", "nan"),
-        TicketItem("Star Wars: The Force Awakens", "06/04/2000", "16:30", "nan"),
-        TicketItem("Star Wars: 2", "06/04/2000", "16:30", "nan"),
-        TicketItem("Star Wars: The Force Awakens 4", "06/04/2000", "16:30", "nan"),
-        TicketItem("Star Wars: The Force Awakens 6", "06/04/2000", "16:30", "nan"))
+//    private val tickets = listOf(TicketItem("Ciao", "06/04/2000", "16:30", "nan"),
+//        TicketItem("Deadpool & Wolverine", "06/04/2000", "16:30", "nan"),
+//        TicketItem("Il Signore Degli Anelli: Il Ritorno Del Re", "06/04/2000", "16:30", "nan"),
+//        TicketItem("Star Wars: The Force Awakens", "06/04/2000", "16:30", "nan"),
+//        TicketItem("Star Wars: 2", "06/04/2000", "16:30", "nan"),
+//        TicketItem("Star Wars: The Force Awakens 4", "06/04/2000", "16:30", "nan"),
+//        TicketItem("Star Wars: The Force Awakens 6", "06/04/2000", "16:30", "nan"))
 
 
 
@@ -70,28 +71,36 @@ class TicketsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+
+
+
+
         // we must ensure this otherwise it may look jarring when popping from ticket view
-        val navBar = requireActivity().findViewById<View>(R.id.bottomNavigationView)
-        navBar.visibility = View.VISIBLE
+        //
+        //navBar.visibility = View.VISIBLE
 
 
 
-        val adapter = TicketAdapter(tickets) { ticket, image ->
+        val adapter = TicketAdapter(mutableListOf()) { ticket ->
 
             // HANDLE THE ITEM BEING CLICKED
-            ViewCompat.setTransitionName(image, "shared_poster_${ticket.title}")
+            //ViewCompat.setTransitionName(image, "shared_poster_${ticket.title}")
             // setup the parcel
             val ticketParcel = TicketDetailsParcel(
-                "1",
-                ticket.title,
-                ticket.date,
-                "TODO",
-                "TODO",
-                "TODO",
+                ticket.ticketId,
+                ticket.filmTitle,
+                ticket.screeningDate,
+                ticket.screeningTime,
+                ticket.screeningTheater,
+                ticket.seatNumber,
             )
             val action = TicketsFragmentDirections.actionGlobalViewTicketFragment(ticketParcel)
             navController.navigate(action)
         }
+
+
 
         //val dividerItemDecoration = MaterialDividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
 
@@ -105,9 +114,20 @@ class TicketsFragment : Fragment() {
         val snapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(binding.ticketsRV)
 
+
         val dots = binding.dotsy
         dots.attachToRecyclerView(binding.ticketsRV, snapHelper)
+        adapter.registerAdapterDataObserver(dots.adapterDataObserver)
 
+        viewModel.tickets.observe(viewLifecycleOwner) {
+            Log.d("TicketsFragment", "Tickets UPDATE: $it")
+            if (it == null) {
+                return@observe
+            } else {
+                adapter.updateTickets(it)
+                adapter.notifyDataSetChanged()
+            }
+        }
 
 
     }

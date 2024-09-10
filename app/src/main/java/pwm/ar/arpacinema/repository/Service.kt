@@ -15,6 +15,10 @@ import retrofit2.http.Url
 interface Service {
 
 
+    // GET USER TICKETS
+    @POST("pwm/chronology")
+    suspend fun getTickets(@Body userIdPost: UserIdPost): Response<TicketResponse>
+
     @GET("pwm/load_films")
     suspend fun getMovies(): Response<MoviesResponse>
 
