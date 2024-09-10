@@ -94,9 +94,11 @@ class TicketAdapter(
     override fun onBindViewHolder(holder: TicketViewHolder, position: Int) {
         val ticketItem = tickets[position]
 
-        holder.binding.filmDate.text = ticketItem.screeningDate
-        holder.binding.movieTime.text = ticketItem.screeningTime
+        holder.binding.filmDate.text = ticketItem.formattedDate
+        holder.binding.movieTime.text = ticketItem.formattedTime
         holder.binding.movieTitle.text = ticketItem.filmTitle
+        holder.binding.filmSeat.text = ticketItem.seatComposition
+        holder.binding.filmSala.text = ticketItem.auditoriumComposition
 //        holder.binding.moviePoster.transitionName = "shared_poster_${ticketItem.title}"
 
         val shapeableImage = holder.binding.moviePoster
@@ -150,8 +152,8 @@ class TicketAdapter(
             response = service.ticketPDF(
                 DTO.PrintTicketRequest(
                     Session.getUserId(context),
-                    "TODO",
-                    "1"
+                    ticket.seatNumber,
+                    ticket.ticketId
                 )
             ) // TODO
         } catch (e: Exception) {
