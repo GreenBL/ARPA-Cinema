@@ -15,7 +15,10 @@ import retrofit2.http.Url
 interface Service {
 
     @POST("pwm/get_amount")
-    suspend fun getAmount(@Body userIdPost: DTO.UserIdPost): Response<BalanceResponse>
+    suspend fun getAmount(@Body userIdPost: DTO.UserIdPost): Response<DTO.BalanceResponse>
+
+    @POST("pwm/update_amount")
+    suspend fun updateUserBalance(@Body balanceUpdateRequest: DTO.BalanceUpdateRequest): Response<GenericResponse>
 
     @GET("pwm/load_films")
     suspend fun getMovies(): Response<MoviesResponse>
@@ -48,9 +51,6 @@ interface Service {
 
     @POST("pwm/update_user")
     suspend fun updateUser(@Body updateUserRequest: UpdateUserRequest): Response<GenericResponse>
-
-    @POST("pwm/update_saldo")
-    suspend fun updateUserBalance(@Body balanceUpdateRequest: BalanceUpdateRequest): Response<GenericResponse>
 
     @GET("pwm/load_images")
     suspend fun loadProfileImages(): Response<ImageListResponse>

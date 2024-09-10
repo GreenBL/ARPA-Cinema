@@ -30,13 +30,14 @@ class WalletViewModel : ViewModel() {
         _fullName.postValue(Session.user?.name + " " + Session.user?.surname)
 
     }
+
     suspend fun fetchBalance() {
         try {
-            // Assuming you have the user ID stored in your session
             val userId = Session.user?.id.toString()
-            val response = api.getAmount(DTO.UserIdPost(userId))  // Define the DTO for this request
+            val response = api.getAmount(DTO.UserIdPost(userId))
 
             if (!response.isSuccessful) {
+                Log.e("WalletViewModel", "Error fetching balance: ${response.message()}")
                 _responseStatus.postValue(Stat.SERVER_ERROR)
                 return
             }
@@ -46,23 +47,40 @@ class WalletViewModel : ViewModel() {
                 _balance.postValue(balance)
                 _responseStatus.postValue(Stat.SUCCESS)
             } else {
+                Log.e("WalletViewModel", "Error: Balance is null")
                 _responseStatus.postValue(Stat.SERVER_ERROR)
             }
         } catch (e: Exception) {
+            Log.e("WalletViewModel", "Network error: ${e.message}")
             _responseStatus.postValue(Stat.NETWORK_ERROR)
         }
     }
 
     suspend fun increaseBalance() {
-        if (inputAmount.value == null) {
+        Log.d("WalletViewModel", "increaseBalance called")
+
+        val amountString = inputAmount.value
+        Log.d("WalletViewModel", "inputAmount: $amountString")
+
+        if (amountString.isNullOrEmpty()) {
             _responseStatus.postValue(Stat.UNFILLED)
+            Log.e("WalletViewModel", "Amount is null or empty.")
             return
         }
+
         try {
-            val balanceUpdateRequest = BalanceUpdateRequest(Session.user?.id.toString(), inputAmount.value!!.toDouble())
+            val amount = amountString.toDouble()
+            Log.d("WalletViewModel", "Parsed amount: $amount")
+
+            val balanceUpdateRequest = BalanceUpdateRequest(Session.user?.id.toString(), amount)
+            Log.d("WalletViewModel", "Sending balance update request: $balanceUpdateRequest")
+
             val response = api.updateUserBalance(balanceUpdateRequest)
+            Log.d("WalletViewModel", "Response received: ${response.code()}")
 
             if (!response.isSuccessful) {
+                val errorBody = response.errorBody()?.string()
+                Log.e("WalletViewModel", "Server error: $errorBody")
                 _responseStatus.postValue(Stat.SERVER_ERROR)
                 return
             }
@@ -74,13 +92,17 @@ class WalletViewModel : ViewModel() {
                 return
             }
 
+            Log.d("WalletViewModel", "Update successful. Current balance: ${_balance.value}, Amount added: $amount")
             _responseStatus.postValue(Stat.SUCCESS)
-            _balance.postValue(_balance.value!! + inputAmount.value!!.toDouble())
+            _balance.postValue((_balance.value ?: 0.0) + amount)
 
+        } catch (e: NumberFormatException) {
+            Log.e("WalletViewModel", "Number format error: ${e.message}", e)
+            _responseStatus.postValue(Stat.SERVER_ERROR)
         } catch (e: Exception) {
+            Log.e("WalletViewModel", "Network error: ${e.message}", e)
             _responseStatus.postValue(Stat.NETWORK_ERROR)
         }
     }
-
 
 }
