@@ -20,6 +20,15 @@ import pwm.ar.arpacinema.model.User
 
 class DTO {
 
+    data class EmailPost(
+        @SerializedName("email") val email: String?
+    )
+
+    data class QuestionResponse(
+        @SerializedName("status") val status: Stat?,
+        @SerializedName("security_question") val question: String?
+    )
+
     data class MovieIdPost(
         @SerializedName("film_id") val movieId: String?,
     )

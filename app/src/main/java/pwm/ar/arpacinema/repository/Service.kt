@@ -16,6 +16,9 @@ import retrofit2.http.Url
 interface Service {
 
 
+    @POST("pwm/get_security_question")
+    suspend fun getSecurityQuestion(@Body emailPost: EmailPost): Response<QuestionResponse>
+
     // LOAD MOVIE DATES -- RIGA 956 SERVER
     @POST("pwm/get_screening_dates")
     suspend fun getMovieDates(@Body movieId: MovieIdPost): Response<MovieDatesResponse>

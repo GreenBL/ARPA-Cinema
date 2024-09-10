@@ -1,6 +1,5 @@
 package pwm.ar.arpacinema.auth
 
-import android.app.Dialog
 import androidx.fragment.app.viewModels
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,7 +13,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.R
+import pwm.ar.arpacinema.common.Dialog
 import pwm.ar.arpacinema.databinding.FragmentPasswordRecoveryBinding
+import pwm.ar.arpacinema.repository.DTO
 import pwm.ar.arpacinema.util.TextValidator
 
 class PasswordRecoveryFragment : Fragment() {
@@ -48,10 +49,14 @@ class PasswordRecoveryFragment : Fragment() {
 
         binding.viewModel = viewModel
         binding.stepOne.viewModel = viewModel
+        binding.stepOne.lifecycleOwner = viewLifecycleOwner
+        binding.stepTwo.viewModel = viewModel
+        binding.stepTwo.lifecycleOwner = viewLifecycleOwner
         binding.lifecycleOwner = viewLifecycleOwner
 
         val firstStepGroup = binding.stepOne
         val secondStepGroup = binding.stepTwo
+        val resetPasswordButton = binding.stepTwo.confirmBtn
         val sendButton = binding.stepOne.sendEmail
         val progress = binding.progressBar2
         val questionText = binding.stepTwo.domandaText
@@ -67,7 +72,6 @@ class PasswordRecoveryFragment : Fragment() {
         }
 
         sendButton.setOnClickListener {
-
             lifecycleScope.launch {
                 progress.visibility = View.VISIBLE
                 sendButton.isEnabled = false
@@ -75,21 +79,24 @@ class PasswordRecoveryFragment : Fragment() {
                 sendButton.isEnabled = true
                 progress.visibility = View.GONE
             }
-
-
-
-
-
-            // fade out first step
-            firstStepGroup.root.animate().alpha(0f).setDuration(500).start()
-            firstStepGroup.root.visibility = View.GONE
-
-            // todo RECOVERY LOGIC!!!
-
-            secondStepGroup.root.visibility = View.VISIBLE
-            // fade in second step
-            secondStepGroup.root.animate().alpha(1f).setDuration(500).start()
         }
+
+        viewModel.status.observe(viewLifecycleOwner) {
+            if (it == DTO.Stat.DEFAULT) return@observe
+            when (it) {
+                DTO.Stat.SUCCESS -> {
+                    firstStepGroup.root.animate().alpha(0f).setDuration(500).start()
+                    firstStepGroup.root.visibility = View.INVISIBLE
+                    secondStepGroup.root.visibility = View.VISIBLE
+                    secondStepGroup.root.animate().alpha(1f).setDuration(500).start()
+                }
+                DTO.Stat.USER_NOT_REGISTERED -> Dialog.showUserNotFound(requireContext())
+                else -> Dialog.showErrorDialog(requireContext())
+            }
+        }
+
+        // SECOND ACT
+
 
 
     }

@@ -30,6 +30,18 @@ object Dialog {
 
     }
 
+    fun showUserNotFound(context: Context) {
+        val builder = MaterialAlertDialogBuilder(context, centered)
+        builder.setTitle("Utente non trovato")
+        builder.setMessage("L'email inserita non è registrata nel nostro database. Controlla l'email e riprova.")
+        builder.setIcon(R.drawable.baseline_error_outline_24)
+        builder.setPositiveButton("Ok") {
+                dialog, _ -> dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
     fun showNetworkErrorDialog(context: Context) {
         val builder = MaterialAlertDialogBuilder(context, centered)
         builder.setTitle("Impossibile connettersi")
