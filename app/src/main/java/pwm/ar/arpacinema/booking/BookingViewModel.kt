@@ -1,14 +1,24 @@
 package pwm.ar.arpacinema.booking
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.dev.Selection
+import pwm.ar.arpacinema.model.ScreeningDate
+import pwm.ar.arpacinema.repository.DTO
+import pwm.ar.arpacinema.repository.RetrofitClient
 import pwm.ar.arpacinema.util.SeatInterpreter
 import java.time.LocalDate
 
 class BookingViewModel : ViewModel() {
+
+    // dates fetched
+    private val _dates = MutableLiveData(listOf<ScreeningDate>())
+    val dates: LiveData<List<ScreeningDate>> = _dates
 
     // preserve RV state
     var datePosition: Int = RecyclerView.NO_POSITION
@@ -39,9 +49,64 @@ class BookingViewModel : ViewModel() {
     private val _total = MutableLiveData(0.0)
     val total: LiveData<Double> = _total
 
+    // status
+
+    private val _status = MutableLiveData(DTO.Stat.DEFAULT)
+    val status: MutableLiveData<DTO.Stat> = _status
+
     fun clearEverything() {
         _selectedSeats.postValue(listOf())
         _selectionObjects.postValue(listOf())
+    }
+
+    val service = RetrofitClient.service
+
+    private fun clearDirtyDateList(list: List<ScreeningDate>) : List<ScreeningDate> {
+        // remove duplicates and sort by date
+        val sortedList = list.sortedBy { it.date }
+        return sortedList.distinctBy { it.date }
+    }
+
+    fun fetchDates(movieId: String) {
+        viewModelScope.launch {
+
+            // serialized request
+            val idPost = DTO.MovieIdPost(movieId)
+
+            try {
+                val response = service.getMovieDates(idPost)
+
+                if (!response.isSuccessful) {
+                    Log.e("BookingViewModel", response.message())
+                    _status.postValue(DTO.Stat.ERROR)
+                    return@launch
+                }
+
+                val body = response.body()
+
+                if (body?.status != DTO.Stat.SUCCESS) {
+                    Log.e("BookingViewModel", body?.status.toString())
+                    _status.postValue(body?.status)
+                    return@launch
+                }
+                Log.d("BookingViewModel", body.toString())
+
+                if (body.dates.isNullOrEmpty()) {
+                    Log.e("BookingViewModel", "No dates found")
+                    _status.postValue(DTO.Stat.ERROR)
+                    return@launch
+                }
+
+                // cleaning the list...
+                _dates.postValue(clearDirtyDateList(body.dates))
+                _status.postValue(body.status)
+
+            } catch (e: Exception) {
+                Log.e("BookingViewModel", e.message.toString())
+                _status.postValue(DTO.Stat.NETWORK_ERROR)
+            }
+
+        }
     }
 
     fun updateList(list: List<Int>) {

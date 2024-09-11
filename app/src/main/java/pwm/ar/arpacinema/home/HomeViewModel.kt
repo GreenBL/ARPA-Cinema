@@ -108,4 +108,8 @@ class HomeViewModel : ViewModel() {
         }
 
     }
+
+    fun init() {
+
+    }
 }

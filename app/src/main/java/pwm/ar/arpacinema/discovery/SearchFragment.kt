@@ -66,6 +66,9 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         (activity as MainActivity).hideBottomNavigation()
 
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+
         val filterFAB = binding.filter
 
         val mainAdapter = ScreeningAdapter(emptyList()) {

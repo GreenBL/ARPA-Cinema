@@ -107,7 +107,7 @@ class TicketAdapter(
 
         Glide.with(holder.itemView.context)
             .load(ticketItem.posterUrl)
-            .apply(bitmapTransform(BlurTransformation(15, 3)))
+            .apply(bitmapTransform(BlurTransformation(8, 5)))
             .transition(DrawableTransitionOptions.withCrossFade())
             .placeholder(shimmer)
             .into(shapeableImage)
@@ -159,7 +159,8 @@ class TicketAdapter(
         } catch (e: Exception) {
             Log.e("TicketAdapter", "Error: ${e.message}", e)
         }
-        return cachePDF(context, response, "${ticket.filmTitle.hashCode()}_biglietto_cinema.pdf")
+        val titleWithUnderscores = ticket.filmTitle.replace(" ", "_").trim()
+        return cachePDF(context, response, "${titleWithUnderscores}_biglietto_cinema.pdf")
     }
 
     private fun cachePDF(context: Context, body: ResponseBody, fileName: String): File {

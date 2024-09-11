@@ -13,7 +13,7 @@ import pwm.ar.arpacinema.model.ScreeningDate
 import pwm.ar.arpacinema.profile.image.ProfileImageAdapter
 
 class MovieDateAdapter(
-    private val dates: List<ScreeningDate>,
+    private val dates: MutableList<ScreeningDate>,
     private val onDayClick: (ScreeningDate) -> Unit
 ) : RecyclerView.Adapter<MovieDateAdapter.MovieDateViewHolder>() {
 
@@ -67,5 +67,21 @@ class MovieDateAdapter(
     fun setSelectionPosition(position: Int) {
         selectedPosition = position
         notifyDataSetChanged()
+    }
+
+    fun updateData(newDates: List<ScreeningDate>) {
+        dates.clear()
+        dates.addAll(newDates)
+        notifyDataSetChanged()
+    }
+
+    fun selectFirstItem() {
+        if (dates.isNotEmpty() && selectedPosition != 0) {
+            val previousSelectedPosition = selectedPosition
+            selectedPosition = 0 // Select the first item
+            notifyItemChanged(previousSelectedPosition) // Deselect previous item
+            notifyItemChanged(selectedPosition) // Select the first item
+            onDayClick(dates[0])
+        }
     }
 }

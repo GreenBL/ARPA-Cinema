@@ -1,8 +1,14 @@
 package pwm.ar.arpacinema.repository
 
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
+import pwm.ar.arpacinema.util.LocalDateAdapter
+import pwm.ar.arpacinema.util.LocalTimeAdapter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.time.LocalDate
+import java.time.LocalTime
 import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
@@ -22,11 +28,18 @@ object RetrofitClient {
         .connectTimeout(2, TimeUnit.SECONDS)
         .build()
 
+    private val gson: Gson = GsonBuilder()
+        .registerTypeAdapter(LocalDate::class.java, LocalDateAdapter())
+        .registerTypeAdapter(LocalTime::class.java, LocalTimeAdapter())
+        .create()
+
+    private val converter = GsonConverterFactory.create()
+
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(SERVER_URL)
             .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
 

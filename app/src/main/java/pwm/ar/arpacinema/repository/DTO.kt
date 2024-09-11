@@ -6,6 +6,7 @@ import pwm.ar.arpacinema.model.Movie
 import pwm.ar.arpacinema.model.ProfileImage
 import pwm.ar.arpacinema.model.Promotion
 import pwm.ar.arpacinema.model.Purchase
+import pwm.ar.arpacinema.model.ScreeningDate
 import pwm.ar.arpacinema.model.Ticket
 import pwm.ar.arpacinema.model.User
 
@@ -18,6 +19,31 @@ import pwm.ar.arpacinema.model.User
  */
 
 class DTO {
+
+    data class EditPasswordRequest(
+        @SerializedName("id") val id: String?,
+        @SerializedName("password") val password: String?
+    )
+
+    data class EmailPost(
+        @SerializedName("email") val email: String?
+    )
+
+    data class QuestionResponse(
+        @SerializedName("status") val status: Stat?,
+        @SerializedName("security_question") val question: String?,
+        @SerializedName("security_answer") val answer: String?,
+        @SerializedName("user_id") val userId: String?
+    )
+
+    data class MovieIdPost(
+        @SerializedName("film_id") val movieId: String?,
+    )
+
+    data class MovieDatesResponse(
+        @SerializedName("status") val status: Stat?,
+        @SerializedName("screening_dates") val dates: List<ScreeningDate>?
+    )
 
     data class PurchasesResponse(
         @SerializedName("status") val status: Stat?,
@@ -129,6 +155,7 @@ class DTO {
         SERVER_ERROR("SERVER_ERROR"), // WHEN SERVER ERROR
         USER_NOT_REGISTERED("USER_NOT_REGISTERED"), // WHEN USER IS NOT REGISTERED
         PSW_ERROR("PSW_ERROR"), // WHEN PASSWORD IS INCORRECT
+        PASSWORD_EDITED("PASSWORD_EDITED"), // WHEN PASSWORD IS EDITED CORRECTLY
         UNKNOWN_ERROR("UNKNOWN_ERROR") // WHEN SOMETHING ELSE HAPPENS WE DONT KNOW ABOUT
     }
 

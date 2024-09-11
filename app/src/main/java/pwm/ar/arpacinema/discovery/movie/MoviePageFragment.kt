@@ -32,8 +32,6 @@ class MoviePageFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // TODO: Use the ViewModel
     }
 
     override fun onCreateView(
@@ -77,7 +75,8 @@ class MoviePageFragment : Fragment() {
             .into(imageview)
 
         binding.buyButton.setOnClickListener {
-            findNavController().navigate(R.id.action_moviePageFragment_to_bookingFragment)
+            val action = MoviePageFragmentDirections.actionMoviePageFragmentToBookingFragment(movie)
+            findNavController().navigate(action)
         }
 
 
