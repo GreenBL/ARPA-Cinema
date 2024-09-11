@@ -122,6 +122,7 @@ class TicketsFragment : Fragment() {
         viewModel.tickets.observe(viewLifecycleOwner) {
             Log.d("TicketsFragment", "Tickets UPDATE: $it")
             if (it == null) {
+                binding.noticket.root.visibility = View.VISIBLE
                 return@observe
             } else {
                 adapter.updateTickets(it)
