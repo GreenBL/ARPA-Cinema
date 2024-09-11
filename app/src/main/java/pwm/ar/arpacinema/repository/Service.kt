@@ -13,6 +13,8 @@ import retrofit2.http.Path
 import retrofit2.http.Url
 
 interface Service {
+    @POST("pwm/get_user_points_and_level")
+    suspend fun getUserPointsAndLevel(@Body userIdPost: UserIdPost): Response<UserPointsAndLevelResponse>
 
     @POST("pwm/get_amount")
     suspend fun getAmount(@Body userIdPost: DTO.UserIdPost): Response<DTO.BalanceResponse>

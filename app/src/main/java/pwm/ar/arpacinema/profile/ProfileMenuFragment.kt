@@ -54,10 +54,6 @@ class ProfileMenuFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
-
-
         // TODO: Use the ViewModel
     }
 
@@ -72,32 +68,26 @@ class ProfileMenuFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Session.user?.let { viewModel.setUser(it) }
-        // force show nav bar
-        //requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility = View.VISIBLE
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-
 
         val topMenu = binding.topMenu
         val centerMenu = binding.centerMenu
         val bottomMenu = binding.bottomMenu
 
         val topMenuAdapter = MenuAdapter(topMenuItems) { menuItem ->
-            // HANDLE THE ITEM BEING CLICKED
-                when (menuItem.label) {
-               "Premi" -> {
-                   findNavController().navigate(R.id.action_profileMenuFragment_to_rewardsFragment)
-               }
-               "Cronologia" -> {
-                   findNavController().navigate(R.id.action_profileMenuFragment_to_historyFragment)
-               }
+            when (menuItem.label) {
+                "Premi" -> {
+                    findNavController().navigate(R.id.action_profileMenuFragment_to_rewardsFragment)
+                }
+                "Cronologia" -> {
+                    findNavController().navigate(R.id.action_profileMenuFragment_to_historyFragment)
+                }
             }
-
         }
 
         val centerMenuAdapter = MenuAdapter(centerMenuItems) { menuItem ->
-            // HANDLE THE ITEM BEING CLICKED
             when (menuItem.label) {
                 "Profilo" -> {
                     findNavController().navigate(R.id.action_profileMenuFragment_to_infoFragment)
@@ -114,18 +104,17 @@ class ProfileMenuFragment : Fragment() {
         }
 
         val bottomMenuAdapter = MenuAdapter(logoutItem) { menuItem ->
-            // HANDLE THE ITEM BEING CLICKED
             when (menuItem.label) {
                 "Logout" -> {
-                            Dialog.showLogoutConfirmationDialog(requireContext()) {
-                                Session.invalidateUser(requireContext())
-                                viewModel.clearUser()
-                                findNavController().navigate(R.id.homeFromProfile)
-                                findNavController().popBackStack()
-                            }
+                    Dialog.showLogoutConfirmationDialog(requireContext()) {
+                        Session.invalidateUser(requireContext())
+                        viewModel.clearUser()
+                        findNavController().navigate(R.id.homeFromProfile)
+                        findNavController().popBackStack()
+                    }
                 }
             }
-//            lifecycleScope.launch {
+            //            lifecycleScope.launch {
 //                if (Session.getUserId(requireContext()) != null) {
 //                    Session.invalidateUser(requireContext())
 //                    Session.printUserId(requireContext())
@@ -164,6 +153,5 @@ class ProfileMenuFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        //(activity as? AppCompatActivity)?.supportActionBar?.displayOptions = androidx.appcompat.app.ActionBar.DISPLAY_SHOW_TITLE
     }
 }
