@@ -105,6 +105,8 @@ class DTO {
         @SerializedName("user") val user: User?
     )
 
+
+
     data class DeleteUserRequest(
         @SerializedName("user") val user: User
     )
@@ -125,6 +127,9 @@ class DTO {
         @SerializedName("user_id") val id: String?,
         @SerializedName("amount") val amount: Double?
     )
+    data class BalanceResponse(
+        @SerializedName("amount") val amount: Double?
+    )
 
     data class ImageListResponse(
         @SerializedName("status") val status: Stat?,
@@ -135,6 +140,13 @@ class DTO {
         @SerializedName("user_id") val id: String?,
         @SerializedName("seat_code") val seatCode: String?,
         @SerializedName("purchase_id") val purchaseID: String?,
+    )
+
+
+    data class UserPointsAndLevelResponse(
+        @SerializedName("status") val status: String?,
+        @SerializedName("points") val points: Int?,
+        @SerializedName("level") val level: Int?
     )
 
 

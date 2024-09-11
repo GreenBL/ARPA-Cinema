@@ -35,6 +35,14 @@ class WalletFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        lifecycleScope.launch {
+            viewModel.fetchBalance()  // Calls the new function to fetch balance from backend
+        }
+
+        viewModel.balance.observe(viewLifecycleOwner) { balance ->
+            binding.dynamicCurrency.text = String.format("%.2f€", balance)  // Update the TextView dynamically
+        }
+
         val confirmButton = binding.confirmButton
         val increaseLayout = binding.increaseLayout
 
