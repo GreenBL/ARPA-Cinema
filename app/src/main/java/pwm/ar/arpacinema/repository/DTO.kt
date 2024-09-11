@@ -20,13 +20,20 @@ import pwm.ar.arpacinema.model.User
 
 class DTO {
 
+    data class EditPasswordRequest(
+        @SerializedName("id") val id: String?,
+        @SerializedName("password") val password: String?
+    )
+
     data class EmailPost(
         @SerializedName("email") val email: String?
     )
 
     data class QuestionResponse(
         @SerializedName("status") val status: Stat?,
-        @SerializedName("security_question") val question: String?
+        @SerializedName("security_question") val question: String?,
+        @SerializedName("security_answer") val answer: String?,
+        @SerializedName("user_id") val userId: String?
     )
 
     data class MovieIdPost(
@@ -148,6 +155,7 @@ class DTO {
         SERVER_ERROR("SERVER_ERROR"), // WHEN SERVER ERROR
         USER_NOT_REGISTERED("USER_NOT_REGISTERED"), // WHEN USER IS NOT REGISTERED
         PSW_ERROR("PSW_ERROR"), // WHEN PASSWORD IS INCORRECT
+        PASSWORD_EDITED("PASSWORD_EDITED"), // WHEN PASSWORD IS EDITED CORRECTLY
         UNKNOWN_ERROR("UNKNOWN_ERROR") // WHEN SOMETHING ELSE HAPPENS WE DONT KNOW ABOUT
     }
 

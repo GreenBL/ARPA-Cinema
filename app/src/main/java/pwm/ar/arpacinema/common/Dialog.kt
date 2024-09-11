@@ -3,6 +3,7 @@ package pwm.ar.arpacinema.common
 import android.content.Context
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.text.HtmlCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -54,6 +55,34 @@ object Dialog {
         val dialog = builder.create()
         dialog.show()
 
+    }
+
+    fun showEditedPasswordSuccessDialog(context: Context) {
+        val builder = MaterialAlertDialogBuilder(context, centered)
+        builder.setTitle("Password modificata")
+        builder.setMessage("La password è stata modificata con successo.")
+        builder.setIcon(R.drawable.baseline_check_circle_outline_24)
+        builder.setPositiveButton("Ok") {
+                dialog, _ -> dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    fun showImpossibleRecoveryDialog(context: Context) {
+        val builder = MaterialAlertDialogBuilder(context, centered)
+        builder.setTitle("Impossibile recuperare la password")
+        builder.setMessage(
+            HtmlCompat.fromHtml(
+            "Il tuo account non ha una domanda di sicurezza impostata, contatta il supporto tecnico all'e-mail <i>supporto@arpa.it</i>",
+            HtmlCompat.FROM_HTML_MODE_LEGACY
+        ))
+        builder.setIcon(R.drawable.baseline_error_outline_24)
+        builder.setPositiveButton("Ok") {
+                dialog, _ -> dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
     }
 
     fun showSignupSuccessDialog(context: Context) {

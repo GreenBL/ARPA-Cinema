@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowInsets
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -60,6 +61,7 @@ class PasswordRecoveryFragment : Fragment() {
         val sendButton = binding.stepOne.sendEmail
         val progress = binding.progressBar2
         val questionText = binding.stepTwo.domandaText
+        val answerField = binding.stepTwo.answerLayout
 
 
         secondStepGroup.root.alpha = 0f
@@ -91,13 +93,48 @@ class PasswordRecoveryFragment : Fragment() {
                     secondStepGroup.root.animate().alpha(1f).setDuration(500).start()
                 }
                 DTO.Stat.USER_NOT_REGISTERED -> Dialog.showUserNotFound(requireContext())
+                DTO.Stat.PSW_ERROR -> {
+                    answerField.error = "La risposta inserita non è corretta!"
+                }
+                DTO.Stat.NETWORK_ERROR -> Dialog.showNetworkErrorDialog(requireContext())
+                DTO.Stat.ERROR -> Dialog.showImpossibleRecoveryDialog(requireContext())
+                DTO.Stat.PASSWORD_EDITED -> {
+                    Dialog.showEditedPasswordSuccessDialog(requireContext())
+                    lifecycleScope.launch {
+                        delay(500) // delay so the user doesnt see two things happening
+                                            // at the same time
+                        findNavController().popBackStack()
+                    }
+
+                }
+
                 else -> Dialog.showErrorDialog(requireContext())
             }
         }
 
         // SECOND ACT
 
+        viewModel.answer.observe(viewLifecycleOwner) {
+            answerField.isErrorEnabled = false
+            resetPasswordButton.isEnabled = viewModel.checkFields()
+        }
 
+        viewModel.newPassword.observe(viewLifecycleOwner) {
+            resetPasswordButton.isEnabled = viewModel.checkFields()
+        }
+
+        resetPasswordButton.setOnClickListener {
+            lifecycleScope.launch {
+                progress.visibility = View.VISIBLE
+                resetPasswordButton.isEnabled = false
+                viewModel.assertAnswer()
+                // close keyboard
+                closeIme()
+                resetPasswordButton.isEnabled = true
+                progress.visibility = View.GONE
+
+            }
+        }
 
     }
 
@@ -111,5 +148,10 @@ class PasswordRecoveryFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun closeIme() {
+        val windowInsetsController = view?.windowInsetsController
+        windowInsetsController?.hide(WindowInsets.Type.ime())
     }
 }
