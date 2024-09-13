@@ -35,10 +35,6 @@ class BookingViewModel : ViewModel() {
     private val _times = MutableLiveData(listOf<ScreeningTime>())
     val times: LiveData<List<ScreeningTime>> = _times
 
-    // THEATER
-    private val _theater = MutableLiveData<String?>(null)
-    val theater: MutableLiveData<String?> = _theater
-
     // preserve RV state
     var datePosition: Int = RecyclerView.NO_POSITION
     var timePosition: Int = RecyclerView.NO_POSITION
@@ -48,8 +44,8 @@ class BookingViewModel : ViewModel() {
     val selectedDate: MutableLiveData<LocalDate> = _selectedDate
 
     // time selection state
-    private val _selectedTime = MutableLiveData<LocalTime>()
-    val selectedTime: MutableLiveData<LocalTime> = _selectedTime
+    private val _selectedTime = MutableLiveData<ScreeningTime>()
+    val selectedTime: MutableLiveData<ScreeningTime> = _selectedTime
 
     // seat selection
     private val _selectedSeats = MutableLiveData(listOf<Int>())
@@ -105,9 +101,9 @@ class BookingViewModel : ViewModel() {
             val buyTicketRequest = DTO.BuyTicketRequest(
                 userId.value,
                 movieId.value,
-                theater.value,
+                selectedTime.value?.auditorium,
                 selectedDate.value,
-                selectedTime.value,
+                selectedTime.value?.time,
                 seatAsStringList
             )
 
@@ -227,14 +223,15 @@ class BookingViewModel : ViewModel() {
     }
 
     fun getRedSeats() {
+
+
         val selectedDate = selectedDate.value
         val selectedTime = selectedTime.value
-        val theater = theater.value
 
         viewModelScope.launch {
-            Log.d("BookingViewModel", "Getting red seats for $selectedDate $selectedTime $theater")
+            Log.d("BookingViewModel", "Getting red seats for $selectedDate $selectedTime ${selectedTime?.auditorium}")
 
-            val redSeatsRequest = DTO.RedSeatsRequest(theater, selectedDate, selectedTime)
+            val redSeatsRequest = DTO.RedSeatsRequest(selectedTime?.auditorium, selectedDate, selectedTime?.time)
 
             try {
                 val response = service.getRedSeats(redSeatsRequest)

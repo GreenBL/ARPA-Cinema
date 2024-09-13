@@ -62,7 +62,7 @@ class CheckoutModal : BottomSheetDialogFragment() {
             viewModel.buyTickets()
             dismiss()
             findNavController().popBackStack(R.id.bookingFragment, true)
-            Dialog.showSignupSuccessDialog(requireContext()) // temp
+            Dialog.showPurchaseSuccessDialog(requireContext(), 10) // temp
         }
 
 

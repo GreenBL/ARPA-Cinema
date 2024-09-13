@@ -95,6 +95,7 @@ class BookingFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         // SEATS
+        // SEAT SECTION
 
         val screenOrientation = resources.configuration.orientation
 
@@ -103,26 +104,26 @@ class BookingFragment : Fragment() {
             .isCustomTitle(true)
             .setSeatSize(if (screenOrientation == Configuration.ORIENTATION_LANDSCAPE) 600 else 220)
             .setCustomTitle(titleArray)
-
+        seatBookView.show()
         setupNavigation()
 
         // DATE
         val dateSelect = binding.dateSelect
 
 
-
-
         dateAdapter = MovieDateAdapter(mutableListOf())
-        {
+        { dateBlock ->
             // get the selections and reserve
             seatBookView.clearSelection()
             Log.d("TAG", "onViewCreated: ${viewModel.selectedSeats.value} and ${seatBookView.getSelectedIdList()}")
-            viewModel.clearEverything()
-            viewModel.datePosition = dateAdapter.selectedPosition
-            Toast.makeText(requireContext(), it.date.toString(), Toast.LENGTH_SHORT).show()
+            viewModel.clearEverything() // clean the seats
+            viewModel.datePosition = dateAdapter.selectedPosition // update the vm
+
             Log.d("TAG", "onViewCreated: ${viewModel.datePosition}")
-            viewModel.selectedDate.postValue(it.date)
+            viewModel.selectedDate.postValue(dateBlock.date) // update the selected date value
         }
+
+
 
         viewModel.dates.observe(viewLifecycleOwner) {
             if (it.isNullOrEmpty()) return@observe
@@ -130,11 +131,16 @@ class BookingFragment : Fragment() {
             dateAdapter.updateData(it)
             dateAdapter.selectFirstItem()
             dateAdapter.notifyDataSetChanged()
-            // to ensure the first item is auto-selected
-            viewModel.datePosition = 0
-            viewModel.selectedDate.postValue(it[0].date)
+//            // to ensure the first item is auto-selected
+//            viewModel.datePosition = 0
+//            viewModel.selectedDate.postValue(it[0].date)
+//            viewModel.fetchTimes(args.movie.id)
         }
 
+        viewModel.selectedDate.observe(viewLifecycleOwner) {
+            if (it == null) return@observe
+            viewModel.fetchTimes(args.movie.id)
+        }
 
 
         observeStatus()
@@ -158,17 +164,16 @@ class BookingFragment : Fragment() {
 
         timeAdapter = MovieTimeAdapter(mutableListOf(ScreeningTime(LocalTime.MIDNIGHT, "0"))) // placeholder item
         {
-            viewModel.selectedTime.postValue(it.time)
+            viewModel.selectedTime.postValue(it)
             seatBookView.clearSelection()
             Log.d("TAG", "onViewCreated: ${viewModel.selectedTime.value}")
             viewModel.clearEverything()
             viewModel.timePosition = timeAdapter.selectedPosition
-            viewModel.theater.postValue(it.auditorium)
 
             // recap log
             Log.d("POWER OF FRIENDSHIP", "selected date: ${viewModel.selectedDate.value},\n" +
-                    "selected time: ${viewModel.selectedTime.value}\n," +
-                    "selected theater: ${viewModel.theater.value}\n")
+                    "selected time: ${viewModel.selectedTime.value?.time}\n," +
+                    "selected theater: ${viewModel.selectedTime.value?.auditorium}\n")
         }
 
         timeSelect.apply {
@@ -183,24 +188,28 @@ class BookingFragment : Fragment() {
             timeAdapter.selectFirstItem()
             timeAdapter.notifyDataSetChanged()
             // to ensure the first item is auto-selected
-            it.forEach { screeningTime ->
-                Log.d("TIME LIST", "TIME LIST: $screeningTime OBSERVED")
-                }
-            viewModel.timePosition = 0
-
-            viewModel.theater.postValue(it[0].auditorium)
-            viewModel.selectedTime.postValue(it[0].time)
+//            it.forEach { screeningTime ->
+//                Log.d("TIME LIST", "TIME LIST: $screeningTime OBSERVED")
+//                }
+////            viewModel.timePosition = 0
+//            timeAdapter.selectFirstItem()
+            viewModel.selectedTime.postValue(it[0])
             binding.auditString.text = "Sala ${it[0].auditorium}"
 
         }
 
-        viewModel.selectedDate.observe(viewLifecycleOwner) {
-            if (it == null) return@observe
-            viewModel.fetchTimes(args.movie.id)
-        }
+//        viewModel.selectedDate.observe(viewLifecycleOwner) {
+//            if (it == null) return@observe
+//            viewModel.fetchTimes(args.movie.id)
+//        }
+
+
 
         viewModel.selectedTime.observe(viewLifecycleOwner) {
+            Log.d("IMPORTANT", "onViewCreated: $it OBSERVED")
             if (it == null) return@observe
+
+            binding.auditString.text = "Sala ${it.auditorium}"
             seatBookView.clearSelection()
             seatBookView.clearRedSeats()
             viewModel.clearEverything()
@@ -208,19 +217,16 @@ class BookingFragment : Fragment() {
 
         }
 
-        viewModel.theater.observe(viewLifecycleOwner) {
-            if (it == null) return@observe
-            binding.auditString.text = "Sala $it"
-        }
-
+//        viewModel.selectedTime.observe(viewLifecycleOwner) {
+//            if (it == null) return@observe
+//        }
         // END OF CLUSTER____
-        seatBookView.show()
-        // SEAT SECTION
         viewModel.redSeats.observe(viewLifecycleOwner) {
             Log.d("REDSEATS", "onViewCreated: $it OBSERVED")
             seatBookView.clearRedSeats()
             seatBookView.setBookedIdList(it)
         }
+
 
         //val testseats = SeatInterpreter.convertListToInteger(listOf("A1", "A2", "A3", "A4", "A5", "E1"))
 
@@ -296,6 +302,13 @@ class BookingFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+        viewModel.status.postValue(DTO.Stat.DEFAULT)
+        viewModel.clearEverything()
+        viewModel.selectedSeats.postValue(listOf())
+        viewModel.selectionObjects.postValue(listOf())
+        viewModel.redSeats.postValue(listOf())
+        viewModel.selectedDate.postValue(null)
+        viewModel.selectedTime.postValue(null)
     }
 
 

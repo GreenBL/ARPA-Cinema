@@ -124,6 +124,7 @@ class TicketsFragment : Fragment() {
                 binding.noticket.root.visibility = View.VISIBLE
                 return@observe
             } else {
+                binding.noticket.root.visibility = View.GONE
                 adapter.updateTickets(it)
                 adapter.notifyDataSetChanged()
             }
