@@ -10,7 +10,7 @@ data class User(
     @SerializedName("imageIndex") val imageIndex: Int,
     @SerializedName("name") var name: String,
     @SerializedName("surname") var surname: String,
-    @SerializedName("email") val email: String,
+    @SerializedName("email") var email: String,
     @SerializedName("phone") var phone: String,
     @SerializedName("level") val level: Int,
     @SerializedName("starPoints") val stars: Int

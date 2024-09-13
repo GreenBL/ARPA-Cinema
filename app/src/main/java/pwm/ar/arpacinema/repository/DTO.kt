@@ -23,6 +23,10 @@ import java.time.LocalTime
  */
 
 class DTO {
+    data class EditEmailRequest(
+        @SerializedName("user_id") val id: String?,
+        @SerializedName("email") val email: String?
+    )
 
     data class BuyTicketRequest(
         @SerializedName("user_id") val userId: String?,
@@ -65,7 +69,7 @@ class DTO {
     )
 
     data class EditPasswordRequest(
-        @SerializedName("id") val id: String?,
+        @SerializedName("user_id") val id: String?,
         @SerializedName("password") val password: String?
     )
 

@@ -21,6 +21,9 @@ interface Service {
     @POST("pwm/occupied_seats")
     suspend fun getRedSeats(@Body redSeatsRequest: RedSeatsRequest): Response<RedSeatsResponse> // TODO
 
+    @POST("pwm/edit_email")
+    suspend fun updateEmail(@Body editEmailRequest: EditEmailRequest): Response<GenericResponse>
+
     @POST("pwm/get_user_points_and_level")
     suspend fun getUserPointsAndLevel(@Body userIdPost: UserIdPost): Response<UserPointsAndLevelResponse>
 

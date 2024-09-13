@@ -56,14 +56,15 @@ class EditEmailFragment : Fragment() {
                 return@setOnClickListener
             }
             lifecycleScope.launch {
-                // debug
-                Log.d("EditEmailFragment", "Email: ${viewModel.email.value}")
-                viewModel.updateEmail()
+                try {
+                    viewModel.updateEmail()
+                    Snackbar.make(view, "E-mail aggiornata con successo", Snackbar.LENGTH_SHORT).show()
+                } catch (e: Exception) {
+                    Snackbar.make(view, "Errore nell'aggiornamento della e-mail", Snackbar.LENGTH_SHORT).show()
+                }
             }
         }
     }
-
-
 
     override fun onDestroy() {
         super.onDestroy()
