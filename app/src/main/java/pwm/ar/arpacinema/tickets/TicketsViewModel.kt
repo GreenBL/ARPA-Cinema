@@ -20,9 +20,12 @@ class TicketsViewModel : ViewModel() {
     val service = RetrofitClient.service
     private val scope = viewModelScope
 
+    var initted = false
+
     init {
         Log.d("TicketsViewModel", "init")
         fetchTickets()
+        initted = true
     }
 
     private fun fetchTickets() {
@@ -39,7 +42,7 @@ class TicketsViewModel : ViewModel() {
                 }
 
                 if (response.body()?.status != DTO.Stat.SUCCESS) {
-                    throw Exception("Error fetching tickets: ${response.body()?.status}")
+                    throw Exception("No tickets available, but server returned status: ${response.body()?.status}")
                 }
 
                 val ticketList = response.body()?.ticket//s
@@ -53,6 +56,13 @@ class TicketsViewModel : ViewModel() {
         }
 
     }
+
+    fun refreshTickets() {
+        if (initted) {
+            fetchTickets()
+        }
+    }
+
 
 
 }

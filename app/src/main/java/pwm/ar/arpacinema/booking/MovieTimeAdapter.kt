@@ -14,7 +14,7 @@ class MovieTimeAdapter(
 ) : RecyclerView.Adapter<MovieTimeAdapter.MovieTimeViewHolder>() {
 
 
-    private var selectedPosition = RecyclerView.NO_POSITION
+    var selectedPosition = RecyclerView.NO_POSITION
 
     inner class MovieTimeViewHolder(val binding: TimeItemBinding) :
         RecyclerView.ViewHolder(binding.root) {

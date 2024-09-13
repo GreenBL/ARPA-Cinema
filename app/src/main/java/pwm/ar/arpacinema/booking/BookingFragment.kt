@@ -11,12 +11,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import dev.jahidhasanco.seatbookview.SeatBookView
 import dev.jahidhasanco.seatbookview.SeatClickListener
+import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.R
+import pwm.ar.arpacinema.Session
 import pwm.ar.arpacinema.common.Dialog
 import pwm.ar.arpacinema.databinding.FragmentBookingBinding
 import pwm.ar.arpacinema.model.ScreeningDate
@@ -66,6 +69,10 @@ class BookingFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        lifecycleScope.launch {
+            viewModel.userId.postValue(Session.getUserId(requireContext()))
+            viewModel.movieId.postValue(args.movie.id)
+        }
         val movie = args.movie
         viewModel.fetchDates(movie.id)
     }
@@ -79,6 +86,7 @@ class BookingFragment : Fragment() {
     }
 
     private lateinit var dateAdapter : MovieDateAdapter
+    private lateinit var timeAdapter : MovieTimeAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -122,7 +130,12 @@ class BookingFragment : Fragment() {
             dateAdapter.updateData(it)
             dateAdapter.selectFirstItem()
             dateAdapter.notifyDataSetChanged()
+            // to ensure the first item is auto-selected
+            viewModel.datePosition = 0
+            viewModel.selectedDate.postValue(it[0].date)
         }
+
+
 
         observeStatus()
 
@@ -143,10 +156,19 @@ class BookingFragment : Fragment() {
 
         val timeSelect = binding.timeSelect
 
-        val timeAdapter = MovieTimeAdapter(mutableListOf(ScreeningTime(LocalTime.now(), "1")))
+        timeAdapter = MovieTimeAdapter(mutableListOf(ScreeningTime(LocalTime.MIDNIGHT, "0"))) // placeholder item
         {
-//            viewModel.selectedDate.postValue(it.time)
-//            Toast.makeText(requireContext(), it.date.toString(), Toast.LENGTH_SHORT).show()
+            viewModel.selectedTime.postValue(it.time)
+            seatBookView.clearSelection()
+            Log.d("TAG", "onViewCreated: ${viewModel.selectedTime.value}")
+            viewModel.clearEverything()
+            viewModel.timePosition = timeAdapter.selectedPosition
+            viewModel.theater.postValue(it.auditorium)
+
+            // recap log
+            Log.d("POWER OF FRIENDSHIP", "selected date: ${viewModel.selectedDate.value},\n" +
+                    "selected time: ${viewModel.selectedTime.value}\n," +
+                    "selected theater: ${viewModel.theater.value}\n")
         }
 
         timeSelect.apply {
@@ -154,16 +176,51 @@ class BookingFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         }
 
+        viewModel.times.observe(viewLifecycleOwner) {
+            if (it.isNullOrEmpty()) return@observe
+            Log.d("TIME LIST", "TIME LIST: $it OBSERVED")
+            timeAdapter.updateData(it)
+            timeAdapter.selectFirstItem()
+            timeAdapter.notifyDataSetChanged()
+            // to ensure the first item is auto-selected
+            it.forEach { screeningTime ->
+                Log.d("TIME LIST", "TIME LIST: $screeningTime OBSERVED")
+                }
+            viewModel.timePosition = 0
 
+            viewModel.theater.postValue(it[0].auditorium)
+            viewModel.selectedTime.postValue(it[0].time)
+            binding.auditString.text = "Sala ${it[0].auditorium}"
 
+        }
 
+        viewModel.selectedDate.observe(viewLifecycleOwner) {
+            if (it == null) return@observe
+            viewModel.fetchTimes(args.movie.id)
+        }
 
+        viewModel.selectedTime.observe(viewLifecycleOwner) {
+            if (it == null) return@observe
+            seatBookView.clearSelection()
+            seatBookView.clearRedSeats()
+            viewModel.clearEverything()
+            viewModel.getRedSeats()
 
+        }
 
+        viewModel.theater.observe(viewLifecycleOwner) {
+            if (it == null) return@observe
+            binding.auditString.text = "Sala $it"
+        }
 
+        // END OF CLUSTER____
         seatBookView.show()
-
-
+        // SEAT SECTION
+        viewModel.redSeats.observe(viewLifecycleOwner) {
+            Log.d("REDSEATS", "onViewCreated: $it OBSERVED")
+            seatBookView.clearRedSeats()
+            seatBookView.setBookedIdList(it)
+        }
 
         //val testseats = SeatInterpreter.convertListToInteger(listOf("A1", "A2", "A3", "A4", "A5", "E1"))
 
@@ -206,11 +263,12 @@ class BookingFragment : Fragment() {
     private fun observeStatus() {
         viewModel.status.observe(viewLifecycleOwner) {
             when (it) {
-                DTO.Stat.ERROR -> {
-                    Dialog.showErrorDialog(requireContext())
+                DTO.Stat.NETWORK_ERROR -> {
+                    Dialog.showNetworkErrorDialog(requireContext())
+                    viewModel.status.postValue(DTO.Stat.DEFAULT)
+                    findNavController().popBackStack()
                 }
-
-                else -> {}
+                else -> {} // default included
             }
         }
     }

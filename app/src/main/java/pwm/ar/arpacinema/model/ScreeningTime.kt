@@ -5,8 +5,8 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 data class ScreeningTime(
-    @SerializedName("scrining_start") val time: LocalTime,
-    @SerializedName("theater") val auditorium: String
+    @SerializedName("time") val time: LocalTime,
+    @SerializedName("theater_id") val auditorium: String
 ) {
     val formattedTime: String
         get() = time.format(DateTimeFormatter.ofPattern("HH:mm"))

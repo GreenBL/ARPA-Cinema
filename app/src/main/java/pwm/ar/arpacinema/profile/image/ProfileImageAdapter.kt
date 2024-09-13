@@ -51,9 +51,5 @@ class ProfileImageAdapter(
             .placeholder(placeholder)
             .into(imageView)
 
-
-
-
-
     }
 }

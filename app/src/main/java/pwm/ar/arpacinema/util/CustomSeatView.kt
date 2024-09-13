@@ -3,6 +3,7 @@ package pwm.ar.arpacinema.util
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
+import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
@@ -463,6 +464,14 @@ constructor(context: Context, attrs: AttributeSet? = null) :
         // Clear the selectedIdList and reset selectedSeats counter
         selectedIdList.clear()
         selectedSeats = 0
+    }
+
+    // clear red seats
+    fun clearRedSeats() {
+        for (view in seatViewList) {
+            markAsAvailable(view)
+        }
+        bookedIdList.clear()
     }
 
 
