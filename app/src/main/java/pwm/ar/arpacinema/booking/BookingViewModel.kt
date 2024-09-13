@@ -40,12 +40,12 @@ class BookingViewModel : ViewModel() {
     var timePosition: Int = RecyclerView.NO_POSITION
 
     // date selection state
-    private val _selectedDate = MutableLiveData<LocalDate>()
-    val selectedDate: MutableLiveData<LocalDate> = _selectedDate
+    private val _selectedDate = MutableLiveData<LocalDate?>()
+    val selectedDate: MutableLiveData<LocalDate?> = _selectedDate
 
     // time selection state
-    private val _selectedTime = MutableLiveData<ScreeningTime>()
-    val selectedTime: MutableLiveData<ScreeningTime> = _selectedTime
+    private val _selectedTime = MutableLiveData<ScreeningTime?>()
+    val selectedTime: MutableLiveData<ScreeningTime?> = _selectedTime
 
     // seat selection
     private val _selectedSeats = MutableLiveData(listOf<Int>())
@@ -82,6 +82,21 @@ class BookingViewModel : ViewModel() {
     fun clearEverything() { // clears seats and selections, NOT DATES OR TIMES
         _selectedSeats.postValue(listOf())
         _selectionObjects.postValue(listOf())
+    }
+
+    fun resetViewModel() {
+        _userId.postValue(null)
+        _movieId.postValue(null)
+        _dates.postValue(listOf())
+        _times.postValue(listOf())
+        _selectedDate.postValue(null)
+        _selectedTime.postValue(null)
+        _selectedSeats.postValue(listOf())
+        _selectionObjects.postValue(listOf())
+        _redSeats.postValue(listOf())
+        _discount.postValue(false)
+        _free.postValue(false)
+        _price.postValue(8.0)
     }
 
     val service = RetrofitClient.service
@@ -140,7 +155,13 @@ class BookingViewModel : ViewModel() {
         return sortedList.distinctBy { it.date }
     }
 
-    fun fetchDates(movieId: String) {
+    private fun clearDirtyTimeList(list: List<ScreeningTime>) : List<ScreeningTime> {
+        // remove duplicates and sort by date
+        val sortedList = list.sortedBy { it.time }
+        return sortedList.distinctBy { it.time }
+    }
+
+    suspend fun fetchDates(movieId: String) {
         viewModelScope.launch {
 
             // serialized request
@@ -182,7 +203,7 @@ class BookingViewModel : ViewModel() {
         }
     }
 
-    fun fetchTimes(movieId: String) {
+    suspend fun fetchTimes(movieId: String) {
 
         val selectedDate = selectedDate.value
 
@@ -214,7 +235,9 @@ class BookingViewModel : ViewModel() {
                 }
 
                 _status.postValue(body?.status)
-                _times.postValue(body?.screeningTimes)
+
+                val sortedList = clearDirtyTimeList(body?.screeningTimes!!)
+                _times.postValue(sortedList)
             } catch (e: Exception) {
                 Log.e("BookingViewModel", e.message.toString())
                 _status.postValue(DTO.Stat.NETWORK_ERROR)
@@ -222,9 +245,12 @@ class BookingViewModel : ViewModel() {
         }
     }
 
-    fun getRedSeats() {
+    suspend fun getRedSeats() {
 
-
+        if (selectedDate.value == null || selectedTime.value == null) {
+            Log.e("Fatal error", "date or time is null")
+            return
+        }
         val selectedDate = selectedDate.value
         val selectedTime = selectedTime.value
 

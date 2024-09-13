@@ -9,9 +9,9 @@
     android:background="@drawable/check_selector"
     android:checkable="true"
     android:foreground="?attr/selectableItemBackground"
-    app:checkedIconGravity="TOP_END"
-    app:checkedIconMargin="4dp"
-    app:checkedIconSize="24dp"
+    app:cardCornerRadius="24dp"
+    app:checkedIconSize="0dp"
+    app:strokeColor="@drawable/card_selector"
     app:strokeWidth="2dp">
 
 

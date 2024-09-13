@@ -17,6 +17,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import dev.jahidhasanco.seatbookview.SeatBookView
 import dev.jahidhasanco.seatbookview.SeatClickListener
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.Session
@@ -74,7 +75,9 @@ class BookingFragment : Fragment() {
             viewModel.movieId.postValue(args.movie.id)
         }
         val movie = args.movie
-        viewModel.fetchDates(movie.id)
+        lifecycleScope.launch {
+            viewModel.fetchDates(movie.id)
+        }
     }
 
     override fun onCreateView(
@@ -90,6 +93,9 @@ class BookingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.root.alpha = 0.0f
+        binding.root.animate().alpha(1.0f).duration = 500
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
@@ -120,7 +126,7 @@ class BookingFragment : Fragment() {
             viewModel.datePosition = dateAdapter.selectedPosition // update the vm
 
             Log.d("TAG", "onViewCreated: ${viewModel.datePosition}")
-            viewModel.selectedDate.postValue(dateBlock.date) // update the selected date value
+            viewModel.selectedDate.value = (dateBlock.date) // update the selected date value
         }
 
 
@@ -130,16 +136,21 @@ class BookingFragment : Fragment() {
             Log.d("DATE LIST", "DATE LIST: $it OBSERVED")
             dateAdapter.updateData(it)
             dateAdapter.selectFirstItem()
+            Log.d("TAG", "Selected first position: ${viewModel.datePosition}")
             dateAdapter.notifyDataSetChanged()
 //            // to ensure the first item is auto-selected
-//            viewModel.datePosition = 0
-//            viewModel.selectedDate.postValue(it[0].date)
-//            viewModel.fetchTimes(args.movie.id)
+            viewModel.datePosition = 0
+            viewModel.selectedDate.postValue(it[0].date)
         }
 
         viewModel.selectedDate.observe(viewLifecycleOwner) {
+            Log.d("selected date", "onViewCreated: $it OBSERVED")
+
             if (it == null) return@observe
-            viewModel.fetchTimes(args.movie.id)
+            lifecycleScope.launch {
+                viewModel.fetchTimes(args.movie.id)
+            }
+
         }
 
 
@@ -164,7 +175,7 @@ class BookingFragment : Fragment() {
 
         timeAdapter = MovieTimeAdapter(mutableListOf(ScreeningTime(LocalTime.MIDNIGHT, "0"))) // placeholder item
         {
-            viewModel.selectedTime.postValue(it)
+            viewModel.selectedTime.value = (it)
             seatBookView.clearSelection()
             Log.d("TAG", "onViewCreated: ${viewModel.selectedTime.value}")
             viewModel.clearEverything()
@@ -182,6 +193,7 @@ class BookingFragment : Fragment() {
         }
 
         viewModel.times.observe(viewLifecycleOwner) {
+            Log.d("TIME LIST", "TIME LIST IMPORTANT IF IT IS NULL ERROR: $it OBSERVED")
             if (it.isNullOrEmpty()) return@observe
             Log.d("TIME LIST", "TIME LIST: $it OBSERVED")
             timeAdapter.updateData(it)
@@ -213,7 +225,10 @@ class BookingFragment : Fragment() {
             seatBookView.clearSelection()
             seatBookView.clearRedSeats()
             viewModel.clearEverything()
-            viewModel.getRedSeats()
+
+            lifecycleScope.launch {
+                viewModel.getRedSeats()
+            }
 
         }
 
@@ -302,13 +317,7 @@ class BookingFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-        viewModel.status.postValue(DTO.Stat.DEFAULT)
-        viewModel.clearEverything()
-        viewModel.selectedSeats.postValue(listOf())
-        viewModel.selectionObjects.postValue(listOf())
-        viewModel.redSeats.postValue(listOf())
-        viewModel.selectedDate.postValue(null)
-        viewModel.selectedTime.postValue(null)
+        viewModel.resetViewModel()
     }
 
 
