@@ -14,6 +14,9 @@ import retrofit2.http.Path
 import retrofit2.http.Url
 
 interface Service {
+    @POST("pwm/edit_email")
+    suspend fun updateEmail(@Body editEmailRequest: EditEmailRequest): Response<GenericResponse>
+
     @POST("pwm/get_user_points_and_level")
     suspend fun getUserPointsAndLevel(@Body userIdPost: UserIdPost): Response<UserPointsAndLevelResponse>
 
