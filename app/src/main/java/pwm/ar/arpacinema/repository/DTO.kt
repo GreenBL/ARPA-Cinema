@@ -25,7 +25,7 @@ class DTO {
     )
 
     data class EditPasswordRequest(
-        @SerializedName("id") val id: String?,
+        @SerializedName("user_id") val id: String?,
         @SerializedName("password") val password: String?
     )
 

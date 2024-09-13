@@ -1,7 +1,9 @@
 package pwm.ar.arpacinema.profile.account
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import pwm.ar.arpacinema.Session
 import pwm.ar.arpacinema.repository.DTO
 import pwm.ar.arpacinema.repository.RetrofitClient
 
@@ -10,17 +12,34 @@ class EditEmailViewModel : ViewModel() {
     private val _email = MutableLiveData<String>()
     val email: MutableLiveData<String> = _email
 
-    suspend fun updateEmail() {
-        val newEmail = email.value ?: return
 
-        // Burada ID'yi ve diğer gerekli bilgileri ayarlamanız gerekiyor.
-        val userId = "user-id" // Kullanıcı ID'sini buradan alabilirsiniz veya ekleyebilirsiniz
-        val response = RetrofitClient.service.updateEmail(
-            DTO.EditEmailRequest(id = userId, email = newEmail)
+    fun init() {
+        _email.value = Session.user?.email
+    }
+
+    suspend fun updateEmail(): Boolean {
+        val editEmailRequest = DTO.EditEmailRequest(
+            id = Session.user?.id.toString(),
+            email = _email.value
         )
+        try {
+            val response = RetrofitClient.service.updateEmail(editEmailRequest)
+            if (response.isSuccessful) {
+                Session.user?.email = _email.value.toString()
+                return true
+            } else {
+                return false
+            }
 
-        if (!response.isSuccessful) {
-            throw Exception("Errore durante l'aggiornamento dell'email")
+        }catch (e: Exception) {
+            Log.e("EditEmailViewModel", "Error updating email")
+
         }
+        return false
+    }
+    override fun onCleared() {
+        super.onCleared()
+        Log.d("EditEmailViewModel", "EditEmailViewModel cleared")
+
     }
 }
