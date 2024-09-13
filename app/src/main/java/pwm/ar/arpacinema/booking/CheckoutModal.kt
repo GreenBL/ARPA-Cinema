@@ -7,11 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.R
+import pwm.ar.arpacinema.common.Dialog
 import pwm.ar.arpacinema.databinding.ModalCheckoutBinding
 import pwm.ar.arpacinema.dev.Selection
 import java.util.Locale
@@ -42,6 +44,8 @@ class CheckoutModal : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = viewLifecycleOwner
 
+        val buyButton = binding.buy
+
         val selections = viewModel.selectionObjects.value!!
 
         val recycler = binding.recyclerView
@@ -54,6 +58,12 @@ class CheckoutModal : BottomSheetDialogFragment() {
             total.text = "${string}€"
         }
 
+        buyButton.setOnClickListener {
+            viewModel.buyTickets()
+            dismiss()
+            findNavController().popBackStack(R.id.bookingFragment, true)
+            Dialog.showPurchaseSuccessDialog(requireContext(), 10) // temp
+        }
 
 
         //recycler.adapter = CheckoutAdapter(viewModel.selections)

@@ -56,6 +56,9 @@ class RewardsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.include.viewTitle.text = "Premi"
+        binding.include.navBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
 
         val topMenuRV = binding.singleButtonMenu // i know... i know...
         val barMenuRV = binding.barrewards

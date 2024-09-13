@@ -7,7 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import pwm.ar.arpacinema.common.Dialog
 import pwm.ar.arpacinema.databinding.FragmentImageSelectorBinding
 import pwm.ar.arpacinema.model.ProfileImage
 
@@ -29,8 +31,6 @@ class ImageSelectorFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // TODO: Use the ViewModel
     }
 
     override fun onCreateView(
@@ -48,8 +48,7 @@ class ImageSelectorFragment : Fragment() {
 
         val imageList : List<ProfileImage> = listOf()
 
-
-
+        setupBar()
 
 
         val imageRecyclerView = binding.profileImageRV
@@ -64,8 +63,24 @@ class ImageSelectorFragment : Fragment() {
         }
 
         viewModel.imageList.observe(viewLifecycleOwner) {
-            Log.d("ImageSelectorFragment", "Fetched images: ${it?.size}")
-            adapter.setDataList(viewModel.imageList.value!!)
+            try {
+                Log.d("ImageSelectorFragment", "Fetched images: ${it?.size}")
+                adapter.setDataList(viewModel.imageList.value!!)
+            } catch (e: NullPointerException) {
+                Log.d("ImageSelectorFragment", "Fetched images: null")
+                Dialog.showErrorDialog(requireContext())
+                findNavController().popBackStack()
+            }
+        }
+    }
+
+    private fun setupBar() {
+        //setup navbar
+        val title = binding.include.viewTitle
+        title.text = "Immagine profilo"
+        val backButton = binding.include.navBack
+        backButton.setOnClickListener {
+            findNavController().popBackStack()
         }
     }
 

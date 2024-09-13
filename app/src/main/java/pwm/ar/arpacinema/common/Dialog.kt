@@ -1,6 +1,7 @@
 package pwm.ar.arpacinema.common
 
 import android.content.Context
+import android.text.Html
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.text.HtmlCompat
@@ -65,6 +66,24 @@ object Dialog {
         builder.setPositiveButton("Ok") {
                 dialog, _ -> dialog.dismiss()
         }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    fun showPurchaseSuccessDialog(context: Context, points: Int) {
+        val builder = MaterialAlertDialogBuilder(context, centered)
+        builder.setTitle("Acquisto effettuato")
+
+        val htmlMessage = """
+        <p>Hai effettuato l'acquisto con successo e hai guadagnato <b>${points} stars</b>.</p>
+        <p><i>Continua a fare acquisti per guadagnare ancora più punti!</i></p>
+        """.trimIndent()
+
+        builder.setMessage(Html.fromHtml(htmlMessage, Html.FROM_HTML_MODE_LEGACY))
+
+        builder.setIcon(R.drawable.baseline_check_circle_outline_24)
+        builder.setPositiveButton("Ok") { dialog, _ -> dialog.dismiss() }
+
         val dialog = builder.create()
         dialog.show()
     }

@@ -71,6 +71,7 @@ open class TextValidator(
         fun isValidName(name: String): String? {
             return when {
                 name.isEmpty() -> null
+                name.contains("  ") -> "Nome non valido"
                 !name.matches("^[a-zA-Z]+(([' ][a-zA-Z ])?[a-zA-Z]*)*\$".toRegex()) -> "Nome non valido"
                 else -> null
             }

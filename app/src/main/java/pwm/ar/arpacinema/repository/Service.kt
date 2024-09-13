@@ -14,6 +14,13 @@ import retrofit2.http.Path
 import retrofit2.http.Url
 
 interface Service {
+
+    @POST("pwm/select_seats_&_buy_tickets")
+    suspend fun buyTickets(@Body buyTicketRequest: BuyTicketRequest): Response<GenericResponse>
+
+    @POST("pwm/occupied_seats")
+    suspend fun getRedSeats(@Body redSeatsRequest: RedSeatsRequest): Response<RedSeatsResponse> // TODO
+
     @POST("pwm/edit_email")
     suspend fun updateEmail(@Body editEmailRequest: EditEmailRequest): Response<GenericResponse>
 
@@ -21,10 +28,10 @@ interface Service {
     suspend fun getUserPointsAndLevel(@Body userIdPost: UserIdPost): Response<UserPointsAndLevelResponse>
 
     @POST("pwm/get_amount")
-    suspend fun getAmount(@Body userIdPost: DTO.UserIdPost): Response<DTO.BalanceResponse>
+    suspend fun getAmount(@Body userIdPost: UserIdPost): Response<BalanceResponse>
 
     @POST("pwm/update_amount")
-    suspend fun updateUserBalance(@Body balanceUpdateRequest: DTO.BalanceUpdateRequest): Response<GenericResponse>
+    suspend fun updateUserBalance(@Body balanceUpdateRequest: BalanceUpdateRequest): Response<GenericResponse>
 
     @POST("pwm/edit_password")
     suspend fun editPassword(@Body editPasswordRequest: EditPasswordRequest): Response<GenericResponse>
@@ -35,6 +42,9 @@ interface Service {
     // LOAD MOVIE DATES -- RIGA 956 SERVER
     @POST("pwm/get_screening_dates")
     suspend fun getMovieDates(@Body movieId: MovieIdPost): Response<MovieDatesResponse>
+
+    @POST("pwm/get_screening_start")
+    suspend fun getMovieTimes(@Body movieTimePost: MovieTimePost): Response<ScreeningWrapper>
 
     // GET USER TICKETS
     @POST("pwm/chronology")

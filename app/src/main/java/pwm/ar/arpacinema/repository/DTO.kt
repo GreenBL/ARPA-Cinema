@@ -7,8 +7,12 @@ import pwm.ar.arpacinema.model.ProfileImage
 import pwm.ar.arpacinema.model.Promotion
 import pwm.ar.arpacinema.model.Purchase
 import pwm.ar.arpacinema.model.ScreeningDate
+import pwm.ar.arpacinema.model.ScreeningTime
 import pwm.ar.arpacinema.model.Ticket
 import pwm.ar.arpacinema.model.User
+import pwm.ar.arpacinema.util.SeatInterpreter
+import java.time.LocalDate
+import java.time.LocalTime
 
 /**
  * This class holds the serializable data classes to be sent to the server
@@ -22,6 +26,46 @@ class DTO {
     data class EditEmailRequest(
         @SerializedName("user_id") val id: String?,
         @SerializedName("email") val email: String?
+    )
+
+    data class BuyTicketRequest(
+        @SerializedName("user_id") val userId: String?,
+        @SerializedName("film_id") val filmId: String?,
+        @SerializedName("theater_id") val theaterId: String?,
+        @SerializedName("screening_date") val screeningDate: LocalDate?,
+        @SerializedName("screening_time") val screeningTime: LocalTime?,
+        @SerializedName("selected_seats") val seatStrList: List<String>,
+        //@SerializedName("price") val price: Double?
+    )
+
+    data class RedSeatsResponse(
+        @SerializedName("status") val status: Stat?,
+        @SerializedName("occupied_seats") val seats: List<String>?
+    ) {
+        val intList: List<Int>
+            get() = SeatInterpreter.convertListToInteger(seats)
+    }
+
+    data class RedSeatsRequest(
+        @SerializedName("theater_id") val theater: String?,
+        @SerializedName("screening_date") val screeningDate: LocalDate?,
+        @SerializedName("screening_time") val screeningTime: LocalTime?,
+    )
+
+    data class MovieTimePost(
+        @SerializedName("film_id") val filmId: String?,
+        @SerializedName("screening_date") val screeningDate: LocalDate?
+    )
+
+    data class ScreeningWrapper(
+        @SerializedName("status") val status: Stat?,
+        @SerializedName("screening_start") val screeningTimes: List<ScreeningTime>?
+    )
+
+    @Deprecated("Use ScreeningTime model instead", ReplaceWith("ScreeningTime"), DeprecationLevel.WARNING)
+    data class ScreeningResponse(
+        @SerializedName("time") val time: LocalTime?,
+        @SerializedName("theater_id") val sala: String?
     )
 
     data class EditPasswordRequest(

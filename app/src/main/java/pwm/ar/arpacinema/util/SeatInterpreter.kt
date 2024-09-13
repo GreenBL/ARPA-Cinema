@@ -68,12 +68,14 @@ object SeatInterpreter {
         return ""
     }
 
-    fun convertListToInteger(list: List<String>): List<Int> {
+    fun convertListToInteger(list: List<String>?): List<Int> {
         val integerList = mutableListOf<Int>()
-        for (seat in list) {
-            val seatId = getSeatId(seat)
-            if (seatId != -1) {
-                integerList.add(seatId)
+        if (list != null) {
+            for (seat in list) {
+                val seatId = getSeatId(seat)
+                if (seatId != -1) {
+                    integerList.add(seatId)
+                }
             }
         }
         return integerList

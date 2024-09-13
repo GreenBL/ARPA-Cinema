@@ -56,8 +56,7 @@ class TicketsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // TODO: Use the ViewModel
+        viewModel.refreshTickets()
     }
 
     override fun onCreateView(
@@ -122,8 +121,10 @@ class TicketsFragment : Fragment() {
         viewModel.tickets.observe(viewLifecycleOwner) {
             Log.d("TicketsFragment", "Tickets UPDATE: $it")
             if (it == null) {
+                binding.noticket.root.visibility = View.VISIBLE
                 return@observe
             } else {
+                binding.noticket.root.visibility = View.GONE
                 adapter.updateTickets(it)
                 adapter.notifyDataSetChanged()
             }
