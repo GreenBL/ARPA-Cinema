@@ -19,9 +19,13 @@ import pwm.ar.arpacinema.model.User
  */
 
 class DTO {
+    data class EditEmailRequest(
+        @SerializedName("user_id") val id: String?,
+        @SerializedName("email") val email: String?
+    )
 
     data class EditPasswordRequest(
-        @SerializedName("id") val id: String?,
+        @SerializedName("user_id") val id: String?,
         @SerializedName("password") val password: String?
     )
 

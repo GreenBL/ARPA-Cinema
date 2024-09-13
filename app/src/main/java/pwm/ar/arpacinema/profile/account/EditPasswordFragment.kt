@@ -21,25 +21,14 @@ class EditPasswordFragment : Fragment() {
     private var _binding: FragmentEditPasswordBinding? = null
     private val binding get() = _binding!!
 
-    companion object {
-        fun newInstance() = EditPasswordFragment()
-    }
-
     private val viewModel: EditPasswordViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // TODO: Use the ViewModel
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentEditPasswordBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentEditPasswordBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,11 +38,11 @@ class EditPasswordFragment : Fragment() {
         setupTopBar()
 
         val passwordField = binding.passwordLayout
-        val confirmPassword = binding.setPasswordButton
+        val confirmPasswordButton = binding.setPasswordButton
 
         passwordField.editText?.addTextChangedListener(TextValidator(passwordField, TextValidator.Companion::isValidPassword))
 
-        confirmPassword.setOnClickListener {
+        confirmPasswordButton.setOnClickListener {
             val passwordText = passwordField.editText?.text.toString()
             if (passwordText.isBlank()) {
                 Snackbar.make(view, "Password vuota", Snackbar.LENGTH_SHORT).show()
@@ -65,12 +54,14 @@ class EditPasswordFragment : Fragment() {
             }
 
             lifecycleScope.launch {
-                Log.d("EditPasswordFragment", "Password: ${viewModel.password.value}")
-                viewModel.updatePassword()
+                val success = viewModel.updatePassword()
+                if (success) {
+                    Snackbar.make(view, "Password aggiornata con successo", Snackbar.LENGTH_SHORT).show()
+                } else {
+                    Snackbar.make(view, "Errore nell'aggiornamento della password", Snackbar.LENGTH_SHORT).show()
+                }
             }
         }
-
-
     }
 
     private fun setupTopBar() {
@@ -84,5 +75,4 @@ class EditPasswordFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 }
