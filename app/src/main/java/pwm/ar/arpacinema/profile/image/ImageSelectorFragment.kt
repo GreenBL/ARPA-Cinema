@@ -7,11 +7,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.common.Dialog
 import pwm.ar.arpacinema.databinding.FragmentImageSelectorBinding
 import pwm.ar.arpacinema.model.ProfileImage
+import pwm.ar.arpacinema.repository.DTO
 
 class ImageSelectorFragment : Fragment() {
 
@@ -55,6 +58,23 @@ class ImageSelectorFragment : Fragment() {
 
         val adapter = ProfileImageAdapter(imageList) { image ->
             Log.d("ImageSelectorFragment", "Selected image: ${image.imageId}")
+            lifecycleScope.launch {
+                binding.profileImageRV.alpha = 0.5f
+                viewModel.updateImage(image)
+                binding.profileImageRV.alpha = 1f
+            }
+
+        }
+
+        viewModel.status.observe(viewLifecycleOwner) {
+            if (it == DTO.Stat.DEFAULT) {
+                return@observe
+            }
+            if (it == DTO.Stat.SUCCESS) {
+                findNavController().popBackStack()
+            } else {
+                Dialog.showErrorDialog(requireContext())
+            }
         }
 
         imageRecyclerView.apply {

@@ -11,12 +11,16 @@ import android.widget.Button
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.Session
 import pwm.ar.arpacinema.databinding.FragmentInfoBinding
+import pwm.ar.arpacinema.util.PlaceholderDrawable
 import pwm.ar.arpacinema.util.TextValidator
 
 class InfoFragment : Fragment() {
@@ -47,6 +51,14 @@ class InfoFragment : Fragment() {
         val nameLayout = binding.nameLayout
         val surnameLayout = binding.surnameLayout
         val phoneLayout = binding.phoneLayout
+        val imageview = binding.profileImage
+
+        Glide.with(requireContext())
+            .load(Session.userImageURL)
+            .placeholder(PlaceholderDrawable.getPlaceholderDrawable())
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .error(R.drawable.outline_cloud_off_24)
+            .into(imageview)
 
         var initialized = false
 
@@ -107,7 +119,15 @@ class InfoFragment : Fragment() {
                     Log.e("InfoFragment", "Error updating user", e)
                     Snackbar.make(view, "Errore durante il salvataggio", Snackbar.LENGTH_SHORT).show()
                 } finally {
-                    saveButton.isEnabled = true
+                    saveButton.isEnabled = false
+                    // trick orribile per nascondere la tastiera
+                    nameLayout.isEnabled = false
+                    surnameLayout.isEnabled = false
+                    phoneLayout.isEnabled = false
+                    nameLayout.isEnabled = true
+                    surnameLayout.isEnabled = true
+                    phoneLayout.isEnabled = true
+
                 }
             }
         }

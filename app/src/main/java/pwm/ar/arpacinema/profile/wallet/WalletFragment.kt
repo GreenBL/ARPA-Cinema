@@ -12,8 +12,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
+import pwm.ar.arpacinema.common.Dialog
 import pwm.ar.arpacinema.databinding.FragmentWalletBinding
 import pwm.ar.arpacinema.repository.DTO
+import java.util.Locale
 
 class WalletFragment : Fragment() {
 
@@ -40,7 +42,7 @@ class WalletFragment : Fragment() {
         }
 
         viewModel.balance.observe(viewLifecycleOwner) { balance ->
-            binding.dynamicCurrency.text = String.format("%.2f€", balance)  // Update the TextView dynamically
+            binding.dynamicCurrency.text = String.format(Locale.ITALY, "%.2f€", balance)  // Update the TextView dynamically
         }
 
         val confirmButton = binding.confirmButton
@@ -87,14 +89,14 @@ class WalletFragment : Fragment() {
 
         viewModel.responseStatus.observe(viewLifecycleOwner) { status ->
             when (status) {
-                DTO.Stat.DEFAULT -> {
-                    // do nothing because we just opened the view mate
-                }
-                DTO.Stat.SUCCESS -> {
-                    Snackbar.make(requireView(), "Saldo caricato", Snackbar.LENGTH_SHORT).show()
+                DTO.Stat.SUCCESS -> {}
+                DTO.Stat.DEFAULT -> {}
+                DTO.Stat.PURCHASE_COMPLETE -> {
+//                    Snackbar.make(requireView(), "Saldo caricato", Snackbar.LENGTH_SHORT).show()
+                    Dialog.showCreditIncreasedDialog(requireContext())
                     viewModel.inputAmount.postValue(null)
                 } else -> {
-                    Snackbar.make(requireView(), "Errore", Snackbar.LENGTH_SHORT).show()
+                    Dialog.showErrorDialog(requireContext())
                 }
             }
         }

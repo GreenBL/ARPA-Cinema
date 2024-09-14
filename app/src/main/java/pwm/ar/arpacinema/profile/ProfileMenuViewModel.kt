@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import pwm.ar.arpacinema.Session
 import pwm.ar.arpacinema.model.User
 import pwm.ar.arpacinema.repository.DTO
 import pwm.ar.arpacinema.repository.RetrofitClient
@@ -63,5 +64,26 @@ class ProfileMenuViewModel : ViewModel() {
         _userSurname.value = ""
         _userLevel.value = 0
         _userPoints.value = 0
+    }
+
+    suspend fun levelUp() {
+
+        val response = apiService.levelUp(DTO.IdPost(Session.userIdStr))
+
+        if (response.isSuccessful.not()) {
+            Log.e("API Error", "Failed to fetch user data")
+            throw Exception("Failed to fetch user data")
+        }
+
+        if (response.body()?.status != DTO.Stat.SUCCESS) {
+            Log.e("API Error", "Failed to fetch user data")
+            throw Exception("Failed to fetch user data")
+        }
+
+        response.body()?.let {
+            _userPoints.postValue(0)
+            _userLevel.postValue(_userLevel.value?.plus(1))
+        }
+
     }
 }

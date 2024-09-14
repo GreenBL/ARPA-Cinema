@@ -1,5 +1,7 @@
 package pwm.ar.arpacinema.util
 
+import pwm.ar.arpacinema.model.Seat
+
 object SeatInterpreter {
     private val seatsMapping = mapOf(
         "A1" to 1,
@@ -90,6 +92,10 @@ object SeatInterpreter {
         }
         return availableList
 
+    }
+
+    fun getSeatObject(seatId: Int): Seat {
+        return Seat(getSeatName(seatId))
     }
 
 

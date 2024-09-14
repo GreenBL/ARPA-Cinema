@@ -18,6 +18,16 @@ interface Service {
     @POST("pwm/add_security_question_and_answer")
     suspend fun addSecurityQuestionAndAnswer(@Body request: SecurityQuestionRequest): Response<DTO.GenericResponse>
 
+    @POST("pwm/user_level_increase")
+    suspend fun levelUp(@Body idPost: IdPost): Response<GenericResponse>
+
+    @POST("pwm/get_all_rewards")
+    suspend fun getRewards(@Body userIdPost: UserIdPost): Response<RewardsCountResponse>
+
+    @POST("pwm/associate_image")
+    suspend fun associateImage(@Body imageRequest : ImageSwapRequest): Response<GenericResponse>
+
+
     @POST("pwm/select_seats_&_buy_tickets")
     suspend fun buyTickets(@Body buyTicketRequest: BuyTicketRequest): Response<GenericResponse>
 

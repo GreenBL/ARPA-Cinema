@@ -17,9 +17,11 @@ class HomeViewModel : ViewModel() {
 
     private val scope = viewModelScope
     // movie list bottom
+    var positionBottom = 0
     private val _movies = MutableLiveData<List<Movie>?>(null)
     val movies: LiveData<List<Movie>?> = _movies
 
+    var positionTop = 0
     private val _promos = MutableLiveData<List<Promotion>?>(null)
     val promos: LiveData<List<Promotion>?> = _promos
 

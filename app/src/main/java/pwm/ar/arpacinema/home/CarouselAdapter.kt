@@ -1,5 +1,6 @@
 package pwm.ar.arpacinema.home
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -7,7 +8,9 @@ import android.widget.TextView
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestOptions
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.runBlocking
 import pwm.ar.arpacinema.R
@@ -19,7 +22,7 @@ import pwm.ar.arpacinema.util.PlaceholderDrawable
 // TODO: THIS IS AN OLD IMPLEMENTATION OF MINE FROM ANOTHER PROJECT, FIX AND REFACTOR BEFORE APP DELIVERY // done but im too lazy to delete the comment
 
 class CarouselAdapter(
-    private var heroList: List<Movie>,
+    private var heroList: MutableList<Movie>,
     private val onItemClick: (Movie) -> Unit): RecyclerView.Adapter<CarouselAdapter.CarouselViewHolder>() {
 
     // ViewHolder holds the view refs
@@ -57,14 +60,19 @@ class CarouselAdapter(
         Glide.with(holder.itemView.context)
             .load(currentHero.posterUrl)
             .placeholder(placeholder)
+            .downsample(DownsampleStrategy.CENTER_OUTSIDE)
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(imageViuh)
     }
 
     override fun getItemCount(): Int = heroList.size
 
-    fun updateData(movieList: List<Movie>) {
-        heroList = movieList
+    fun updateData(movieList: MutableList<Movie>) {
+        Log.d("CarouselAdapter", "updateData: $movieList")
+        heroList.apply {
+            clear()
+            addAll(movieList)
+        }
         notifyDataSetChanged() // Notify the adapter that the data has changed
     }
 

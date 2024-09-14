@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -47,6 +48,7 @@ class PromoAdapter(
         CoroutineScope(Dispatchers.Main).launch {
             Glide.with(holder.itemView.context)
                 .load(promo.link)
+                .downsample(DownsampleStrategy.CENTER_OUTSIDE)
                 .placeholder(PlaceholderDrawable.getPlaceholderDrawable())
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(binding.movieImage)

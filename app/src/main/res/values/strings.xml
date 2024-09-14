@@ -92,4 +92,7 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+    <string name="popcorn_desc">I popcorn del nostro cinema sono preparati al momento, con ingredienti di alta qualità, per offrire un\'esperienza croccante e gustosa. Disponibili in vari gusti, come classico salato, burro e caramello, sono perfetti per accompagnare la visione del film.</string>
+    <string name="bibite_desc">Le bibite del nostro cinema sono servite fresche e disponibili in diverse varianti, perfette per accompagnare la visione del film. Puoi scegliere tra vari formati, assicurandoti una bevanda rinfrescante per tutta la durata della proiezione.</string>
+    <string name="combo_desc">I nostri menu Combo offrono un\'esperienza completa per il cinema, combinando popcorn croccanti con una bibita fresca. Disponibili in diverse dimensioni, i menu sono pensati per soddisfare le esigenze di tutti, da chi preferisce uno snack leggero a chi vuole un\'opzione più abbondante. Riscattare un menu Combo con i punti costa meno rispetto a prendere bibita e popcorn separatamente, rendendolo l\'opzione ideale per massimizzare il valore dei tuoi punti!</string>
 </resources>

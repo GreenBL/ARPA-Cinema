@@ -4,39 +4,37 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import pwm.ar.arpacinema.databinding.SeatCheckoutItemBinding
 import pwm.ar.arpacinema.databinding.SmallTicketItemBinding
 import pwm.ar.arpacinema.dev.Selection
+import pwm.ar.arpacinema.model.Seat
+import pwm.ar.arpacinema.util.SeatInterpreter
 import java.util.Locale
 
 class CheckoutAdapter (
-    private val selectionItems: List<Selection>,
+    private val seatSelection: List<Int>,
 ) : RecyclerView.Adapter<CheckoutAdapter.SelectionViewHolder>() {
 
-    inner class SelectionViewHolder(val binding: SmallTicketItemBinding) :
+    inner class SelectionViewHolder(val binding: SeatCheckoutItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-            fun bind(selection: Selection) {
-                binding.elTitoloDelFilm.text = selection.movieTitle
-                binding.seatString.text = selection.seatCustomString
-                val fromattedString = String.format(Locale.ITALY,"%.2f", selection.price.toDouble())
-                binding.sala.text = selection.showScreen
-                binding.elCosto.text = fromattedString
-                binding.date.text = selection.showDate
-                binding.timeScreen.text = selection.showTime
+            fun bind(seat: Seat) {
+                binding.root.text = seat.identifier.uppercase()
             }
         }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SelectionViewHolder {
-        val binding = SmallTicketItemBinding.inflate(
+        val binding = SeatCheckoutItemBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
         return SelectionViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: SelectionViewHolder, position: Int) {
-        val menuItem = selectionItems[position]
-        holder.bind(menuItem)
+        val seatIndex = seatSelection[position]
+        val seat = SeatInterpreter.getSeatObject(seatIndex)
+        holder.bind(seat)
     }
 
-    override fun getItemCount(): Int = selectionItems.size
+    override fun getItemCount(): Int = seatSelection.size
 }

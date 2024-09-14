@@ -93,7 +93,7 @@ class WalletViewModel : ViewModel() {
             }
 
             Log.d("WalletViewModel", "Update successful. Current balance: ${_balance.value}, Amount added: $amount")
-            _responseStatus.postValue(Stat.SUCCESS)
+            _responseStatus.postValue(Stat.PURCHASE_COMPLETE)
             _balance.postValue((_balance.value ?: 0.0) + amount)
 
         } catch (e: NumberFormatException) {

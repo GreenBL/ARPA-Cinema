@@ -9,6 +9,7 @@ import pwm.ar.arpacinema.model.Purchase
 import pwm.ar.arpacinema.model.ScreeningDate
 import pwm.ar.arpacinema.model.ScreeningTime
 import pwm.ar.arpacinema.model.Ticket
+import pwm.ar.arpacinema.model.TransactionType
 import pwm.ar.arpacinema.model.User
 import pwm.ar.arpacinema.util.SeatInterpreter
 import java.time.LocalDate
@@ -43,7 +44,7 @@ class DTO {
         @SerializedName("screening_date") val screeningDate: LocalDate?,
         @SerializedName("screening_time") val screeningTime: LocalTime?,
         @SerializedName("selected_seats") val seatStrList: List<String>,
-        //@SerializedName("price") val price: Double?
+        @SerializedName("reward_type") val transactionType: TransactionType = TransactionType.STANDARD
     )
 
     data class RedSeatsResponse(
@@ -212,6 +213,17 @@ class DTO {
         @SerializedName("error") val error: String? = null
     )
 
+    data class ImageSwapRequest(
+        @SerializedName("user_id") val id: String?,
+        @SerializedName("image_id") val imageId: String?
+    )
+
+    data class RewardsCountResponse(
+        @SerializedName("status") val status: Stat?,
+        @SerializedName("free_ticket_count") val rewards: Int?,
+        @SerializedName("ticket_discounts") val ticketDiscounts: Int?
+    )
+
     // status enum for responses
 
     enum class Stat(val status: String) {
@@ -224,7 +236,9 @@ class DTO {
         USER_NOT_REGISTERED("USER_NOT_REGISTERED"), // WHEN USER IS NOT REGISTERED
         PSW_ERROR("PSW_ERROR"), // WHEN PASSWORD IS INCORRECT
         PASSWORD_EDITED("PASSWORD_EDITED"), // WHEN PASSWORD IS EDITED CORRECTLY
-        UNKNOWN_ERROR("UNKNOWN_ERROR") // WHEN SOMETHING ELSE HAPPENS WE DONT KNOW ABOUT
+        UNKNOWN_ERROR("UNKNOWN_ERROR"), // WHEN SOMETHING ELSE HAPPENS WE DONT KNOW ABOUT
+        PURCHASE_FAIL("PURCHASE_FAIL"), // WHEN PURCHASE FAILED
+        PURCHASE_COMPLETE("PURCHASE_COMPLETE") // WHEN PURCHASE SUCCEEDS)
     }
 
 }

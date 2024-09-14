@@ -14,6 +14,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import kotlinx.coroutines.launch
@@ -24,6 +26,7 @@ import pwm.ar.arpacinema.common.Dialog
 import pwm.ar.arpacinema.common.MenuItem
 import pwm.ar.arpacinema.databinding.FragmentHomeBinding
 import pwm.ar.arpacinema.databinding.FragmentProfileMenuBinding
+import pwm.ar.arpacinema.util.PlaceholderDrawable
 
 class ProfileMenuFragment : Fragment() {
 
@@ -54,7 +57,6 @@ class ProfileMenuFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // TODO: Use the ViewModel
     }
 
     override fun onCreateView(
@@ -75,6 +77,15 @@ class ProfileMenuFragment : Fragment() {
         val topMenu = binding.topMenu
         val centerMenu = binding.centerMenu
         val bottomMenu = binding.bottomMenu
+        val image = binding.profileimage
+        val levelChip = binding.chip
+
+        Glide.with(requireContext())
+            .load(Session.userImageURL)
+            .placeholder(PlaceholderDrawable.getPlaceholderDrawable())
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .error(R.drawable.outline_cloud_off_24)
+            .into(image)
 
         val topMenuAdapter = MenuAdapter(topMenuItems) { menuItem ->
             when (menuItem.label) {
@@ -86,6 +97,37 @@ class ProfileMenuFragment : Fragment() {
                 }
             }
         }
+
+        viewModel.userLevel.observe(viewLifecycleOwner) {
+            levelChip.text = "Livello ${viewModel.userLevel.value}"
+        }
+
+        viewModel.userPoints.observe(viewLifecycleOwner) {
+            if (it == 1000) {
+                levelChip.setOnClickListener {
+                    Dialog.showLevelUpRationale(requireContext(), viewModel.userLevel.value!!) {
+                        lifecycleScope.launch {
+                            viewModel.levelUp()
+                            levelChip.text = "Livello ${viewModel.userLevel.value}"
+                        }
+                    }
+                }
+                levelChip.text = "Livello ${viewModel.userLevel.value} ⟫ Livello ${viewModel.userLevel.value?.plus(
+                    1
+                )}"
+                levelChip.isClickable = true
+                levelChip.setChipStrokeColorResource(R.color.colorGoldContainer_highContrast)
+                levelChip.setChipBackgroundColorResource(R.color.colorGoldContainer)
+                levelChip.chipStrokeWidth = 8F
+            } else {
+                levelChip.text = "Livello ${viewModel.userLevel.value}"
+                levelChip.setChipStrokeColorResource(com.google.android.material.R.color.m3_chip_stroke_color)
+                levelChip.setChipBackgroundColorResource(com.google.android.material.R.color.m3_chip_background_color)
+                levelChip.chipStrokeWidth = 2F
+                levelChip.isClickable = false
+            }
+        }
+
 
         val centerMenuAdapter = MenuAdapter(centerMenuItems) { menuItem ->
             when (menuItem.label) {
@@ -99,8 +141,7 @@ class ProfileMenuFragment : Fragment() {
                     findNavController().navigate(R.id.action_profileMenuFragment_to_walletFragment)
                 }
             }
-            Toast.makeText(requireContext(), "Clicked: ${menuItem.label}", Toast.LENGTH_SHORT)
-                .show()
+
         }
 
         val bottomMenuAdapter = MenuAdapter(logoutItem) { menuItem ->
@@ -114,13 +155,6 @@ class ProfileMenuFragment : Fragment() {
                     }
                 }
             }
-            //            lifecycleScope.launch {
-//                if (Session.getUserId(requireContext()) != null) {
-//                    Session.invalidateUser(requireContext())
-//                    Session.printUserId(requireContext())
-//                    viewModel.clearUser()
-//                }
-//            }
         }
 
         val dividerItemDecoration =

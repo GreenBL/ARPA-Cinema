@@ -24,7 +24,11 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fadingEdgeLength="16dp"
+        android:clipChildren="false"
+        android:clipToOutline="false"
+        android:clipToPadding="false"
+        android:fadingEdgeLength="0dp"
+        android:paddingTop="16dp"
         android:paddingBottom="32dp"
         android:requiresFadingEdge="vertical"
         android:scrollbars="vertical"
