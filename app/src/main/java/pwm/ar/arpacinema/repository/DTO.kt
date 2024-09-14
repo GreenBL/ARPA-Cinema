@@ -224,6 +224,11 @@ class DTO {
         @SerializedName("ticket_discounts") val ticketDiscounts: Int?
     )
 
+    data class Message(
+        @SerializedName("status") val status: Stat?,
+        @SerializedName("message") val message: String?
+    )
+
     // status enum for responses
 
     enum class Stat(val status: String) {

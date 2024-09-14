@@ -1,6 +1,7 @@
 package pwm.ar.arpacinema.profile.account
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,13 +26,45 @@ class AccountViewModel : ViewModel() {
 
     fun init() {
         _userEmail.value = Session.user?.email
-        _isSecurityEnabled.value = false // NEED TO QUERY THE SERVER FOR THIS TODO TODO TODO TODO
+        assert2FA()
     }
 
     private val api = RetrofitClient.service
 
     private val _toastMessage = MutableLiveData<String>()
     val toastMessage: LiveData<String> get() = _toastMessage
+
+    private fun assert2FA() {
+        viewModelScope.launch {
+            try {
+                val response = api.checkSecurityQuestion(DTO.UserIdPost(Session.userIdStr))
+
+                if (!response.isSuccessful) {
+                    throw Exception("Request failed with code: ${response.code()}")
+                }
+
+                val body = response.body() ?: throw Exception("Response body is null")
+
+                if (body.status != DTO.Stat.SUCCESS) {
+                    throw Exception("Request failed with status: ${body.status}")
+                }
+
+                val message = body.message
+
+                when (message) {
+                    "Security question is set" -> {
+                        _isSecurityEnabled.postValue(true)
+                    }
+                    "No security question set" -> {
+                        _isSecurityEnabled.postValue(false)
+                    }
+                }
+
+            } catch (e: Exception) {
+                Log.e("AccountViewModel", "2FA ERROR: ${e.message}")
+            }
+        }
+    }
 
         // TODO
     fun deleteUserAccount(context: Context, navController: NavController) {

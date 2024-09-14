@@ -48,8 +48,7 @@ class AccountFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // TODO: Use the ViewModel
+        viewModel.init()
     }
 
     override fun onCreateView(
@@ -63,7 +62,7 @@ class AccountFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
 
         val menu = binding.accountMenu
         val bottomMenu = binding.otherMenu
@@ -72,7 +71,7 @@ class AccountFragment : Fragment() {
         }
         binding.include.viewTitle.text = "Account"
         setupMenus(menu, bottomMenu)
-        viewModel.init()
+
 
     }
 

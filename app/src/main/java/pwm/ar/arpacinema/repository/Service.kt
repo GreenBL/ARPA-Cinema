@@ -101,6 +101,9 @@ interface Service {
     @POST("pwm/download_pdf")
     suspend fun ticketPDF(@Body printTicketRequest: PrintTicketRequest): ResponseBody
 
+    @POST("pwm/check_security_question")
+    suspend fun checkSecurityQuestion(@Body userIdPost: UserIdPost): Response<Message>
+
     // ====================================================================================
     //                                     DEBUG
     @GET("pwm/ping")
