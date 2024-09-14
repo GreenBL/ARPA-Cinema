@@ -181,4 +181,17 @@ object Dialog {
         dialog.show()
 
     }
+
+    fun showPurchaseFailDialog(requireContext: Context) {
+        val builder = MaterialAlertDialogBuilder(requireContext, centered)
+        builder.setTitle("Saldo insufficiente")
+        builder.setMessage("Non hai abbastanza credito per effettuare l'acquisto. Ricarica il tuo saldo.")
+        builder.setIcon(R.drawable.round_euro_24)
+        builder.setPositiveButton("Ok") { dialog, _ -> dialog.dismiss() }
+        val dialog = builder.create()
+        dialog.show()
+
+
+
+    }
 }

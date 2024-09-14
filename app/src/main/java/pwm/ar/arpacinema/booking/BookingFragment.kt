@@ -74,9 +74,11 @@ class BookingFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.userId.postValue(Session.getUserId(requireContext()))
             viewModel.movieId.postValue(args.movie.id)
+            viewModel.fetchUserLevelAndPoints()
         }
         val movie = args.movie
         lifecycleScope.launch {
+            viewModel.movie.postValue(movie)
             viewModel.fetchDates(movie.id)
         }
     }

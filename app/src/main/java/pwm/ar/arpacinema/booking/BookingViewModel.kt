@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.Session
 import pwm.ar.arpacinema.dev.Selection
+import pwm.ar.arpacinema.model.Movie
 import pwm.ar.arpacinema.model.ScreeningDate
 import pwm.ar.arpacinema.model.ScreeningTime
 import pwm.ar.arpacinema.repository.DTO
@@ -18,6 +19,10 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 class BookingViewModel : ViewModel() {
+
+    // whole movie as arg
+    private val _movie = MutableLiveData<Movie>()
+    val movie: MutableLiveData<Movie> = _movie
 
     // user ID arg from the fragm
     private val _userId = MutableLiveData<String?>(null)
@@ -73,6 +78,35 @@ class BookingViewModel : ViewModel() {
 
     private val _total = MutableLiveData(0.0)
     val total: LiveData<Double> = _total
+
+    // points
+    private val _points = MutableLiveData(0)
+    val points: LiveData<Int> = _points
+
+    // level
+    private val _level = MutableLiveData(0)
+    val level: LiveData<Int> = _level
+
+    suspend fun fetchUserLevelAndPoints() {
+        val userId = Session.userIdStr
+        val response = RetrofitClient.service.getUserPointsAndLevel(DTO.UserIdPost(userId))
+        try {
+            if (!response.isSuccessful) {
+                Log.e("BookingViewModel", response.message())
+                _status.postValue(DTO.Stat.ERROR)
+                return
+            }
+            val body = response.body()
+
+            body?.let {
+                _points.postValue(it.points)
+                _level.postValue(it.level)
+            }
+        } catch (e: Exception) {
+            _status.postValue(DTO.Stat.NETWORK_ERROR)
+            Log.e("BookingViewModel", e.message.toString(), e)
+        }
+    }
 
     // status
 
@@ -133,14 +167,26 @@ class BookingViewModel : ViewModel() {
 
                 val body = response.body()
 
-                if (body?.status != DTO.Stat.SUCCESS) {
-                    Log.e("BookingViewModel", body?.status.toString())
-                    _status.postValue(body?.status)
+                if (body?.status == DTO.Stat.ERROR) {
+                    Log.e("BookingViewModel", body.status.toString())
+                    _status.postValue(body.status)
+                    return@launch
+                }
+
+                if (body?.status == DTO.Stat.PURCHASE_FAIL) {
+                    Log.e("BookingViewModel", body.status.toString())
+                    _status.postValue(body.status)
+                    return@launch
+                }
+
+                if (body?.status == DTO.Stat.PURCHASE_COMPLETE) {
+                    Log.e("BookingViewModel", body.status.toString())
+                    _status.postValue(body.status)
                     return@launch
                 }
 
                 Log.d("BookingViewModel", body.toString())
-                _status.postValue(body.status)
+                _status.postValue(body?.status)
 
             } catch (e: Exception) {
                 Log.e("BookingViewModel", e.message.toString())
