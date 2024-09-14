@@ -2,6 +2,7 @@ package pwm.ar.arpacinema.booking
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.common.Dialog
 import pwm.ar.arpacinema.databinding.ModalCheckoutBinding
 import pwm.ar.arpacinema.dev.Selection
+import pwm.ar.arpacinema.model.TransactionType
 import pwm.ar.arpacinema.repository.DTO
 import pwm.ar.arpacinema.util.PlaceholderDrawable
 import java.time.format.DateTimeFormatter
@@ -66,10 +68,12 @@ class CheckoutModal : BottomSheetDialogFragment() {
                 .into(image)
         }
 
+        val bonusDescriptor = binding.bonusCompat
         val recycler = binding.recyclerView
         val totalStarPoints = binding.totalStars
         val total = binding.total
         val userLevel = viewModel.level.value
+        val seatsCountString = binding.dynamicPosts
 
         val movie = viewModel.movie.value
 
@@ -78,14 +82,48 @@ class CheckoutModal : BottomSheetDialogFragment() {
         binding.timeoIco.text = viewModel.selectedTime.value?.formattedTime
         binding.saleIco.text = viewModel.selectedTime.value?.formattedAuditorium
 
+        val discountChip = binding.discountedChip
+        val freeChip = binding.freeChip
+        bonusDescriptor.tooltipText = "È possibile applicare un solo tipo di sconto per ogni transazione."
+        bonusDescriptor.setOnClickListener {
+            it.performLongClick()
+        }
 
+        seatsCountString.text = if (selections?.size!! > 1) "${selections.size} Posti Selezionati" else "Posto Selezionato"
+
+        var totaleCalc = 0.0
         lifecycleScope.launch {
-            val totale = selections?.size?.times(STANDARD_PRICE)
-            val string = String.format(Locale.ITALY,"%.2f", totale)
+            viewModel.fetchRewardCounts()
+            totaleCalc = selections.size.times(STANDARD_PRICE)
+            val string = String.format(Locale.ITALY,"%.2f", totaleCalc)
             total.text = string
-            val totalStars = totale?.times(userLevel?.plus(1) ?: 0)?.toInt()
+            val totalStars = totaleCalc.times(userLevel?.plus(1) ?: 0).toInt()
             totalStarPoints.text = totalStars.toString()
 
+        }
+
+        viewModel.free.observe(viewLifecycleOwner) {
+            freeChip.isEnabled = it
+        }
+
+        viewModel.discounts.observe(viewLifecycleOwner) {
+            discountChip.isEnabled = it
+        }
+
+        freeChip.setOnClickListener {
+            if (freeChip.isChecked) {
+                viewModel.applyFree()
+            } else {
+                viewModel.removeRewards()
+            }
+        }
+
+        discountChip.setOnClickListener {
+            if (discountChip.isChecked) {
+                viewModel.applyDiscount()
+            } else {
+                viewModel.removeRewards()
+            }
         }
 
         buyButton.setOnClickListener {
@@ -97,16 +135,57 @@ class CheckoutModal : BottomSheetDialogFragment() {
 
         viewModel.status.observe(viewLifecycleOwner) {
             when (it) {
+                DTO.Stat.NETWORK_ERROR -> {
+                    Dialog.showNetworkErrorDialog(requireContext())
+                    viewModel.status.postValue(DTO.Stat.DEFAULT)
+                }
                 DTO.Stat.PURCHASE_COMPLETE -> {
                     dismiss()
                     findNavController().popBackStack(R.id.bookingFragment, true)
-                    Dialog.showPurchaseSuccessDialog(requireContext(), totalStarPoints.text.toString().toInt()) // to do actual number
+                    if (viewModel.transactionType.value == TransactionType.FREE) {
+                        Dialog.showPurchaseSuccessDialogFree(requireContext()) // temp
+                    } else {
+                        Dialog.showPurchaseSuccessDialog(requireContext(), totalStarPoints.text.toString().toInt()) // to do actual number
+                    }
+
                     viewModel.status.postValue(DTO.Stat.DEFAULT)
                 }
                 DTO.Stat.PURCHASE_FAIL -> {
                     Dialog.showPurchaseFailDialog(requireContext())
                     viewModel.status.postValue(DTO.Stat.DEFAULT)
                 } else -> {}
+            }
+        }
+
+        viewModel.transactionType.observe(viewLifecycleOwner) {
+            when (it!!) {
+                TransactionType.FREE -> {
+                    // remove 8 euros
+                    Log.d("CheckoutModal", "Free selected")
+                    val new = totaleCalc.minus(8)
+                    val string = String.format(Locale.ITALY,"%.2f", new)
+                    val totalStars = new.times(userLevel?.plus(1) ?: 0).toInt()
+                    totalStarPoints.text = totalStars.toString()
+                    total.text = string
+                    buyButton.text = "Riscatta Biglietto Gratuito"
+                }
+                TransactionType.DISCOUNT -> {
+                    Log.d("CheckoutModal", "Discount selected")
+                    val new = totaleCalc.minus(4)
+                    val string = String.format(Locale.ITALY,"%.2f", new)
+                    val totalStars = new.times(userLevel?.plus(1) ?: 0).toInt()
+                    totalStarPoints.text = totalStars.toString()
+                    total.text = string
+                    buyButton.text = "Conferma e Paga"
+                }
+                TransactionType.STANDARD -> {
+                    Log.d("CheckoutModal", "Standard selected")
+                    val string = String.format(Locale.ITALY,"%.2f", totaleCalc)
+                    total.text = string
+                    val totalStars = totaleCalc.times(userLevel?.plus(1) ?: 0).toInt()
+                    totalStarPoints.text = totalStars.toString()
+                    buyButton.text = "Conferma e Paga"
+                }
             }
         }
 
@@ -118,14 +197,12 @@ class CheckoutModal : BottomSheetDialogFragment() {
             throw Exception("selections is null or empty, which should not happen!!!")
         }
 
+
+
         val adapter = CheckoutAdapter(selections)
-//        val decoration = MaterialDividerItemDecoration(requireContext(), MaterialDividerItemDecoration.VERTICAL).apply {
-//            isLastItemDecorated = true
-//            dividerThickness = 64
-//            dividerColor = requireContext().getColor(android.R.color.transparent)
-//        }
+
         recycler.adapter = adapter
-//        recycler.addItemDecoration(decoration)
+
         recycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
 

@@ -2,6 +2,7 @@ package pwm.ar.arpacinema.home
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +26,7 @@ import com.google.android.material.carousel.MultiBrowseCarouselStrategy
 import com.google.android.material.carousel.UncontainedCarouselStrategy
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import kotlinx.coroutines.launch
+import me.relex.circleindicator.CircleIndicator2
 import pwm.ar.arpacinema.model.Categories.*
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.Session
@@ -37,6 +39,12 @@ import pwm.ar.arpacinema.util.PlaceholderDrawable
 
 
 class HomeFragment : Fragment() {
+
+    // pos
+    private lateinit var bottomDots : CircleIndicator2
+    private lateinit var topDots : CircleIndicator2
+    private lateinit var carouselLayoutManager : CarouselLayoutManager
+    private lateinit var popLayoutManager : CarouselLayoutManager
 
     // Binding
     private var _binding: FragmentHomeBinding? = null
@@ -158,17 +166,17 @@ class HomeFragment : Fragment() {
 
         // bottom carousel
         val snapHelper = CarouselSnapHelper()
-        val bottomDots = binding.bottomGear
+        bottomDots = binding.bottomGear
 
 
-        val carAdapter = CarouselAdapter(emptyList()) { movie ->
+        val carAdapter = CarouselAdapter(mutableListOf()) { movie ->
 
             val action = HomeFragmentDirections.actionGlobalMoviePageFragment(movie)
             findNavController().navigate(action)
 
         }
         val carousel = binding.carouselRV
-        val carouselLayoutManager = CarouselLayoutManager(UncontainedCarouselStrategy()).apply {
+        carouselLayoutManager = CarouselLayoutManager(UncontainedCarouselStrategy()).apply {
             carouselAlignment = CarouselLayoutManager.ALIGNMENT_CENTER
         }
 
@@ -181,26 +189,20 @@ class HomeFragment : Fragment() {
 
         snapHelper.attachToRecyclerView(carousel)
 
-
         viewModel.movies.observe(viewLifecycleOwner) { movies ->
-            if (movies == null || movies.isEmpty()) {
+            if (movies.isNullOrEmpty()) {
                 return@observe
             }
-            movies.let {
-                carAdapter.updateData(it)
 
-                if (it.size > 2) {
-                    carousel.scrollToPosition(1)
-                }
+            movies.let {
+                carAdapter.updateData(it.toMutableList())
+                carAdapter.notifyDataSetChanged()
+
                 bottomDots.attachToRecyclerView(binding.carouselRV, snapHelper)
                 carAdapter.registerAdapterDataObserver(bottomDots.adapterDataObserver)
 
             }
         }
-
-
-
-
 
 
         // popromotions
@@ -209,14 +211,14 @@ class HomeFragment : Fragment() {
             findNavController().navigate(action)
         }
         val popRV = binding.popRV
-        val popLayoutManager = CarouselLayoutManager(FullScreenCarouselStrategy())
+        popLayoutManager = CarouselLayoutManager(FullScreenCarouselStrategy())
         popLayoutManager.carouselAlignment = CarouselLayoutManager.ALIGNMENT_CENTER
         popRV.apply {
             adapter = popAdapter
             layoutManager = popLayoutManager
         }
 
-        val topDots = binding.topIndi
+        topDots = binding.topIndi
 
 
         val popsnapHelper = CarouselSnapHelper()
@@ -227,8 +229,14 @@ class HomeFragment : Fragment() {
                 return@observe
             }
 
+            if(popAdapter.itemCount != 0) {
+                return@observe // means there is already data in there
+            }
+
+
             promos.let {
                 popAdapter.updateData(promos)
+                popAdapter.notifyDataSetChanged()
             }
             popAdapter.registerAdapterDataObserver(topDots.adapterDataObserver)
             topDots.attachToRecyclerView(binding.popRV, popsnapHelper)
@@ -246,14 +254,22 @@ class HomeFragment : Fragment() {
             //findNavController().navigate(R.id.authFragment)
         }
 
-
+        carousel.post {
+            carousel.scrollToPosition(viewModel.positionBottom)
+        }
+        popRV.post {
+            popRV.scrollToPosition(viewModel.positionTop)
+        }
 
 
 
     }
 
+
     override fun onDestroyView() {
         super.onDestroyView()
+        viewModel.positionTop = topDots.getSnapPosition(popLayoutManager)
+        viewModel.positionBottom = topDots.getSnapPosition(carouselLayoutManager)
         _binding = null
     }
 
