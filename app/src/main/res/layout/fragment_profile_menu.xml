@@ -169,7 +169,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:text='@{"Livello " + String.valueOf(viewModel.userLevel)}'
+            android:text=''
             app:chipCornerRadius="64dp"
             app:layout_constraintBottom_toTopOf="@+id/materialCardView2"
             app:layout_constraintEnd_toEndOf="parent"

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.divider.MaterialDividerItemDecoration
@@ -49,12 +50,26 @@ class OptionsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // navbar
+        binding.include.viewTitle.text = "Premi Bar"
+        binding.include.navBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        val description = binding.stringResDescription
+
+
+
         val title = args.type
         val textview = binding.textView34
         textview.text = title
-
         val image = binding.imageView15
 
+        when (title) {
+            "Popcorn" -> description.text = getString(R.string.popcorn_desc)
+            "Bibite" -> description.text = getString(R.string.bibite_desc)
+            "Combo" -> description.text = getString(R.string.combo_desc)
+        }
         when (title) {
             "Popcorn" -> image.setImageResource(R.drawable.popcorn_buckets__dark_background)
             "Bibite" -> image.setImageResource(R.drawable.tall_drink_cups__dark_background)
@@ -66,6 +81,9 @@ class OptionsFragment : Fragment() {
         val optionsAdapter = OptionsAdapter(listOfOptions) {}
 
         val materialDivider = MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
+            .apply {
+                isLastItemDecorated = false
+            }
         optionsMenu.apply {
             addItemDecoration(materialDivider)
             layoutManager = LinearLayoutManager(requireContext())
