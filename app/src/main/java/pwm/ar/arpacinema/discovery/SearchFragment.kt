@@ -80,11 +80,6 @@ class SearchFragment : Fragment() {
 
 
         val recyclerView = binding.resultsRV
-//        recyclerView.adapter = ScreeningAdapter(aah) {
-//            Toast.makeText(requireContext(), "Clicked something", Toast.LENGTH_SHORT).show()
-//            showIme = false
-//            findNavController().navigate(R.id.action_searchFragment_to_moviePageFragment)
-//        }
 
         recyclerView.apply {
 
@@ -97,7 +92,6 @@ class SearchFragment : Fragment() {
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-//            addItemDecoration(divider)
             adapter = LoadingScreenAdapter(mockList)
         }
 ////////////////////////////////////////////////// TODO ///////////////////////////////// SWAP ADPAPTER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -143,12 +137,19 @@ class SearchFragment : Fragment() {
         }
 
         viewModel.movies.observe(viewLifecycleOwner) { movies ->
+
             if (movies != null) {
+
+                recyclerView.alpha = 0.0f
+
                 recyclerView.adapter = ScreeningAdapter(movies) { movie ->
                     val action = SearchFragmentDirections.actionSearchFragmentToMoviePageFragment(movie)
                     showIme = false
                     findNavController().navigate(action)
                 }
+
+                recyclerView.animate().alpha(1.0f).duration = 450
+
             }
         }
 

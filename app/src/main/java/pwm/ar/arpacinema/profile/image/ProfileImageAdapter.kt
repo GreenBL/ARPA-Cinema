@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import pwm.ar.arpacinema.R
+import pwm.ar.arpacinema.Session
 import pwm.ar.arpacinema.databinding.ProfileImageItemBinding
 import pwm.ar.arpacinema.model.ProfileImage
 
@@ -50,6 +52,20 @@ class ProfileImageAdapter(
             .transition(DrawableTransitionOptions.withCrossFade())
             .placeholder(placeholder)
             .into(imageView)
+
+        // we check if the url is stored the same, we set the border to some color
+        // if it is not, we remove the border
+
+        if (images[position].imageUrl == Session.userImageURL) {
+            binding.imageWrap.strokeWidth = 12
+            binding.imageWrap.strokeColor = imageView.context.getColor(R.color.md_theme_primary)
+            binding.root.isClickable = false
+        } else {
+            binding.imageWrap.strokeWidth = 2
+        }
+
+
+
 
     }
 }

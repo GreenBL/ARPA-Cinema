@@ -50,6 +50,7 @@ class TicketsViewModel : ViewModel() {
                 _tickets.postValue(ticketList)
 
             } catch (e: Exception) {
+                _tickets.postValue(null)
                 Log.e("TicketsViewModel", "Error fetching tickets", e)
             }
 

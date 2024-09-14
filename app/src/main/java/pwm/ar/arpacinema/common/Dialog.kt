@@ -75,7 +75,7 @@ object Dialog {
         builder.setTitle("Acquisto effettuato")
 
         val htmlMessage = """
-        <p>Hai effettuato l'acquisto con successo e hai guadagnato <b>${points} stars</b>.</p>
+        <p>Hai effettuato l'acquisto con successo e hai guadagnato <span style="color: yellow"><b>${points} stars</b></span>.</p>
         <p><i>Continua a fare acquisti per guadagnare ancora più punti!</i></p>
         """.trimIndent()
 
@@ -165,5 +165,52 @@ object Dialog {
         }
         val dialog = builder.create()
         dialog.show()
+    }
+
+    fun showLoginDialog(requireContext: Context, onClickLogin: () -> Unit) {
+        val builder = MaterialAlertDialogBuilder(requireContext, centered)
+        builder.setTitle("Accedi per continuare")
+        builder.setMessage("Vuoi acquistare i biglietti per questo spettacolo? Per prima cosa devi effettuare il login.")
+        builder.setIcon(R.drawable.round_login_24)
+        builder.setPositiveButton("Accedi") { dialog, _ ->
+            onClickLogin()
+            dialog.dismiss()
+        }
+        builder.setNegativeButton("Annulla") { dialog, _ -> dialog.dismiss() }
+        val dialog = builder.create()
+        dialog.show()
+
+    }
+
+    fun showPurchaseFailDialog(requireContext: Context) {
+        val builder = MaterialAlertDialogBuilder(requireContext, centered)
+        builder.setTitle("Saldo insufficiente")
+        builder.setMessage("Non hai abbastanza credito per effettuare l'acquisto. Ricarica il tuo saldo.")
+        builder.setIcon(R.drawable.round_euro_24)
+        builder.setPositiveButton("Ok") { dialog, _ -> dialog.dismiss() }
+        val dialog = builder.create()
+        dialog.show()
+
+
+
+    }
+
+    fun showPurchaseSuccessDialogFree(context: Context) {
+        val builder = MaterialAlertDialogBuilder(context, centered)
+        builder.setTitle("Biglietto riscattato")
+
+        val htmlMessage = """
+        <p>Hai riscattato un <span style="color: yellow">biglietto gratuito!</span></b></p>
+        <p><i>Continua a fare acquisti per guadagnare ancora più punti e ottenere ancora più sconti!</i></p>
+        """.trimIndent()
+
+        builder.setMessage(Html.fromHtml(htmlMessage, Html.FROM_HTML_MODE_LEGACY))
+
+        builder.setIcon(R.drawable.baseline_check_circle_outline_24)
+        builder.setPositiveButton("Ok") { dialog, _ -> dialog.dismiss() }
+
+        val dialog = builder.create()
+        dialog.show()
+
     }
 }

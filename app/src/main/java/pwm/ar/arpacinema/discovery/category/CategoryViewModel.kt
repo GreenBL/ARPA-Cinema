@@ -41,11 +41,23 @@ class CategoryViewModel : ViewModel() {
 
             val movies = response.body()?.movies//s
             Log.d("CategoryViewModel", "LIST OF MOVIES: $movies")
-            _movies.postValue(movies)
+            if (movies == null) {
+                throw Exception("Error")
+            }
+            val newList = assertMovieCategory(movies, category)
+            _movies.postValue(newList)
 
         } catch (e: Exception) {
-            Log.d("CategoryViewModel", "getMoviesByCategory: $e")
+            Log.e("CategoryViewModel", "getMoviesByCategory: $e", e)
         }
+    }
+
+    private fun assertMovieCategory(movies : List<Movie>, category: String) : List<Movie> {
+        val mutableListOfMovies = movies.toMutableList()
+        mutableListOfMovies.removeAll {
+            category !in it.categories
+        }
+        return mutableListOfMovies
     }
 
 }

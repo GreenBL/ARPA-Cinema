@@ -76,16 +76,16 @@ class ScreeningAdapter(
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(image)
 
-        if (shouldAnimate) {
-            // Trigger your fade-in animation here
-            holder.itemView.alpha = 0f
-            holder.itemView.animate().alpha(1f).setDuration(300).start()
-        }
-
-        // Reset the animation flag after the first binding
-        if (position == showingItems.size - 1) {
-            shouldAnimate = false
-        }
+//        if (shouldAnimate) {
+//            // Trigger your fade-in animation here
+//            holder.itemView.alpha = 0f
+//            holder.itemView.animate().alpha(1f).setDuration(300).start()
+//        }
+//
+//        // Reset the animation flag after the first binding
+//        if (position == showingItems.size - 1) {
+//            shouldAnimate = false
+//        }
     }
 
     override fun getItemCount(): Int = showingItems.size

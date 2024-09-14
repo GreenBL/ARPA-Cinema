@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.databinding.FragmentCategoryBinding
@@ -71,12 +72,17 @@ class CategoryFragment : Fragment() {
 
         // set the title
         binding.topBarInclude.viewTitle.text = category.category
+        binding.topBarInclude.navBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
 
         // set up the placeholder adapter for the recycler view
         val placeholderAdapter = LoadingScreenAdapter(placeholders)
         recycler.adapter = placeholderAdapter // once stuff loads swap it with the good one
 
         scope.launch {
+            if (viewModel.movies.value != null) return@launch
+            delay(300L) // delay for the animation to finish
             viewModel.getMoviesByCategory(category.category)
 //            Log.d("CategoryFragment", "onViewCreated: ${viewModel.movies.value}")
 //            if (viewModel.movies.value != null) {

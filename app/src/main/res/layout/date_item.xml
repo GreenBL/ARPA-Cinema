@@ -8,8 +8,13 @@
     android:layout_marginHorizontal="8dp"
     android:background="@drawable/check_selector"
     android:checkable="true"
+    android:clipChildren="false"
+    android:clipToOutline="false"
+    android:clipToPadding="false"
     android:foreground="?attr/selectableItemBackground"
     app:cardCornerRadius="24dp"
+    app:cardElevation="4dp"
+    app:cardMaxElevation="4dp"
     app:checkedIconSize="0dp"
     app:strokeColor="@drawable/card_selector"
     app:strokeWidth="2dp">
