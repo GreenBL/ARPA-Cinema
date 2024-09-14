@@ -10,6 +10,8 @@
     android:checkable="true"
     android:foreground="?attr/selectableItemBackground"
     app:cardCornerRadius="24dp"
+    app:cardElevation="12dp"
+    app:cardMaxElevation="12dp"
     app:checkedIconSize="0dp"
     app:strokeColor="@drawable/card_selector"
     app:strokeWidth="2dp">

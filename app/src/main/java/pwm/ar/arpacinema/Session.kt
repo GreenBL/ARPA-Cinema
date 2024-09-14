@@ -24,11 +24,19 @@ object Session {
     private var _user: User? = null
     val user: User? get() = _user
 
+    val userIdStr: String get() = _user?.id.toString()
+    val userIdInt: Int? get() = _user?.id
+
     private var _userImageURL: String? = null
-    val userImageURL: String? get() = _userImageURL
+    val userImageURL: String?
+        get() = _userImageURL
 
 
     val loggedIn : Boolean get() = _user != null
+
+    fun setUserImageURL(url: String) {
+        _userImageURL = url
+    }
 
     // store the user ID [important: store it after logging in else it will be lost]
     suspend fun storeUser(context: Context, user: User) {

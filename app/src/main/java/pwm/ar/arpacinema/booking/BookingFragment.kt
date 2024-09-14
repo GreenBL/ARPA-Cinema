@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -249,13 +250,13 @@ class BookingFragment : Fragment() {
 
         seatBookView.setSeatClickListener(object : SeatClickListener {
             override fun onAvailableSeatClick(selectedIdList: List<Int>, view: View) {
-
-
-
-
-                viewModel.updateList(selectedIdList)
-                Log.d("SEATS", "onAvailableSeatClick: $selectedIdList and ${viewModel.selectedSeats.value}")
-
+                if(Session.loggedIn) {
+                    viewModel.updateList(selectedIdList)
+                    Log.d("SEATS", "onAvailableSeatClick: $selectedIdList and ${viewModel.selectedSeats.value}")
+                } else {
+                    showLoginRationale()
+                    seatBookView.markAsAvailable(view as TextView)
+                }
             }
             override fun onBookedSeatClick(view: View) {
             }
@@ -279,6 +280,13 @@ class BookingFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+    }
+
+    private fun showLoginRationale() {
+        Dialog.showLoginDialog(requireContext()) {
+            val action = BookingFragmentDirections.actionGlobalAuthFragment()
+            findNavController().navigate(action)
+        }
     }
 
     private fun observeStatus() {
@@ -311,6 +319,7 @@ class BookingFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
+        // shade the view
         //requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 

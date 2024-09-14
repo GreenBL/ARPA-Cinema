@@ -119,7 +119,7 @@ class SignupFragment : Fragment() {
 
         errorHighlight(nameField, surnameField, phoneField, emailField, passwordField)
         // handle closing of this
-        setupNavBack(closeButton)
+        setupNavBack(binding.floatingActionButton2)
         signUpAction(signUpButton)
         // temporarily disable the text fields
 
@@ -158,7 +158,7 @@ class SignupFragment : Fragment() {
         signUpButton.isEnabled = true
     }
 
-    private fun setupNavBack(closeButton: MaterialButton) {
+    private fun setupNavBack(closeButton: View) {
         closeButton.setOnClickListener {
             findNavController().popBackStack()
         }

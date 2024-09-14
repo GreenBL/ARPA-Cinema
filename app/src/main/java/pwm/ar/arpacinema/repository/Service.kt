@@ -15,6 +15,9 @@ import retrofit2.http.Url
 
 interface Service {
 
+    @POST("pwm/associate_image")
+    suspend fun associateImage(@Body imageRequest : ImageSwapRequest): Response<GenericResponse>
+
     @POST("pwm/select_seats_&_buy_tickets")
     suspend fun buyTickets(@Body buyTicketRequest: BuyTicketRequest): Response<GenericResponse>
 

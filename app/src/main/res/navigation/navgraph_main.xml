@@ -324,4 +324,13 @@
         app:exitAnim="@anim/nav_default_exit_anim"
         app:popEnterAnim="@anim/fade_in"
         app:popExitAnim="@anim/zoom_fade_out" />
+    <action
+        android:id="@+id/action_global_authFragment"
+        app:destination="@id/authFragment"
+        app:enterAnim="@anim/zoom_fade_in"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/zoom_fade_out"
+        app:popUpTo="@id/homeFragment"
+        app:popUpToInclusive="false" />
 </navigation>

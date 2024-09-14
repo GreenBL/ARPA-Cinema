@@ -166,4 +166,19 @@ object Dialog {
         val dialog = builder.create()
         dialog.show()
     }
+
+    fun showLoginDialog(requireContext: Context, onClickLogin: () -> Unit) {
+        val builder = MaterialAlertDialogBuilder(requireContext, centered)
+        builder.setTitle("Accedi per continuare")
+        builder.setMessage("Vuoi acquistare i biglietti per questo spettacolo? Per prima cosa devi effettuare il login.")
+        builder.setIcon(R.drawable.round_login_24)
+        builder.setPositiveButton("Accedi") { dialog, _ ->
+            onClickLogin()
+            dialog.dismiss()
+        }
+        builder.setNegativeButton("Annulla") { dialog, _ -> dialog.dismiss() }
+        val dialog = builder.create()
+        dialog.show()
+
+    }
 }

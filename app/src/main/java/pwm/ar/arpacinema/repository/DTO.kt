@@ -204,6 +204,11 @@ class DTO {
         @SerializedName("error") val error: String? = null
     )
 
+    data class ImageSwapRequest(
+        @SerializedName("user_id") val id: String?,
+        @SerializedName("image_id") val imageId: String?
+    )
+
     // status enum for responses
 
     enum class Stat(val status: String) {

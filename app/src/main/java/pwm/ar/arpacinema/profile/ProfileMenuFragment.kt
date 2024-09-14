@@ -14,6 +14,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import kotlinx.coroutines.launch
@@ -24,6 +26,7 @@ import pwm.ar.arpacinema.common.Dialog
 import pwm.ar.arpacinema.common.MenuItem
 import pwm.ar.arpacinema.databinding.FragmentHomeBinding
 import pwm.ar.arpacinema.databinding.FragmentProfileMenuBinding
+import pwm.ar.arpacinema.util.PlaceholderDrawable
 
 class ProfileMenuFragment : Fragment() {
 
@@ -75,6 +78,14 @@ class ProfileMenuFragment : Fragment() {
         val topMenu = binding.topMenu
         val centerMenu = binding.centerMenu
         val bottomMenu = binding.bottomMenu
+        val image = binding.profileimage
+
+        Glide.with(requireContext())
+            .load(Session.userImageURL)
+            .placeholder(PlaceholderDrawable.getPlaceholderDrawable())
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .error(R.drawable.outline_cloud_off_24)
+            .into(image)
 
         val topMenuAdapter = MenuAdapter(topMenuItems) { menuItem ->
             when (menuItem.label) {
@@ -114,13 +125,6 @@ class ProfileMenuFragment : Fragment() {
                     }
                 }
             }
-            //            lifecycleScope.launch {
-//                if (Session.getUserId(requireContext()) != null) {
-//                    Session.invalidateUser(requireContext())
-//                    Session.printUserId(requireContext())
-//                    viewModel.clearUser()
-//                }
-//            }
         }
 
         val dividerItemDecoration =
