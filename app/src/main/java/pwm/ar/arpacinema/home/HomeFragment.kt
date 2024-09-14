@@ -1,13 +1,18 @@
 package pwm.ar.arpacinema.home
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.InsetDrawable
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.appcompat.view.menu.MenuBuilder
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -30,6 +35,7 @@ import me.relex.circleindicator.CircleIndicator2
 import pwm.ar.arpacinema.model.Categories.*
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.Session
+import pwm.ar.arpacinema.common.Dialog
 import pwm.ar.arpacinema.databinding.FragmentHomeBinding
 import pwm.ar.arpacinema.discovery.movie.MoviePageFragmentDirections
 import pwm.ar.arpacinema.model.Categories
@@ -105,9 +111,12 @@ class HomeFragment : Fragment() {
             binding.tophome.titleStr.text = "Ciao ${Session.user!!.name}!"
             binding.tophome.textView.text = ""
 
-            binding.tophome.badge.isEnabled = false
-            binding.tophome.icon.visibility = View.INVISIBLE
+            binding.tophome.badge.isEnabled = true
+            binding.tophome.icon.visibility = View.GONE
             binding.tophome.icon.scaleType = ImageView.ScaleType.CENTER_CROP
+
+
+
 
             viewModel.userImageURL.observe(viewLifecycleOwner) {
                 if (it == null) {
@@ -121,6 +130,8 @@ class HomeFragment : Fragment() {
                     .into(binding.tophome.profileicon)
 
             }
+
+
 
         }
 
@@ -245,6 +256,9 @@ class HomeFragment : Fragment() {
 
         // handle badge click
         binding.tophome.badge.setOnClickListener {
+            if (Session.user != null) {
+               return@setOnClickListener
+            } else {
              val sharedElementView = binding.tophome.badge
 
              val cardNavController = findNavController()
@@ -252,6 +266,7 @@ class HomeFragment : Fragment() {
             val extras = FragmentNavigatorExtras(sharedElementView to "shared_card")
             cardNavController.navigate(R.id.authFragment, null, null, extras)
             //findNavController().navigate(R.id.authFragment)
+                }
         }
 
         carousel.post {

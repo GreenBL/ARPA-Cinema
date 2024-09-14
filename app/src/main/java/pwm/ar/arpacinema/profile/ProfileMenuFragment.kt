@@ -57,7 +57,6 @@ class ProfileMenuFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // TODO: Use the ViewModel
     }
 
     override fun onCreateView(
@@ -142,8 +141,7 @@ class ProfileMenuFragment : Fragment() {
                     findNavController().navigate(R.id.action_profileMenuFragment_to_walletFragment)
                 }
             }
-            Toast.makeText(requireContext(), "Clicked: ${menuItem.label}", Toast.LENGTH_SHORT)
-                .show()
+
         }
 
         val bottomMenuAdapter = MenuAdapter(logoutItem) { menuItem ->

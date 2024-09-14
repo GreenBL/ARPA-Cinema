@@ -239,4 +239,17 @@ object Dialog {
         dialog.show()
 
     }
+
+    fun showCreditIncreasedDialog(context: Context) {
+        val builder = MaterialAlertDialogBuilder(context, centered)
+        builder.setTitle("Saldo ricaricato")
+        builder.setMessage("Il tuo credito è stato ricaricato con successo.")
+        builder.setIcon(R.drawable.baseline_check_circle_outline_24)
+        builder.setPositiveButton("Ok") {
+                dialog, _ -> dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
+
+    }
 }
