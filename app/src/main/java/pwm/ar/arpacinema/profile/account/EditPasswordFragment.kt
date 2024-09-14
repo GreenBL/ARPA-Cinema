@@ -1,5 +1,6 @@
 package pwm.ar.arpacinema.profile.account
 
+import android.app.AlertDialog
 import androidx.fragment.app.viewModels
 import android.os.Bundle
 import android.util.Log
@@ -40,6 +41,7 @@ class EditPasswordFragment : Fragment() {
         val passwordField = binding.passwordLayout
         val confirmPasswordButton = binding.setPasswordButton
 
+
         passwordField.editText?.addTextChangedListener(TextValidator(passwordField, TextValidator.Companion::isValidPassword))
 
         confirmPasswordButton.setOnClickListener {
@@ -53,16 +55,36 @@ class EditPasswordFragment : Fragment() {
                 return@setOnClickListener
             }
 
+
             lifecycleScope.launch {
-                val success = viewModel.updatePassword()
-                if (success) {
-                    Snackbar.make(view, "Password aggiornata con successo", Snackbar.LENGTH_SHORT).show()
-                } else {
+                try {
+                    val success = viewModel.updatePassword()
+                    if (success) {
+
+                        passwordField.isEnabled = false
+                        confirmPasswordButton.isEnabled = false
+
+                        showSuccessDialog()
+
+                        findNavController().popBackStack()
+                    } else {
+                        Snackbar.make(view, "Errore nell'aggiornamento della password", Snackbar.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
                     Snackbar.make(view, "Errore nell'aggiornamento della password", Snackbar.LENGTH_SHORT).show()
                 }
             }
         }
     }
+
+    private fun showSuccessDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Aggiornamento riuscito")
+            .setMessage("La password è stata aggiornata con successo.")
+            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            .show()
+    }
+
 
     private fun setupTopBar() {
         binding.inclusion.viewTitle.text = "Modifica password"

@@ -24,6 +24,14 @@ import java.time.LocalTime
  */
 
 class DTO {
+
+    data class SecurityQuestionRequest(
+        @SerializedName("user_id") val userId: Int,
+        @SerializedName("security_question") val securityQuestion: Int,
+        @SerializedName("security_answer") val securityAnswer: String
+    )
+
+
     data class EditEmailRequest(
         @SerializedName("user_id") val id: String?,
         @SerializedName("email") val email: String?
