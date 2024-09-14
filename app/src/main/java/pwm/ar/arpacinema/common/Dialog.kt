@@ -1,9 +1,8 @@
 package pwm.ar.arpacinema.common
 
 import android.content.Context
+import android.content.DialogInterface
 import android.text.Html
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.text.HtmlCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
@@ -208,6 +207,33 @@ object Dialog {
 
         builder.setIcon(R.drawable.baseline_check_circle_outline_24)
         builder.setPositiveButton("Ok") { dialog, _ -> dialog.dismiss() }
+
+        val dialog = builder.create()
+        dialog.show()
+
+    }
+
+    fun showLevelUpRationale(context: Context, level : Int, onClickConfirm: () -> Unit) {
+        val builder = MaterialAlertDialogBuilder(context, centered)
+        builder.setTitle("Salire di livello?")
+
+        val htmlMessage = """
+        <p>Hai raggiunto i punti necessari per passare al <span style="color: yellow"><b>livello ${level + 1}</span>!</b> </p>
+        <p>Se scegli di passare al prossimo livello <span style="color: red"><b>i tuoi punti saranno azzerati.</b></span></p>
+        <p>Ma non temere! Aumentando di livello godrai di un guadagno di <span><em>Stars</em></span> maggiorato!</b></p>
+        </b>Vuoi continuare?</b>
+        """
+
+        builder.setMessage(Html.fromHtml(htmlMessage, Html.FROM_HTML_MODE_LEGACY))
+        builder.setIcon(R.drawable.star_half_glow)
+        builder.setPositiveButton("Si") {
+                dialog, _ ->
+            onClickConfirm()
+            dialog.dismiss()
+            }
+        builder.setNegativeButton("No") {
+                dialog, _ -> dialog.dismiss()
+        }
 
         val dialog = builder.create()
         dialog.show()

@@ -15,6 +15,9 @@ import retrofit2.http.Url
 
 interface Service {
 
+    @POST("pwm/user_level_increase")
+    suspend fun levelUp(@Body idPost: IdPost): Response<GenericResponse>
+
     @POST("pwm/get_all_rewards")
     suspend fun getRewards(@Body userIdPost: UserIdPost): Response<RewardsCountResponse>
 
