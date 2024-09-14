@@ -15,6 +15,9 @@ import retrofit2.http.Url
 
 interface Service {
 
+    @POST("pwm/add_security_question_and_answer")
+    suspend fun addSecurityQuestionAndAnswer(@Body request: SecurityQuestionRequest): Response<DTO.GenericResponse>
+
     @POST("pwm/select_seats_&_buy_tickets")
     suspend fun buyTickets(@Body buyTicketRequest: BuyTicketRequest): Response<GenericResponse>
 

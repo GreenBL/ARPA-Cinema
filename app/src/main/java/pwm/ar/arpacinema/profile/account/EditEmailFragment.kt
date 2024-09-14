@@ -1,5 +1,6 @@
 package pwm.ar.arpacinema.profile.account
 
+import android.app.AlertDialog
 import androidx.fragment.app.viewModels
 import android.os.Bundle
 import android.util.Log
@@ -49,22 +50,48 @@ class EditEmailFragment : Fragment() {
         val setEmailButton = binding.setEmailButton
         val emailLayout = binding.emailLayout
 
+
         emailLayout.editText?.addTextChangedListener(TextValidator(emailLayout, TextValidator.Companion::isValidEmail))
+
+
         setEmailButton.setOnClickListener {
             if (emailLayout.error != null || emailLayout.editText?.text.isNullOrBlank()) {
                 Snackbar.make(view, "E-mail non valida", Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
+
             lifecycleScope.launch {
                 try {
-                    viewModel.updateEmail()
-                    Snackbar.make(view, "E-mail aggiornata con successo", Snackbar.LENGTH_SHORT).show()
+                    val success = viewModel.updateEmail()
+                    if (success) {
+
+                        emailLayout.isEnabled = false
+                        setEmailButton.isEnabled = false
+
+                        // Per la finestra di dialogo
+                        showSuccessDialog()
+
+                        findNavController().popBackStack()
+                    } else {
+                        Snackbar.make(view, "Errore nell'aggiornamento della e-mail", Snackbar.LENGTH_SHORT).show()
+                    }
                 } catch (e: Exception) {
                     Snackbar.make(view, "Errore nell'aggiornamento della e-mail", Snackbar.LENGTH_SHORT).show()
                 }
             }
         }
     }
+
+    // Per mostrare la finestra di dialogo
+    private fun showSuccessDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Aggiornamento riuscito")
+            .setMessage("L'email è stata aggiornata con successo.")
+            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            .show()
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()
