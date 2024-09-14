@@ -252,4 +252,40 @@ object Dialog {
         dialog.show()
 
     }
+
+    fun show2FAuthenticationConfirmation(context: Context) {
+        val builder = MaterialAlertDialogBuilder(context, centered)
+        builder.setTitle("Domanda impostata")
+        builder.setMessage("La tua domanda di sicurezza è stata impostata con successo.")
+        builder.setIcon(R.drawable.baseline_check_circle_outline_24)
+        builder.setPositiveButton("Ok") {
+                dialog, _ -> dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    fun showEditPasswordDialog(context: Context) {
+        val builder = MaterialAlertDialogBuilder(context, centered)
+        builder.setTitle("Password modificata")
+        builder.setMessage("La tua password è stata modificata con successo.")
+        builder.setIcon(R.drawable.baseline_check_circle_outline_24)
+        builder.setPositiveButton("Ok") {
+                dialog, _ -> dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    fun showEditEmailDialog(context: Context) {
+        val builder = MaterialAlertDialogBuilder(context, centered)
+        builder.setTitle("E-mail modificata")
+        builder.setMessage("La tua e-mail è stata modificata con successo.")
+        builder.setIcon(R.drawable.baseline_check_circle_outline_24)
+        builder.setPositiveButton("Ok") {
+                dialog, _ -> dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
 }

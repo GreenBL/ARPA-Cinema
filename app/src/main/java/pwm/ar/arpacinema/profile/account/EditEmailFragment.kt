@@ -8,11 +8,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.R
+import pwm.ar.arpacinema.common.Dialog
 import pwm.ar.arpacinema.databinding.FragmentEditEmailBinding
 import pwm.ar.arpacinema.util.TextValidator
 
@@ -50,8 +52,16 @@ class EditEmailFragment : Fragment() {
         val setEmailButton = binding.setEmailButton
         val emailLayout = binding.emailLayout
 
+        setEmailButton.isEnabled = false
+
 
         emailLayout.editText?.addTextChangedListener(TextValidator(emailLayout, TextValidator.Companion::isValidEmail))
+
+        emailLayout.editText?.addTextChangedListener {
+            val validatorFun = TextValidator.Companion::B_isValidEmail
+
+            setEmailButton.isEnabled = validatorFun(it.toString())
+        }
 
 
         setEmailButton.setOnClickListener {
@@ -83,13 +93,14 @@ class EditEmailFragment : Fragment() {
         }
     }
 
-    // Per mostrare la finestra di dialogo
+    // Per mostrare la finestra di dialogo di Material 0.0.0-alpha12 ... ma anche no
     private fun showSuccessDialog() {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Aggiornamento riuscito")
-            .setMessage("L'email è stata aggiornata con successo.")
-            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-            .show()
+//        AlertDialog.Builder(requireContext())
+//            .setTitle("Aggiornamento riuscito")
+//            .setMessage("L'email è stata aggiornata con successo.")
+//            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+//            .show()
+        Dialog.showEditEmailDialog(requireContext())
     }
 
 

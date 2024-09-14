@@ -11,13 +11,38 @@ import pwm.ar.arpacinema.repository.DTO
 import pwm.ar.arpacinema.repository.RetrofitClient
 
 class SecurityViewModel : ViewModel() {
+
+    private val _questionId = MutableLiveData<Int>()
+    val questionId: MutableLiveData<Int> = _questionId
+
+    private val _answer = MutableLiveData<String>()
+    val answer: MutableLiveData<String> = _answer
+
+
     private val service = RetrofitClient.service
     private val _securityQuestionResult = MutableLiveData<DTO.GenericResponse>()
     val securityQuestionResult: LiveData<DTO.GenericResponse> = _securityQuestionResult
 
-    fun addSecurityQuestionAndAnswer(userId: Int, questionId: Int, answer: String) {
+    fun assertFields() : Boolean {
+        if (questionId.value == null) {
+            return false
+        }
+        if (answer.value.isNullOrEmpty()) {
+            return false
+        }
+        return true
+    }
+
+
+
+    fun addSecurityQuestionAndAnswer() {
+
         viewModelScope.launch {
             try {
+                val userId = Session.user?.id!!
+                val questionId = questionId.value!!
+                val answer = answer.value!!
+
                 val request = DTO.SecurityQuestionRequest(userId, questionId, answer)
                 Log.d("SecurityViewModel", "Sending request: $request")
                 val response = service.addSecurityQuestionAndAnswer(request)
