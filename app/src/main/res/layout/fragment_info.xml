@@ -65,7 +65,9 @@
                     app:cardCornerRadius="200dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:strokeColor="@color/md_theme_primary"
+                    app:strokeWidth="3dp">
 
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/profileImage"

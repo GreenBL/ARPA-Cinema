@@ -318,7 +318,7 @@ object Dialog {
         val builder = MaterialAlertDialogBuilder(context, centered)
         builder.setTitle("Riscattare ${reward.category}?")
 
-        val message = SpannableString("${reward.description}\n\n${reward.points} Stars\n\nConfermi di voler riscattare questo premio?")
+        val message = SpannableString("${reward.size}\n\n${reward.points} Stars\n\nConfermi di voler riscattare questo premio?")
 
         message.setSpan(
             RelativeSizeSpan(1.3f),
@@ -326,8 +326,17 @@ object Dialog {
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
 
-        val costStartIndex = reward.description.length + 2
+        val optionStartIndex = 0
+        val optionEndIndex = optionStartIndex + reward.size.length
+
+        val costStartIndex = reward.size.length + 2
         val costEndIndex = costStartIndex + reward.points.toString().length + 6
+
+        message.setSpan(
+            RelativeSizeSpan(1.25f),
+            optionStartIndex, optionEndIndex,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
 
         message.setSpan(
             ForegroundColorSpan(Color.parseColor("#FFCC66")),
