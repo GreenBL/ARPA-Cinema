@@ -15,6 +15,9 @@ import retrofit2.http.Url
 
 interface Service {
 
+    @POST("pwm/get_items")
+    suspend fun getRedeemedItems(@Body request: UserIdPost): Response<RedeemedItemsResponse>
+
     @POST("pwm/add_security_question_and_answer")
     suspend fun addSecurityQuestionAndAnswer(@Body request: SecurityQuestionRequest): Response<DTO.GenericResponse>
 
