@@ -6,6 +6,7 @@ import pwm.ar.arpacinema.model.Movie
 import pwm.ar.arpacinema.model.ProfileImage
 import pwm.ar.arpacinema.model.Promotion
 import pwm.ar.arpacinema.model.Purchase
+import pwm.ar.arpacinema.model.Reward
 import pwm.ar.arpacinema.model.ScreeningDate
 import pwm.ar.arpacinema.model.ScreeningTime
 import pwm.ar.arpacinema.model.Ticket
@@ -236,6 +237,10 @@ class DTO {
         @SerializedName("message") val message: String?
     )
 
+    data class RedeemedItemsResponse(
+        @SerializedName("status") val status: Stat?,
+        @SerializedName("items") val items: List<Reward>?
+    )
     // status enum for responses
 
     enum class Stat(val status: String) {

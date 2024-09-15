@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import pwm.ar.arpacinema.R
+import pwm.ar.arpacinema.Session
 import pwm.ar.arpacinema.databinding.FragmentInventoryBinding
 import pwm.ar.arpacinema.model.Reward
 import pwm.ar.arpacinema.parcels.RewardDetailsParcel
@@ -17,82 +18,68 @@ import pwm.ar.arpacinema.rewards.OptionsAdapter
 
 class InventoryFragment : Fragment() {
 
-    private var _binding : FragmentInventoryBinding? = null
+    private var _binding: FragmentInventoryBinding? = null
     private val binding get() = _binding!!
 
-    companion object {
-        fun newInstance() = InventoryFragment()
-    }
-
     private val viewModel: InventoryViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentInventoryBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentInventoryBinding.inflate(inflater, container, false)
         return binding.root
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupNavigation()
+        setupRecyclerView()
+        fetchAndObserveRedeemedItems()
+    }
 
-        val recyclerView = binding.recyclerView
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun setupRecyclerView() {
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val decoration = MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL).apply {
             isLastItemDecorated = false
         }
-        val adapter = OptionsAdapter(
-            listOf(
-                Reward("Sconto", "Sconto biglietto (50%)", 500),
-                Reward("Sconto", "Biglietto gratuito (100%)", 1000),
-                Reward("Sconto", "Biglietto gratuito (100%)", 1000),
-                Reward("Sconto", "Biglietto gratuito (100%)", 1000),
-                Reward("Sconto", "Biglietto gratuito (100%)", 1000),
-                Reward("Sconto", "Biglietto gratuito (100%)", 1000),
-                Reward("Sconto", "Biglietto gratuito (100%)", 1000),
-                Reward("Sconto", "Biglietto gratuito (100%)", 1000),
-                Reward("Sconto", "Biglietto gratuito (100%)", 1000),
-                Reward("Sconto", "Biglietto gratuito (100%)", 1000),
-                Reward("Sconto", "Biglietto gratuito (100%)", 1000),
-                Reward("Sconto", "Biglietto gratuito (100%)", 1000),
-                Reward("Sconto", "Biglietto gratuito (100%)", 1000),
-                Reward("Sconto", "Biglietto gratuito (100%)", 1000),
-                Reward("Sconto", "Biglietto gratuito (100%)", 1000),
-            )
-        , showPoints = false) {
 
-            // build the parcel
+        val adapter = OptionsAdapter(
+            menuItems = emptyList(), // Initialize with empty list
+            showPoints = false
+        ) { reward ->
+            // Build the parcel
             val parcel = RewardDetailsParcel(
                 rewardId = "temp",
-                rewardCategory = it.category,
-                rewardOption = it.description
+                rewardCategory = reward.category,
+                rewardOption = reward.description
             )
             val action = CodeFragmentDirections.actionGlobalCodeFragment(parcel)
             findNavController().navigate(action)
         }
 
-        recyclerView.apply {
+        binding.recyclerView.apply {
             this.layoutManager = layoutManager
             this.adapter = adapter
             addItemDecoration(decoration)
             overScrollMode = View.OVER_SCROLL_NEVER
         }
-
-
-
-
     }
+
+    private fun fetchAndObserveRedeemedItems() {
+        val userId = Session.userIdInt ?: return
+        viewModel.fetchRedeemedItems(userId)
+
+        viewModel.redeemedItems.observe(viewLifecycleOwner) { items ->
+            (binding.recyclerView.adapter as? OptionsAdapter)?.updateItems(items)
+        }
+    }
+
 
     private fun setupNavigation() {
         binding.include.viewTitle.text = "I miei premi"
@@ -100,6 +87,4 @@ class InventoryFragment : Fragment() {
             findNavController().popBackStack()
         }
     }
-
-
 }

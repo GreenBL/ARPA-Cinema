@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import pwm.ar.arpacinema.MenuAdapter
 import pwm.ar.arpacinema.R
+import pwm.ar.arpacinema.Session
 import pwm.ar.arpacinema.common.LargeMenuAdapter
 import pwm.ar.arpacinema.common.MenuItem
 import pwm.ar.arpacinema.databinding.FragmentAccountBinding
@@ -26,8 +27,8 @@ class RewardsFragment : Fragment() {
         MenuItem(R.drawable.tall_drink_cups__dark_background, "Bibite"),
         MenuItem(R.drawable.popcorn_buckets_and_then_some_drink_cups_in_front_, "Combo"))
     private val discountsList = listOf(
-        Reward("Sconto", "Sconto biglietto (50%)", 500),
-        Reward("Sconto", "Biglietto gratuito (100%)", 1000))
+        Reward("Sconto", "Sconto biglietto (50%)", 500, ""),
+        Reward("Sconto", "Biglietto gratuito (100%)", 1000, ""))
 
     private var _binding: FragmentRewardsBinding? = null
     private val binding get() = _binding!!
@@ -58,6 +59,14 @@ class RewardsFragment : Fragment() {
         binding.include.viewTitle.text = "Premi"
         binding.include.navBack.setOnClickListener {
             findNavController().popBackStack()
+        }
+        val userId = Session.userIdInt ?: return  // Ensure user is logged in
+        viewModel.fetchUserPointsAndLevel(userId)
+
+        viewModel.userPointsAndLevel.observe(viewLifecycleOwner) { response ->
+            response?.let {
+                binding.textView20.text = "Saldo punti: ${it.points ?: 0}"
+            }
         }
 
         val topMenuRV = binding.singleButtonMenu // i know... i know...

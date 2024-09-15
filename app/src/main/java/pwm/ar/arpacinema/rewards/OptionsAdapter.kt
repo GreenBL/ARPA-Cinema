@@ -13,7 +13,7 @@ import pwm.ar.arpacinema.databinding.OptionBinding
 import pwm.ar.arpacinema.model.Reward
 
 class OptionsAdapter(
-    private val menuItems: List<Reward>,
+    private var menuItems: List<Reward>,
     private val showPoints: Boolean = true,
     private val onItemClick: (Reward) -> Unit = {}
 ) : RecyclerView.Adapter<OptionsAdapter.RewardViewHolder>() {
@@ -36,16 +36,27 @@ class OptionsAdapter(
 
     override fun onBindViewHolder(holder: RewardViewHolder, position: Int) {
         val menuItem = menuItems[position]
+        val displayText = "${menuItem.category}: ${menuItem.size}"
+        val displayText2 = "${menuItem.size}"
 
         if (showPoints) {
             holder.binding.cost.visibility = View.VISIBLE
+            holder.binding.cost.text = menuItem.points.toString()
+            holder.binding.optionTitle.text = displayText2
         } else {
             holder.binding.cost.visibility = View.GONE
+            holder.binding.optionTitle.text = displayText
         }
 
-        holder.binding.optionTitle.text = menuItem.description
-        holder.binding.cost.text = menuItem.points.toString()
+
+
     }
 
     override fun getItemCount(): Int = menuItems.size
+
+    // Method to update items and notify adapter
+    fun updateItems(newItems: List<Reward>) {
+        menuItems = newItems
+        notifyDataSetChanged()
+    }
 }
