@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import pwm.ar.arpacinema.MenuAdapter
 import pwm.ar.arpacinema.R
+import pwm.ar.arpacinema.common.Dialog
 import pwm.ar.arpacinema.common.LargeMenuAdapter
 import pwm.ar.arpacinema.common.MenuItem
 import pwm.ar.arpacinema.databinding.FragmentAccountBinding
@@ -89,8 +90,10 @@ class RewardsFragment : Fragment() {
             findNavController().navigate(action)
 
         }
-        val discountsAdapter = OptionsAdapter(discountsList) {
+        val discountsAdapter = OptionsAdapter(discountsList) { reward ->
+            Dialog.showRedeemRationaleDialog(requireContext(), reward) {
 
+            }
         }
 
         val dividerItemDecoration =

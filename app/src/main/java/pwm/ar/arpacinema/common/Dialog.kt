@@ -2,14 +2,21 @@ package pwm.ar.arpacinema.common
 
 import android.content.Context
 import android.content.DialogInterface
+import android.graphics.Color
+import android.graphics.Typeface
 import android.text.Html
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
+import android.text.style.StyleSpan
 import androidx.core.text.HtmlCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.R
-
+import pwm.ar.arpacinema.model.Reward
 
 
 object Dialog {
@@ -303,6 +310,46 @@ object Dialog {
         builder.setIcon(R.drawable.baseline_check_circle_outline_24)
         builder.setPositiveButton("Ok") { dialog, _ -> dialog.dismiss() }
 
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    fun showRedeemRationaleDialog(context: Context, reward: Reward, onClickConfirm: () -> Unit) {
+        val builder = MaterialAlertDialogBuilder(context, centered)
+        builder.setTitle("Riscattare ${reward.category}?")
+
+        // Create the message parts using SpannableString
+        val message = SpannableString("${reward.description}\n\n${reward.points} Stars\n\nConfermi di voler riscattare questo premio?")
+
+        // Apply bold style to the reward option (top part)
+        message.setSpan(
+            RelativeSizeSpan(1.3f),
+            0, reward.description.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        val costStartIndex = reward.description.length + 2
+        val costEndIndex = costStartIndex + reward.points.toString().length + 6
+
+        message.setSpan(
+            ForegroundColorSpan(Color.parseColor("#FFCC66")),
+            costStartIndex, costEndIndex,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        message.setSpan(
+            RelativeSizeSpan(2f),
+            costStartIndex, costEndIndex,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        builder.setMessage(message)
+        builder.setIcon(R.drawable.baseline_redeem_24)
+        builder.setPositiveButton("Si") { dialog, _ ->
+            onClickConfirm()
+            dialog.dismiss()
+        }
+        builder.setNegativeButton("No") { dialog, _ -> dialog.dismiss() }
+
+        // Create and show the dialog
         val dialog = builder.create()
         dialog.show()
     }
