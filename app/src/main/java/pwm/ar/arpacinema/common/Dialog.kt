@@ -10,6 +10,7 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
+import android.util.Log
 import androidx.core.text.HtmlCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
@@ -348,10 +349,12 @@ object Dialog {
             costStartIndex, costEndIndex,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
+
         builder.setMessage(message)
         builder.setIcon(R.drawable.baseline_redeem_24)
         builder.setPositiveButton("Si") { dialog, _ ->
-            onClickConfirm()
+            Log.d("RewardsFragment", "Positive button clicked for reward: ${reward.category}")
+            onClickConfirm() // Ensure this line is reached
             dialog.dismiss()
         }
         builder.setNegativeButton("No") { dialog, _ -> dialog.dismiss() }
@@ -360,6 +363,7 @@ object Dialog {
         val dialog = builder.create()
         dialog.show()
     }
+
 
     fun showNotEnoughPointsDialog(context: Context) {
         val builder = MaterialAlertDialogBuilder(context, centered)

@@ -241,7 +241,10 @@ class DTO {
         @SerializedName("status") val status: Stat?,
         @SerializedName("items") val items: List<Reward>?
     )
-    // status enum for responses
+
+    data class RedeemRequest(val userId: Int, val rewardType: String)
+
+    data class RedeemResponse(val status: String, val message: String)
 
     enum class Stat(val status: String) {
         SUCCESS("SUCCESS"), // WHEN OP SUCCEEDS

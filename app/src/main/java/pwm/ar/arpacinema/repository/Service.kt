@@ -15,6 +15,10 @@ import retrofit2.http.Url
 
 interface Service {
 
+    @POST("pwm/select_discounts")
+    suspend fun selectDiscounts(@Body request: DTO.RedeemRequest): Response<DTO.RedeemResponse>
+
+
     @POST("pwm/get_items")
     suspend fun getRedeemedItems(@Body request: UserIdPost): Response<RedeemedItemsResponse>
 

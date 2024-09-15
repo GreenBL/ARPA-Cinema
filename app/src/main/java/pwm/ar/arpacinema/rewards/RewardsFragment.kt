@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,10 +29,10 @@ class RewardsFragment : Fragment() {
         MenuItem(R.drawable.tall_drink_cups__dark_background, "Bibite"),
         MenuItem(R.drawable.popcorn_buckets_and_then_some_drink_cups_in_front_, "Combo"))
     private val discountsList = listOf(
-        Reward("Sconto", "Sconto biglietto (50%)", 500, ""),
-        Reward("Sconto", "Biglietto gratuito (100%)", 1000, ""))
+        Reward("Sconto", "Sconto biglietto (50%)", 500, "", "ticket_discount"),
+        Reward("Sconto", "Biglietto gratuito (100%)", 1000, "", "free_ticket"))
 
-    private var _binding: FragmentRewardsBinding? = null
+                private var _binding: FragmentRewardsBinding? = null
     private val binding get() = _binding!!
 
     companion object {
@@ -70,40 +71,44 @@ class RewardsFragment : Fragment() {
             }
         }
 
-        val topMenuRV = binding.singleButtonMenu // i know... i know...
+        // Osserva la risposta dell'API di riscatto
+        viewModel.redeemResponse.observe(viewLifecycleOwner) { response ->
+            response?.let {
+                if (it.status == "SUCCESS") {
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    viewModel.fetchUserPointsAndLevel(Session.userIdInt!!) // Aggiorna i punti
+                } else {
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+
+        val topMenuRV = binding.singleButtonMenu
         val barMenuRV = binding.barrewards
         val discountsRV = binding.discountMenuHostile
 
         val topMenuAdapter = MenuAdapter(topItemList) {
-            //  only one so...
             findNavController().navigate(R.id.action_rewardsFragment_to_inventoryFragment)
         }
         val barMenuAdapter = LargeMenuAdapter(barItemList) { menuItem ->
-
             var selection = "Ni1"
-
             when (menuItem.label) {
-                "Popcorn" -> {
-                    selection = menuItem.label
-                }
-                "Bibite" -> {
-                    selection = menuItem.label
-                    }
-                "Combo" -> {
-                    selection = menuItem.label
-                }
+                "Popcorn" -> selection = menuItem.label
+                "Bibite" -> selection = menuItem.label
+                "Combo" -> selection = menuItem.label
             }
-
             val action = RewardsFragmentDirections.actionRewardsFragmentToOptionsFragment(selection)
-
             findNavController().navigate(action)
-
         }
         val discountsAdapter = OptionsAdapter(discountsList) { reward ->
             Dialog.showRedeemRationaleDialog(requireContext(), reward) {
-
+                viewModel.redeemReward(Session.userIdInt!!, reward)
             }
+
         }
+
+
 
         val dividerItemDecoration =
             MaterialDividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL).apply {
@@ -134,8 +139,8 @@ class RewardsFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(dividerItemDecoration)
         }
-
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

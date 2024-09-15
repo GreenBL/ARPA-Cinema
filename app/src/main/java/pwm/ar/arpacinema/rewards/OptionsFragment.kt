@@ -19,10 +19,10 @@ import pwm.ar.arpacinema.model.Reward
 class OptionsFragment : Fragment() {
 
     private val listOfOptions = listOf(
-        Reward("Popcorn", "XL (500g)", 335, ""),
-        Reward("Popcorn", "L (350g)", 275, ""),
-        Reward("Popcorn", "M (250g)", 215, ""),
-        Reward("Popcorn", "S (150g)", 155, ""),
+        Reward("Popcorn", "XL (500g)", 335, "", ""),
+        Reward("Popcorn", "L (350g)", 275, "", ""),
+        Reward("Popcorn", "M (250g)", 215, "", ""),
+        Reward("Popcorn", "S (150g)", 155, "", ""),
     )
 
     private var _binding : FragmentOptionsBinding? = null
