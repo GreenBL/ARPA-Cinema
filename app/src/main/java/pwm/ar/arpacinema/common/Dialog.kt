@@ -318,10 +318,8 @@ object Dialog {
         val builder = MaterialAlertDialogBuilder(context, centered)
         builder.setTitle("Riscattare ${reward.category}?")
 
-        // Create the message parts using SpannableString
         val message = SpannableString("${reward.description}\n\n${reward.points} Stars\n\nConfermi di voler riscattare questo premio?")
 
-        // Apply bold style to the reward option (top part)
         message.setSpan(
             RelativeSizeSpan(1.3f),
             0, reward.description.length,
@@ -350,6 +348,16 @@ object Dialog {
         builder.setNegativeButton("No") { dialog, _ -> dialog.dismiss() }
 
         // Create and show the dialog
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    fun showNotEnoughPointsDialog(context: Context) {
+        val builder = MaterialAlertDialogBuilder(context, centered)
+        builder.setTitle("Saldo insufficiente")
+        builder.setMessage("Non hai abbastanza punti per riscattare questo premio.")
+        builder.setIcon(R.drawable.baseline_redeem_24)
+        builder.setPositiveButton("Ok") { dialog, _ -> dialog.dismiss() }
         val dialog = builder.create()
         dialog.show()
     }
