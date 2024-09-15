@@ -48,6 +48,7 @@
         android:clipToPadding="true"
         android:foreground="?attr/selectableItemBackground"
         android:transitionName="shared_card"
+        app:cardBackgroundColor="@color/md_theme_primary"
         app:cardCornerRadius="100dp"
         app:cardUseCompatPadding="false"
         app:contentPadding="0dp"
@@ -63,7 +64,8 @@
             android:layout_height="48dp"
             android:scaleType="centerInside"
 
-            android:src="@drawable/round_login_24" />
+            android:src="@drawable/round_login_24"
+            android:tint="@color/md_theme_onPrimary" />
 
         <ImageView
             android:id="@+id/profileicon"
