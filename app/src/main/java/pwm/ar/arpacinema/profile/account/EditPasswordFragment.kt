@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.R
+import pwm.ar.arpacinema.common.Dialog
 import pwm.ar.arpacinema.databinding.FragmentEditPasswordBinding
 import pwm.ar.arpacinema.util.TextValidator
 
@@ -35,11 +36,17 @@ class EditPasswordFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         setupTopBar()
 
         val passwordField = binding.passwordLayout
         val confirmPasswordButton = binding.setPasswordButton
+        confirmPasswordButton.isEnabled = false
+
+        viewModel.password.observe(viewLifecycleOwner) {
+            val valid = TextValidator.B_isValidPassword(it)
+            confirmPasswordButton.isEnabled = valid
+        }
 
 
         passwordField.editText?.addTextChangedListener(TextValidator(passwordField, TextValidator.Companion::isValidPassword))
@@ -78,11 +85,12 @@ class EditPasswordFragment : Fragment() {
     }
 
     private fun showSuccessDialog() {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Aggiornamento riuscito")
-            .setMessage("La password è stata aggiornata con successo.")
-            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-            .show()
+//        AlertDialog.Builder(requireContext())
+//            .setTitle("Aggiornamento riuscito")
+//            .setMessage("La password è stata aggiornata con successo.")
+//            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+//            .show()
+        Dialog.showEditedPasswordSuccessDialog(requireContext())
     }
 
 

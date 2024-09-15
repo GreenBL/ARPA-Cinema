@@ -29,7 +29,7 @@ interface Service {
 
 
     @POST("pwm/select_seats_&_buy_tickets")
-    suspend fun buyTickets(@Body buyTicketRequest: BuyTicketRequest): Response<GenericResponse>
+    suspend fun buyTickets(@Body buyTicketRequest: BuyTicketRequest): Response<BuyResponse>
 
     @POST("pwm/occupied_seats")
     suspend fun getRedSeats(@Body redSeatsRequest: RedSeatsRequest): Response<RedSeatsResponse> // TODO
@@ -100,6 +100,9 @@ interface Service {
 
     @POST("pwm/download_pdf")
     suspend fun ticketPDF(@Body printTicketRequest: PrintTicketRequest): ResponseBody
+
+    @POST("pwm/check_security_question")
+    suspend fun checkSecurityQuestion(@Body userIdPost: UserIdPost): Response<Message>
 
     // ====================================================================================
     //                                     DEBUG

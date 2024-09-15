@@ -40,23 +40,30 @@ class HistoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupNavigation()
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+
+        val quantity = binding.totalMovies
 
         val recycler = binding.vistaRiciclatrice
         val deco = MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL).apply {
             dividerColor = resources.getColor(android.R.color.transparent, null)
-            dividerThickness = 64
+            dividerThickness = 32
         }
-        val adapter = HistoryAdapter(
-            listOf(Selection("Endgame", "20/30/40", "16:30", "Sala 1", "A1"),
-                Selection("Endgame2", "20/30/40", "16:30", "Sala 2", "A2"),
-                Selection("Endgame3", "20/30/40", "16:30", "Sala 3", "A3"),
-                Selection("Endgame4", "20/30/40", "16:30", "Sala 4", "A4"))
-        )
+        val adapter = HistoryAdapter(mutableListOf())
 
         adapter.apply {
             recycler.addItemDecoration(deco)
             recycler.adapter = this
             recycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        }
+
+        viewModel.compressedTickets.observe(viewLifecycleOwner) {
+            if (it.isNullOrEmpty()) {
+                return@observe
+            }
+            adapter.updateList(it)
+            adapter.notifyDataSetChanged()
         }
     }
 

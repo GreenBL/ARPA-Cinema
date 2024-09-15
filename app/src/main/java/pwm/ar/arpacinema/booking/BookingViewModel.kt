@@ -92,6 +92,10 @@ class BookingViewModel : ViewModel() {
     private val _level = MutableLiveData(0)
     val level: LiveData<Int> = _level
 
+    // response
+    private val _serverResponse = MutableLiveData<DTO.BuyResponse?>()
+    val serverResponse: LiveData<DTO.BuyResponse?> = _serverResponse
+
     val service = RetrofitClient.service
 
     suspend fun fetchUserLevelAndPoints() {
@@ -219,6 +223,7 @@ class BookingViewModel : ViewModel() {
                 }
 
                 if (body?.status == DTO.Stat.PURCHASE_COMPLETE) {
+                    _serverResponse.value = body
                     Log.e("BookingViewModel", body.status.toString())
                     _status.postValue(body.status)
                     return@launch
@@ -226,6 +231,7 @@ class BookingViewModel : ViewModel() {
 
                 Log.d("BookingViewModel", body.toString())
                 _status.postValue(body?.status)
+
 
             } catch (e: Exception) {
                 Log.e("BookingViewModel", e.message.toString())

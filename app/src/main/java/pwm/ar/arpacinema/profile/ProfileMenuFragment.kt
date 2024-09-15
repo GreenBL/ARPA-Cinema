@@ -108,13 +108,13 @@ class ProfileMenuFragment : Fragment() {
                     Dialog.showLevelUpRationale(requireContext(), viewModel.userLevel.value!!) {
                         lifecycleScope.launch {
                             viewModel.levelUp()
-                            levelChip.text = "Livello ${viewModel.userLevel.value}"
+                            levelChip.text = "Livello ${viewModel.userLevel.value!!.plus(1)}"
                         }
                     }
                 }
-                levelChip.text = "Livello ${viewModel.userLevel.value} ⟫ Livello ${viewModel.userLevel.value?.plus(
-                    1
-                )}"
+//                levelChip.text = "Livello ${viewModel.userLevel.value} ⟫ Livello ${viewModel.userLevel.value?.plus(
+//                    1
+//                )}"
                 levelChip.isClickable = true
                 levelChip.setChipStrokeColorResource(R.color.colorGoldContainer_highContrast)
                 levelChip.setChipBackgroundColorResource(R.color.colorGoldContainer)

@@ -12,6 +12,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.navigation.fragment.findNavController
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.Session
+import pwm.ar.arpacinema.common.Dialog
 import pwm.ar.arpacinema.databinding.FragmentSecurityBinding
 import pwm.ar.arpacinema.model.Questions
 import pwm.ar.arpacinema.repository.DTO
@@ -34,59 +35,77 @@ class SecurityFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+
         setupUI()
         observeViewModel()
     }
 
     private fun setupUI() {
         binding.navappbar.viewTitle.text = "Sicurezza"
+        binding.navappbar.navBack.setOnClickListener{
+            findNavController().popBackStack()
+        }
 
+        val button = binding.button5
         val dropdownMenu = binding.securityQuestionSpinner
         val arrayAdapter = ArrayAdapter(
             requireContext(),
             R.layout.custom_dropdown_item,
-            Questions.values().map { it.question }
+            Questions.entries.map { it.question }
         )
         dropdownMenu.setAdapter(arrayAdapter)
 
-        binding.answer.editText?.doAfterTextChanged {
-            updateSaveButtonState()
+        dropdownMenu.setOnItemClickListener { _, _, position, _ ->
+            viewModel.questionId.postValue(position)
         }
 
-        binding.button5.setOnClickListener {
-            saveSecurityQuestionAndAnswer()
+        viewModel.questionId.observe(viewLifecycleOwner) {
+            button.isEnabled = viewModel.assertFields()
+        }
+
+        viewModel.answer.observe(viewLifecycleOwner) {
+            button.isEnabled = viewModel.assertFields()
+        }
+
+        button.setOnClickListener {
+            viewModel.addSecurityQuestionAndAnswer()
         }
     }
 
     private fun observeViewModel() {
         viewModel.securityQuestionResult.observe(viewLifecycleOwner) { response ->
-            if (response.status == DTO.Stat.SUCCESS) {
-                Toast.makeText(context, "Domanda di sicurezza salvata con successo", Toast.LENGTH_SHORT).show()
-                // You might want to navigate back or clear the fields here
-            } else if (response.status == DTO.Stat.ERROR) {
-                Toast.makeText(context, "Errore: ${response.error}", Toast.LENGTH_LONG).show()
-            } else {
-                Toast.makeText(context, "Risposta non riconosciuta", Toast.LENGTH_LONG).show()
+            // better approach
+            val status = response.status
+            when (status) {
+                DTO.Stat.SUCCESS -> {
+                    findNavController().popBackStack()
+                    Dialog.show2FAuthenticationConfirmation(requireContext())
+                }
+                else -> {
+                    Dialog.showErrorDialog(requireContext())
+                }
             }
         }
     }
 
 
-    private fun updateSaveButtonState() {
-        binding.button5.isEnabled = binding.securityQuestionSpinner.text.isNotEmpty() &&
-                !binding.answer.editText?.text.isNullOrEmpty()
-    }
+//    private fun updateSaveButtonState() {
+//        binding.button5.isEnabled = binding.securityQuestionSpinner.text.isNotEmpty() &&
+//                !binding.answer.editText?.text.isNullOrEmpty()
+//    }
 
-    private fun saveSecurityQuestionAndAnswer() {
-        val selectedQuestion = binding.securityQuestionSpinner.text.toString()
-        val answer = binding.answer.editText?.text.toString()
-
-        val questionId = Questions.values().find { it.question == selectedQuestion }?.questionId
-            ?: return
-
-        val userId = Session.user?.id?.toString()?.toInt() ?: return
-        viewModel.addSecurityQuestionAndAnswer(userId, questionId, answer)
-    }
+//    private fun saveSecurityQuestionAndAnswer() {
+//        val selectedQuestion = binding.securityQuestionSpinner.text.toString()
+//        val answer = binding.answer.editText?.text.toString()
+//
+//        val questionId = Questions.entries.find { it.question == selectedQuestion }?.questionId
+//            ?: return
+//
+//        val userId = Session.user?.id?.toString()?.toInt() ?: return
+//        viewModel.addSecurityQuestionAndAnswer(userId, questionId, answer)
+//    }
 
     override fun onDestroyView() {
         super.onDestroyView()
