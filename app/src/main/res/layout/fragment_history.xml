@@ -33,7 +33,7 @@
                 android:layout_marginStart="16dp"
                 android:fontFamily="@font/noto_sans"
                 android:paddingBottom="8dp"
-                android:text="Totale film visti: 8"
+                android:text='@{String.format("Totale Film: %s", viewModel.count)}'
                 android:textSize="20sp" />
         </com.google.android.material.appbar.AppBarLayout>
 

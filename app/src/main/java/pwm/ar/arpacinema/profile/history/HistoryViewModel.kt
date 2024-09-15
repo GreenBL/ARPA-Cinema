@@ -20,6 +20,9 @@ class HistoryViewModel : ViewModel() {
     private val _compressedTickets = MutableLiveData<List<Ticket>?>(null)
     val compressedTickets: LiveData<List<Ticket>?> = _compressedTickets
 
+    private val _count = MutableLiveData<Int?>(null)
+    val count: LiveData<Int?> = _count
+
     val service = RetrofitClient.service
 
     init {
@@ -51,17 +54,23 @@ class HistoryViewModel : ViewModel() {
                 val compressedTicketsList = ticketList?.toMutableList()
                     ?: throw Exception("No tickets available")
 
-                val uniqueTickets = compressedTicketsList?.distinctBy { ticket ->
+                val uniqueTickets = compressedTicketsList.distinctBy { ticket ->
                     Pair(ticket.filmTitle, ticket.screeningDate)
                 }
 
+                val count = uniqueTickets.distinctBy {
+                    it.filmTitle
+                }.count()
+
+                _count.postValue(count)
+
 
                 // and finally sort this mess
-                uniqueTickets?.sortedBy {
+                uniqueTickets.sortedBy {
                     it.screeningDate
                 }
 
-                uniqueTickets?.let {
+                uniqueTickets.let {
                     _compressedTickets.postValue(it)
                 }
 
@@ -73,6 +82,7 @@ class HistoryViewModel : ViewModel() {
             }
 
         }
+
 
     }
 

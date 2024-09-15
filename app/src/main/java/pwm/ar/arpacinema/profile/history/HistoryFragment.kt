@@ -63,7 +63,6 @@ class HistoryFragment : Fragment() {
                 return@observe
             }
             adapter.updateList(it)
-            quantity.text = "Totale film: ${it.size}"
             adapter.notifyDataSetChanged()
         }
     }
