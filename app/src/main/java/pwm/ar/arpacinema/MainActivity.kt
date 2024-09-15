@@ -41,8 +41,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
+        setupWindowDecorations()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         installSplashScreen().setKeepOnScreenCondition {
             false
         }
@@ -70,7 +72,7 @@ class MainActivity : AppCompatActivity() {
 
         makeItemsVisible()
 
-        setupWindowDecorations()
+
 
         if(DEBUG_MODE) {
             val user = User(1, 1, "Riccardo", "Parisi", "riccardo@mail.it", "3334445566", 2, 3)
