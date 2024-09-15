@@ -29,6 +29,10 @@ class AccountViewModel : ViewModel() {
         assert2FA()
     }
 
+    fun refresh2FA() {
+        assert2FA()
+    }
+
     private val api = RetrofitClient.service
 
     private val _toastMessage = MutableLiveData<String>()

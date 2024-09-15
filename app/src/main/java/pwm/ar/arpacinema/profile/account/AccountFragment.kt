@@ -153,4 +153,9 @@ class AccountFragment : Fragment() {
             .show()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.refresh2FA()
+    }
+
 }
