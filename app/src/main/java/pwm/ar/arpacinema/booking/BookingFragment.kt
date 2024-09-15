@@ -321,7 +321,6 @@ class BookingFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        // shade the view
         //requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 

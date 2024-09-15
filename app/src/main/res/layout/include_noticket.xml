@@ -6,10 +6,22 @@
     android:layout_height="match_parent">
 
     <ImageView
+        android:id="@+id/imageView22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tint="@color/md_theme_primary"
+        app:layout_constraintBottom_toTopOf="@+id/textView10"
+        app:layout_constraintEnd_toEndOf="@+id/textView10"
+        app:layout_constraintStart_toStartOf="@+id/textView10"
+        app:srcCompat="@drawable/round_hide_source_24" />
+
+    <ImageView
         android:id="@+id/imageView21"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:alpha="0.2"
+        android:alpha="0.15"
+        android:backgroundTint="#000000"
+        android:tint="@color/md_theme_primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -20,14 +32,15 @@
 
     <ImageView
         android:id="@+id/imageView19"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:alpha="0.8"
-        android:rotation="45"
-        android:rotationX="49"
-        android:rotationY="-15"
+        android:rotation="-75"
+        android:rotationX="19"
+        android:rotationY="-11"
         android:src="@drawable/ticket_new_bg"
         android:tint="@color/md_theme_error"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,12 +51,13 @@
         style="@style/Widget.Material3.MaterialTimePicker.Display.HelperText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:fontFamily="@font/noto_sans"
         android:text="Non hai nessun biglietto"
-        android:textSize="24sp"
+        android:textColor="@color/md_theme_primary"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView19" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

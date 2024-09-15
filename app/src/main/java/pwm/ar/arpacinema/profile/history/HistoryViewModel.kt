@@ -20,7 +20,7 @@ class HistoryViewModel : ViewModel() {
     private val _compressedTickets = MutableLiveData<List<Ticket>?>(null)
     val compressedTickets: LiveData<List<Ticket>?> = _compressedTickets
 
-    private val _count = MutableLiveData<Int?>(null)
+    private val _count = MutableLiveData<Int?>(0)
     val count: LiveData<Int?> = _count
 
     val service = RetrofitClient.service
