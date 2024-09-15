@@ -29,7 +29,7 @@ interface Service {
 
 
     @POST("pwm/select_seats_&_buy_tickets")
-    suspend fun buyTickets(@Body buyTicketRequest: BuyTicketRequest): Response<GenericResponse>
+    suspend fun buyTickets(@Body buyTicketRequest: BuyTicketRequest): Response<BuyResponse>
 
     @POST("pwm/occupied_seats")
     suspend fun getRedSeats(@Body redSeatsRequest: RedSeatsRequest): Response<RedSeatsResponse> // TODO

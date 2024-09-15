@@ -6,21 +6,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import pwm.ar.arpacinema.databinding.SmallTicketItemBinding
 import pwm.ar.arpacinema.dev.Selection
+import pwm.ar.arpacinema.model.Ticket
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 class HistoryAdapter (
-    private val selectionItems: List<Selection>,
+    private val selectionItems: MutableList<Ticket>,
 ) : RecyclerView.Adapter<HistoryAdapter.SmallTicketViewHolder>() {
 
     inner class SmallTicketViewHolder(val binding: SmallTicketItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(selection: Selection) {
-            binding.elTitoloDelFilm.text = selection.movieTitle
-            binding.seatString.text = selection.seatCustomString
-            binding.elCosto.visibility = View.GONE
-            binding.elSymbuloDeEuros.visibility = View.GONE
-            binding.date.text = selection.showDate
-            binding.timeScreen.text = selection.showTime
+        fun bind(selection: Ticket) {
+            binding.elTitoloDelFilm.text = selection.filmTitle
+            binding.textView35.text = "${selection.formattedDate} ${selection.year}"
         }
     }
 
@@ -38,4 +36,10 @@ class HistoryAdapter (
     }
 
     override fun getItemCount(): Int = selectionItems.size
+
+    fun updateList(newList: List<Ticket>) {
+        selectionItems.clear()
+        selectionItems.addAll(newList)
+        notifyDataSetChanged()
+    }
 }

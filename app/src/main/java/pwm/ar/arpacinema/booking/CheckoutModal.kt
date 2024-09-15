@@ -16,6 +16,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.divider.MaterialDividerItemDecoration
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.R
 import pwm.ar.arpacinema.common.Dialog
@@ -31,7 +32,7 @@ private const val STANDARD_PRICE = 8.0
 
 class CheckoutModal : BottomSheetDialogFragment() {
 
-    private var _binding : ModalCheckoutBinding? = null
+    private var _binding: ModalCheckoutBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: BookingViewModel by activityViewModels()
@@ -78,26 +79,33 @@ class CheckoutModal : BottomSheetDialogFragment() {
         val movie = viewModel.movie.value
 
         binding.textView18.text = movie?.title
-        binding.dataIco.text = viewModel.selectedDate.value?.format(DateTimeFormatter.ofPattern("dd MMMM", Locale.ITALIAN))
+        binding.dataIco.text = viewModel.selectedDate.value?.format(
+            DateTimeFormatter.ofPattern(
+                "dd MMMM",
+                Locale.ITALIAN
+            )
+        )
         binding.timeoIco.text = viewModel.selectedTime.value?.formattedTime
         binding.saleIco.text = viewModel.selectedTime.value?.formattedAuditorium
 
         val discountChip = binding.discountedChip
         val freeChip = binding.freeChip
-        bonusDescriptor.tooltipText = "È possibile applicare un solo tipo di sconto per ogni transazione."
+        bonusDescriptor.tooltipText =
+            "È possibile applicare un solo tipo di sconto per ogni transazione."
         bonusDescriptor.setOnClickListener {
             it.performLongClick()
         }
 
-        seatsCountString.text = if (selections?.size!! > 1) "${selections.size} Posti Selezionati" else "Posto Selezionato"
+        seatsCountString.text =
+            if (selections?.size!! > 1) "${selections.size} Posti Selezionati" else "Posto Selezionato"
 
         var totaleCalc = 0.0
         lifecycleScope.launch {
             viewModel.fetchRewardCounts()
             totaleCalc = selections.size.times(STANDARD_PRICE)
-            val string = String.format(Locale.ITALY,"%.2f", totaleCalc)
+            val string = String.format(Locale.ITALY, "%.2f", totaleCalc)
             total.text = string
-            val totalStars = totaleCalc.times(userLevel?.plus(1) ?: 0).toInt()
+            val totalStars = totaleCalc.times(10).plus(viewModel.level.value!!).toInt()
             totalStarPoints.text = totalStars.toString()
 
         }
@@ -139,50 +147,64 @@ class CheckoutModal : BottomSheetDialogFragment() {
                     Dialog.showNetworkErrorDialog(requireContext())
                     viewModel.status.postValue(DTO.Stat.DEFAULT)
                 }
+
                 DTO.Stat.PURCHASE_COMPLETE -> {
                     dismiss()
                     findNavController().popBackStack(R.id.bookingFragment, true)
                     if (viewModel.transactionType.value == TransactionType.FREE) {
                         Dialog.showPurchaseSuccessDialogFree(requireContext()) // temp
                     } else {
-                        Dialog.showPurchaseSuccessDialog(requireContext(), totalStarPoints.text.toString().toInt()) // to do actual number
+                        if (viewModel.serverResponse.value?.newPoints == 1000) {
+                            Dialog.showMaxPointsDialog(requireContext())
+                        } else {
+                            Dialog.showPurchaseSuccessDialog(
+                                requireContext(),
+                                viewModel.serverResponse.value?.pointsEarned!!
+                            )
+                        }
                     }
 
                     viewModel.status.postValue(DTO.Stat.DEFAULT)
                 }
+
                 DTO.Stat.PURCHASE_FAIL -> {
                     Dialog.showPurchaseFailDialog(requireContext())
                     viewModel.status.postValue(DTO.Stat.DEFAULT)
-                } else -> {}
+                }
+
+                else -> {}
             }
         }
 
         viewModel.transactionType.observe(viewLifecycleOwner) {
+            val level = viewModel.level.value!! // points = euros x 10 + level
             when (it!!) {
                 TransactionType.FREE -> {
                     // remove 8 euros
                     Log.d("CheckoutModal", "Free selected")
                     val new = totaleCalc.minus(8)
-                    val string = String.format(Locale.ITALY,"%.2f", new)
-                    val totalStars = new.times(userLevel?.plus(1) ?: 0).toInt()
+                    val string = String.format(Locale.ITALY, "%.2f", new)
+                    val totalStars = new.times(10).plus(level).toInt()
                     totalStarPoints.text = totalStars.toString()
                     total.text = string
                     buyButton.text = "Riscatta Biglietto Gratuito"
                 }
+
                 TransactionType.DISCOUNT -> {
                     Log.d("CheckoutModal", "Discount selected")
                     val new = totaleCalc.minus(4)
-                    val string = String.format(Locale.ITALY,"%.2f", new)
-                    val totalStars = new.times(userLevel?.plus(1) ?: 0).toInt()
+                    val string = String.format(Locale.ITALY, "%.2f", new)
+                    val totalStars = new.times(10).plus(level).toInt()
                     totalStarPoints.text = totalStars.toString()
                     total.text = string
                     buyButton.text = "Conferma e Paga"
                 }
+
                 TransactionType.STANDARD -> {
                     Log.d("CheckoutModal", "Standard selected")
-                    val string = String.format(Locale.ITALY,"%.2f", totaleCalc)
+                    val string = String.format(Locale.ITALY, "%.2f", totaleCalc)
                     total.text = string
-                    val totalStars = totaleCalc.times(userLevel?.plus(1) ?: 0).toInt()
+                    val totalStars = totaleCalc.times(10).plus(level).toInt()
                     totalStarPoints.text = totalStars.toString()
                     buyButton.text = "Conferma e Paga"
                 }
@@ -198,12 +220,12 @@ class CheckoutModal : BottomSheetDialogFragment() {
         }
 
 
-
         val adapter = CheckoutAdapter(selections)
 
         recycler.adapter = adapter
 
-        recycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        recycler.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
 
     }
@@ -211,7 +233,8 @@ class CheckoutModal : BottomSheetDialogFragment() {
     override fun onStart() {
         super.onStart()
 
-        val bottomSheet = dialog?.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
+        val bottomSheet =
+            dialog?.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
         if (bottomSheet != null) {
             val behavior = BottomSheetBehavior.from(bottomSheet)
             behavior.state = BottomSheetBehavior.STATE_EXPANDED

@@ -74,7 +74,7 @@ object Dialog {
         builder.setTitle("Acquisto effettuato")
 
         val htmlMessage = """
-        <p>Hai effettuato l'acquisto con successo e hai guadagnato <span style="color: yellow"><b>${points} stars</b></span>.</p>
+        <p>Hai effettuato l'acquisto con successo e hai guadagnato <span style="color: #FFCC66"><b>${points} Stars</b></span>.</p>
         <p><i>Continua a fare acquisti per guadagnare ancora più punti!</i></p>
         """.trimIndent()
 
@@ -199,7 +199,7 @@ object Dialog {
         builder.setTitle("Biglietto riscattato")
 
         val htmlMessage = """
-        <p>Hai riscattato un <span style="color: yellow">biglietto gratuito!</span></b></p>
+        <p>Hai riscattato un <span style="color: #FFCC66">biglietto gratuito!</span></b></p>
         <p><i>Continua a fare acquisti per guadagnare ancora più punti e ottenere ancora più sconti!</i></p>
         """.trimIndent()
 
@@ -218,8 +218,8 @@ object Dialog {
         builder.setTitle("Salire di livello?")
 
         val htmlMessage = """
-        <p>Hai raggiunto i punti necessari per passare al <span style="color: yellow"><b>livello ${level + 1}</span>!</b> </p>
-        <p>Se scegli di passare al prossimo livello <span style="color: red"><b>i tuoi punti saranno azzerati.</b></span></p>
+        <p>Hai raggiunto i punti necessari per passare al <span style="color: #FFCC66"><b>livello ${level + 1}</span>!</b> </p>
+        <p>Se scegli di passare al prossimo livello <span style="color: #FF3333"><b>i tuoi punti saranno azzerati.</b></span></p>
         <p>Ma non temere! Aumentando di livello godrai di un guadagno di <span><em>Stars</em></span> maggiorato!</b></p>
         </b>Vuoi continuare?</b>
         """
@@ -285,6 +285,24 @@ object Dialog {
         builder.setPositiveButton("Ok") {
                 dialog, _ -> dialog.dismiss()
         }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    fun showMaxPointsDialog(context: Context) {
+        val builder = MaterialAlertDialogBuilder(context, centered)
+        builder.setTitle("Acquisto effettuato")
+
+        val htmlMessage = """
+        <p>Hai effettuato l'acquisto con successo. Ti avvisiamo che hai raggiunto il tetto massimo di <span style="color: #FFCC66"><b>1000 Stars</b></span>.</p>
+        <i>Per continuare a guadagnare punti sali di livello o riscatta ricompense!</i>
+        """.trimIndent()
+
+        builder.setMessage(Html.fromHtml(htmlMessage, Html.FROM_HTML_MODE_LEGACY))
+
+        builder.setIcon(R.drawable.baseline_check_circle_outline_24)
+        builder.setPositiveButton("Ok") { dialog, _ -> dialog.dismiss() }
+
         val dialog = builder.create()
         dialog.show()
     }

@@ -37,6 +37,13 @@ class DTO {
         @SerializedName("email") val email: String?
     )
 
+    data class BuyResponse(
+        @SerializedName("status") val status: Stat?,
+        @SerializedName("message") val error: String?,
+        @SerializedName("new_points") val newPoints: Int?,
+        @SerializedName("points_to_add") val pointsEarned: Int?
+    )
+
     data class BuyTicketRequest(
         @SerializedName("user_id") val userId: String?,
         @SerializedName("film_id") val filmId: String?,

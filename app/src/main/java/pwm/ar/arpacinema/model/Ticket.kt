@@ -39,4 +39,11 @@ data class Ticket(
     val formattedTime: String
         get() = screeningTime.substring(0, 5)
 
+    val year : String
+        get() {
+            val date = LocalDate.parse(screeningDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+            return date.year.toString()
+        }
+
+
 }
