@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.Session
 import pwm.ar.arpacinema.model.Movie
@@ -39,7 +40,7 @@ class HomeViewModel : ViewModel() {
 
     // get user image url
     fun getUserImageURL() {
-        scope.launch {
+        scope.launch(Dispatchers.IO) {
             try {
                 val request = DTO.UserIdPost(Session.user?.id.toString())
                 val response = service.getUserImage(request)
@@ -66,7 +67,7 @@ class HomeViewModel : ViewModel() {
 
     // get promo list
     private fun getPromos() {
-        scope.launch {
+        scope.launch(Dispatchers.IO) {
             try {
                 val response = service.getPromotions()
 
@@ -89,7 +90,7 @@ class HomeViewModel : ViewModel() {
     }
     // get movie list
     private fun getMovies() {
-        scope.launch {
+        scope.launch(Dispatchers.IO) {
             try {
                 val response = service.getMoviesOfTheWeek()
 

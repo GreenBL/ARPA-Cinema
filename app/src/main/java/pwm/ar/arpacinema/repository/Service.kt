@@ -15,6 +15,18 @@ import retrofit2.http.Url
 
 interface Service {
 
+    @POST("pwm/select_popcorn_and_buy_item")
+    suspend fun buyPopcorn(@Body popcornRequest: PopcornRequest): Response<Message>
+
+    @POST("pwm/select_drink_and_buy_item")
+    suspend fun buyDrink(@Body drinkRequest: DrinkRequest): Response<Message>
+
+    @POST("pwm/select_combo_and_buy_item")
+    suspend fun buyCombo(@Body comboRequest: ComboRequest): Response<Message>
+
+    @POST("pwm/select_discounts")
+    suspend fun redeemDiscount(@Body redeemDiscountRequest: RedeemDiscountRequest): Response<Message>
+
     @POST("pwm/get_items")
     suspend fun getRedeemedItems(@Body request: UserIdPost): Response<RedeemedItemsResponse>
 

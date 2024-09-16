@@ -55,9 +55,9 @@ class InventoryFragment : Fragment() {
         ) { reward ->
             // Build the parcel
             val parcel = RewardDetailsParcel(
-                rewardId = "temp",
+                rewardId = "${Math.random().times(10000).toInt()}",
                 rewardCategory = reward.category,
-                rewardOption = reward.description
+                rewardOption = "${reward.category} : ${ reward.size }"
             )
             val action = CodeFragmentDirections.actionGlobalCodeFragment(parcel)
             findNavController().navigate(action)

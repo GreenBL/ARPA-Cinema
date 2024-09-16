@@ -7,6 +7,7 @@ import pwm.ar.arpacinema.model.ProfileImage
 import pwm.ar.arpacinema.model.Promotion
 import pwm.ar.arpacinema.model.Purchase
 import pwm.ar.arpacinema.model.Reward
+import pwm.ar.arpacinema.model.RewardType
 import pwm.ar.arpacinema.model.ScreeningDate
 import pwm.ar.arpacinema.model.ScreeningTime
 import pwm.ar.arpacinema.model.Ticket
@@ -241,6 +242,28 @@ class DTO {
         @SerializedName("status") val status: Stat?,
         @SerializedName("items") val items: List<Reward>?
     )
+
+    data class RedeemDiscountRequest(
+        @SerializedName("user_id") val userId: String?,
+        @SerializedName("reward_type") val rewardId: RewardType?
+    )
+
+    data class PopcornRequest(
+        @SerializedName("user_id") val userId: String?,
+        @SerializedName("popcorn_id") val rewardId: Int?
+    )
+
+    data class DrinkRequest(
+        @SerializedName("user_id") val userId: String?,
+        @SerializedName("drink_id") val rewardId: Int?
+    )
+
+    data class ComboRequest(
+        @SerializedName("user_id") val userId: String?,
+        @SerializedName("combo_id") val rewardId: Int?
+    )
+
+
     // status enum for responses
 
     enum class Stat(val status: String) {
