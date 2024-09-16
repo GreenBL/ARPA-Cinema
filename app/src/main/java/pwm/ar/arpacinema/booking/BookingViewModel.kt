@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.Session
 import pwm.ar.arpacinema.dev.Selection
@@ -179,7 +180,7 @@ class BookingViewModel : ViewModel() {
 
         if (selectedSeats.value.isNullOrEmpty()) return
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
 
             val seats = selectedSeats.value
             val seatAsStringList = mutableListOf<String>()
@@ -223,7 +224,7 @@ class BookingViewModel : ViewModel() {
                 }
 
                 if (body?.status == DTO.Stat.PURCHASE_COMPLETE) {
-                    _serverResponse.value = body
+                    _serverResponse.postValue(body)
                     Log.e("BookingViewModel", body.status.toString())
                     _status.postValue(body.status)
                     return@launch
@@ -253,7 +254,7 @@ class BookingViewModel : ViewModel() {
     }
 
     suspend fun fetchDates(movieId: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
 
             // serialized request
             val idPost = DTO.MovieIdPost(movieId)
@@ -298,7 +299,7 @@ class BookingViewModel : ViewModel() {
 
         val selectedDate = selectedDate.value
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val movieTimePost = DTO.MovieTimePost(movieId, selectedDate)
 
             try {
@@ -345,7 +346,7 @@ class BookingViewModel : ViewModel() {
         val selectedDate = selectedDate.value
         val selectedTime = selectedTime.value
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             Log.d("BookingViewModel", "Getting red seats for $selectedDate $selectedTime ${selectedTime?.auditorium}")
 
             val redSeatsRequest = DTO.RedSeatsRequest(selectedTime?.auditorium, selectedDate, selectedTime?.time)

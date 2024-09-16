@@ -51,7 +51,7 @@ class CodeFragment : DialogFragment() {
         shimmer.startShimmer()
 
         scope.launch {
-            val imageUri = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=LOCUSTE"
+            val imageUri = "http://10.0.2.2:9000/pwm/get_qr?data=${rewardDetails.rewardId}"
 
 
             Glide.with(this@CodeFragment)

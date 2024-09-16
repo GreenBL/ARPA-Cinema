@@ -370,4 +370,15 @@ object Dialog {
         val dialog = builder.create()
         dialog.show()
     }
+
+    fun showRedeemSuccessDialog(context: Context) {
+        val builder = MaterialAlertDialogBuilder(context, centered)
+        builder.setTitle("Riscatto effettuato")
+        builder.setMessage("Il premio è stato riscatto con successo.")
+        builder.setIcon(R.drawable.baseline_check_circle_outline_24)
+        builder.setPositiveButton("Ok") { dialog, _ -> dialog.dismiss() }
+
+        val dialog = builder.create()
+        dialog.show()
+    }
 }

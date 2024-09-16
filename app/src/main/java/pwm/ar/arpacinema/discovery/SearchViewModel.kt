@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pwm.ar.arpacinema.model.Movie
 import pwm.ar.arpacinema.repository.DTO
@@ -43,7 +44,7 @@ class SearchViewModel : ViewModel() {
     }
 
     private fun fetchMovies() {
-       scope.launch {
+       scope.launch(Dispatchers.IO) {
             try {
                 val response = api.getMovies()
 

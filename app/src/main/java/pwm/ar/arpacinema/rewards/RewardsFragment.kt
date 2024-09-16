@@ -19,6 +19,7 @@ import pwm.ar.arpacinema.common.MenuItem
 import pwm.ar.arpacinema.databinding.FragmentAccountBinding
 import pwm.ar.arpacinema.databinding.FragmentRewardsBinding
 import pwm.ar.arpacinema.model.Reward
+import pwm.ar.arpacinema.repository.DTO
 
 class RewardsFragment : Fragment() {
 
@@ -28,8 +29,8 @@ class RewardsFragment : Fragment() {
         MenuItem(R.drawable.tall_drink_cups__dark_background, "Bibite"),
         MenuItem(R.drawable.popcorn_buckets_and_then_some_drink_cups_in_front_, "Combo"))
     private val discountsList = listOf(
-        Reward("Sconto", "Sconto biglietto (50%)", 500, ""),
-        Reward("Sconto", "Biglietto gratuito (100%)", 1000, ""))
+        Reward(0,"Sconto", "Sconto biglietto (50%)", 700, ""),
+        Reward(0,"Sconto", "Biglietto gratuito (100%)", 1000, ""))
 
     private var _binding: FragmentRewardsBinding? = null
     private val binding get() = _binding!!
@@ -100,7 +101,25 @@ class RewardsFragment : Fragment() {
 
         }
         val discountsAdapter = OptionsAdapter(discountsList) { reward ->
+            if (viewModel.userPointsAndLevel.value?.points!! < reward.points) {
+                Dialog.showNotEnoughPointsDialog(requireContext())
+                return@OptionsAdapter
+            }
+
             Dialog.showRedeemRationaleDialog(requireContext(), reward) {
+                viewModel.redeemDiscount(reward)
+            }
+        }
+
+        viewModel.status.observe(viewLifecycleOwner) {
+            when (it) {
+                DTO.Stat.DEFAULT -> {}
+                DTO.Stat.SUCCESS -> {
+                    Dialog.showRedeemSuccessDialog(requireContext())
+                }
+                else -> {
+                    Dialog.showErrorDialog(requireContext())
+                }
 
             }
         }
