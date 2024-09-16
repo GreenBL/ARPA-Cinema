@@ -38,11 +38,11 @@ class WalletFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         lifecycleScope.launch {
-            viewModel.fetchBalance()  // Calls the new function to fetch balance from backend
+            viewModel.fetchBalance()
         }
 
         viewModel.balance.observe(viewLifecycleOwner) { balance ->
-            binding.dynamicCurrency.text = String.format(Locale.ITALY, "%.2f€", balance)  // Update the TextView dynamically
+            binding.dynamicCurrency.text = String.format(Locale.ITALY, "%.2f€", balance)
         }
 
         val confirmButton = binding.confirmButton
@@ -53,6 +53,7 @@ class WalletFragment : Fragment() {
 
         val backButton = binding.include.navBack
         backButton.setOnClickListener {
+            increaseLayout.isEnabled = false
             findNavController().popBackStack()
         }
 
