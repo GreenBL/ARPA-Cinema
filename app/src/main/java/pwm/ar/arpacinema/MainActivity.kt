@@ -48,6 +48,13 @@ class MainActivity : AppCompatActivity() {
         installSplashScreen().setKeepOnScreenCondition {
             false
         }
+        runBlocking {
+            if (RetrofitClient.checkConnection()) {
+                Log.i("MainActivity", "Connection OK")
+            } else {
+                Log.e("MainActivity", "Connection FAILED")
+            }
+        }
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
@@ -87,7 +94,7 @@ class MainActivity : AppCompatActivity() {
         setupBottomBarBehavior(navController)
 
         runBlocking {
-            retrofit.checkConnection()
+            //retrofit.checkConnection()
             if (Session.getUserId(this@MainActivity) == null) {
                 // hide bottom nav
                 Log.i("MainActivity", "User NOT FOUND, SKIPPING autoLOGIN")

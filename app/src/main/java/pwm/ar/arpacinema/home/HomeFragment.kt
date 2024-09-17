@@ -41,6 +41,8 @@ import pwm.ar.arpacinema.discovery.movie.MoviePageFragmentDirections
 import pwm.ar.arpacinema.model.Categories
 import pwm.ar.arpacinema.model.Movie
 import pwm.ar.arpacinema.model.Promotion
+import pwm.ar.arpacinema.repository.RetrofitClient
+import pwm.ar.arpacinema.repository.Sentinel
 import pwm.ar.arpacinema.util.PlaceholderDrawable
 
 
@@ -283,8 +285,17 @@ class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        if (RetrofitClient.interloper.networkStatus.value == Sentinel.NetStat.OFFLINE) {
+            _binding = null
+            return
+        }
+
+        if (viewModel.positionBottom == 0 || viewModel.positionTop == 0) {
+            _binding = null
+            return
+        }
         viewModel.positionTop = topDots.getSnapPosition(popLayoutManager)
-        viewModel.positionBottom = topDots.getSnapPosition(carouselLayoutManager)
+        viewModel.positionBottom = bottomDots.getSnapPosition(carouselLayoutManager)
         _binding = null
     }
 
